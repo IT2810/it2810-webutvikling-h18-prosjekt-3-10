@@ -8,6 +8,7 @@ import CalenderScreen from '../screens/CalenderScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import TodoScreen from '../screens/TodoScreen';
 import ContactScreen from '../screens/ContactScreen';
+import ProfileScreen from '../screens/ProfilesScreen';
 
 
 const HomeStack = createStackNavigator({
@@ -22,7 +23,7 @@ HomeStack.navigationOptions = {
       name={
         Platform.OS === 'ios'
           ? `ios-home${focused ? '' : '-outline'}`
-          : 'home'
+          : 'md-home'
       }
     />
   ),
@@ -112,4 +113,5 @@ export default createBottomTabNavigator({
   ActivityStack,
   TodoStack,
   ContactStack,
+  ProfileStack
 });
