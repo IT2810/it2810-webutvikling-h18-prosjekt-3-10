@@ -6,35 +6,80 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   View,
+  Modal,
+  Button,
+  AsyncStorage
 } from 'react-native';
-import { WebBrowser } from 'expo';
-
+import { WebBrowser, Icon } from 'expo';
+import Colors from '../constants/Colors'
 import { MonoText } from '../components/StyledText';
+import t from 'tcomb-form-native';
 
 export default class ContactsScreen extends Component {
   static navigationOptions = {
     title: "Contacts",
   };
 
+  state = {
+    addContactModalVisible: false,
+  }
+
+
+
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps='handled'>
           
           {this.emptyContactsList()}
+          {this.addContactModal()}
 
         </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
       </View>
     );
+  }
+
+  handleSubmit = () => {
+    const value = this.formRef.getValue(); // use that ref to get the form value
+    console.log('Trying to save: ', value);
+    this.saveContact(value);
+  }
+
+  async saveContact(contact) {
+    console.log("trying to save")
+    await AsyncStorage.setItem("contacts", JSON.stringify(contact))
+    console.log("saved")
+  }
+
+  async retrieveContacts() {
+    const retrievedItem = await AsyncStorage.getItem("contacts");
+    const item = JSON.parse(retrievedItem);
+    console.log(item);
+  }
+
+  addContactModal = () => {
+    const Contact = t.struct({
+      name: t.String,
+      email: t.String
+    })
+    const Form = t.form.Form;
+
+    return (
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.state.addContactModalVisible}
+        onRequestClose={() => {this.setState({addContactModalVisible: false})}}>
+        <Text style={styles.modalTitle}>Add contact</Text>
+        <View style={styles.formContainer}>
+          <Form type={Contact} ref={form => this.formRef = form}/>
+        </View>
+        <Button onPress={this.handleSubmit} title="Add" style={{width: 40}}/>
+        <Button onPress={this.retrieveContacts} title="Retrieve" style={{width: 40}}/>
+      </Modal>
+    )
   }
 
   emptyContactsList = () => {
@@ -53,45 +98,21 @@ export default class ContactsScreen extends Component {
           <Text style={styles.getStartedText}>It looks like your contacts list is empty.</Text>
           <Text style={styles.getStartedText}>Let's add some!</Text>
         </View>
-        <View>
 
+        <View>
+          <TouchableHighlight hitSlop={{top: 20, right: 20, left: 20, bottom: 20}}>
+            <Icon.Ionicons
+              name="ios-add-circle"
+              size={32}
+              style={{ marginTop: 20 }}
+              color={Colors.tintColor}
+              onPress={() => this.setState({addContactModalVisible: true})}
+            />
+          </TouchableHighlight>
         </View>
       </View>
     )
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
@@ -99,15 +120,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
   contentContainer: {
     paddingTop: 30,
+  },
+  formContainer: {
+    justifyContent: 'center',
+    padding: 20,
+  },
+  modalTitle: {
+    padding: 20,
+    fontSize: 17,
+    color: 'rgba(96,100,109, 1)',
+    textAlign: 'center',
   },
   welcomeContainer: {
     alignItems: 'center',
@@ -129,39 +153,11 @@ const styles = StyleSheet.create({
   homeScreenFilename: {
     marginVertical: 7,
   },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
   getStartedText: {
     fontSize: 17,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
     textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
   },
   tabBarInfoText: {
     fontSize: 17,
