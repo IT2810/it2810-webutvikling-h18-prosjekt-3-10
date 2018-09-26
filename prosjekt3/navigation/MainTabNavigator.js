@@ -4,9 +4,11 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import ProfileScreen from '../screens/ProfilesScreen';
+import CalenderScreen from '../screens/CalenderScreen';
+import ActivityScreen from '../screens/ActivityScreen';
+import TodoScreen from '../screens/TodoScreen';
+import ContactScreen from '../screens/ContactScreen';
+
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -19,37 +21,67 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? `ios-home${focused ? '' : '-outline'}`
+          : 'home'
       }
     />
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const CalenderStack = createStackNavigator({
+  Calender: CalenderScreen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+CalenderStack.navigationOptions = {
+  tabBarLabel: 'Calendar',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+      name={Platform.OS === 'ios'
+        ? `ios-calendar${focused ? ''
+          : '-outline'}` : 'md-calendar'}
     />
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const ActivityStack = createStackNavigator({
+  Activity: ActivityScreen,
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+ActivityStack.navigationOptions = {
+  tabBarLabel: 'Activity',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+      name={Platform.OS === 'ios' ? `ios-heart${focused ? '' : '-outline'}` : 'md-heart'}
+    />
+  ),
+};
+
+const TodoStack = createStackNavigator({
+  Todo: TodoScreen,
+});
+
+TodoStack.navigationOptions = {
+  tabBarLabel: 'Todo',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? `ios-list${focused ? '' : '-outline'}` : 'md-list'}
+    />
+  ),
+};
+
+const ContactStack = createStackNavigator({
+  Contact: ContactScreen,
+});
+
+ContactStack.navigationOptions = {
+  tabBarLabel: 'Contacts',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
     />
   ),
 };
@@ -76,8 +108,8 @@ ProfileStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
-  ProfileStack
-
+  CalenderStack,
+  ActivityStack,
+  TodoStack,
+  ContactStack,
 });
