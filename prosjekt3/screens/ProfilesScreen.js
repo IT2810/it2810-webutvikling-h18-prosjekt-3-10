@@ -6,27 +6,34 @@ import {
     Image,
     TextInput,
     ScrollView,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform,
+    ImageBackground,
 } from 'react-native';
 
 export default class UserProfileView extends Component {
     static navigationOptions = {
-        title: 'Profile',
+        title: "Profile",
     };
-
     render() {
+
         return (
+
 
             <ScrollView style={styles.scroll}>
                 <KeyboardAvoidingView style={styles.viewContent} behavior="padding" enabled>
 
 
+
                     <Image style={styles.avatar}
                         source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar4.png' }} />
+
+
 
                     <TextInput style={styles.name} placeholder="Name" />
                     <TextInput style={styles.userInfo} placeholder="E-mail" keyboardType="email-address" />
                     <TextInput style={styles.userInfo} placeholder="Town" />
+
                 </KeyboardAvoidingView>
             </ScrollView>
 
@@ -37,15 +44,15 @@ export default class UserProfileView extends Component {
 const styles = StyleSheet.create({
 
     scroll: {
-        flex: 1
+
     },
 
     viewContent: {
-        padding: 20,
+        flex: 1,
         alignItems: 'center',
-
-
+        padding: 20,
     },
+
     avatar: {
         width: 130,
         height: 130,
@@ -72,4 +79,5 @@ const styles = StyleSheet.create({
         backgroundColor: "#778899",
         alignItems: 'center',
     }
+
 });
