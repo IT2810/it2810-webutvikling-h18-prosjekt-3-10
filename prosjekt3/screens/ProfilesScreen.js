@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Avatar } from 'react-native-elements';
 import {
     StyleSheet,
     Text,
@@ -7,25 +8,26 @@ import {
     TextInput,
     ScrollView,
     KeyboardAvoidingView,
+    ImageBackground,
+
 } from 'react-native';
 
 export default class UserProfileView extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = { // inital sate for input fields
             name: '',
             email: '',
             town: '',
             height: '',
             weight: '',
-
         };
     }
     static navigationOptions = {
-        header: null,
+        header: null, // remove initial white-area header
     };
 
-    /* funksjon som bestemmer at input kun kan være integers for høyde */
+    /* function that restrict user to only input integers for height input field */
     onChangedHeight(height) {
         let newHeight = 'cm   ';
         let heightNumbers = '0123456789';
@@ -36,7 +38,7 @@ export default class UserProfileView extends Component {
         }
         this.setState({ myHeightNumber: newHeight });
     }
-
+    /* function that restrict user to only input integers for weight input field */
     onChangedWeight(weight) {
         let newWeight = 'kg   ';
         let weightNumbers = '0123456789';
@@ -48,54 +50,114 @@ export default class UserProfileView extends Component {
         this.setState({ myWeightNumber: newWeight });
     }
 
-
     render() {
         let profilePicture = {
-            uri: 'https://bootdey.com/img/Content/avatar/avatar4.png'
+            uri: 'https://bootdey.com/img/Content/avatar/avatar4.png' // link to profile image/avatar
         }
+        // let backgroundImage = "../assets/images/profileBackground.jpg"
+
         return (
-            <ScrollView style={styles.scroll}>
-                <KeyboardAvoidingView style={styles.viewContent} behavior="padding" enabled>
+            <KeyboardAvoidingView behavior="position" enabled>
+                <ScrollView>
                     <View style={styles.headBackground}>
+                        {/* <ImageBackground style={styles.ImageBackground} source={require(backgroundImage) }> */}
+
                         <Text style={styles.headerText}>Profile</Text>
-                        <Image style={styles.avatar}
-                            source={profilePicture} />
-                        <TextInput style={styles.name} placeholder="Name" onChangeText={(name => this.setState({ name }))} />
-                        <TextInput
-                            style={styles.integerInput}
-                            placeholder="Height"
-                            keyboardType='numeric'
-                            onChangeText={(height) => this.onChangedHeight(height)}
-                            value={this.state.myHeightNumber}
-                            maxLength={8}  //setting limit of input
-                        />
-                        <TextInput
-                            style={styles.integerInput}
-                            placeholder="Weight"
-                            keyboardType='numeric'
-                            onChangeText={(weight) => this.onChangedWeight(weight)}
-                            value={this.state.myWeightNumber}
-                            maxLength={8}  //setting limit of input
-                        />
+                        <View style={styles.avatarImage}>
+                            <Avatar // using react native elements - external libary
+                                xlarge
+                                rounded
+                                source={profilePicture}
+                                activeOpacity={0.7}
+                            />
+                        </View>
+
+                        <View style={styles.SectionStyleName}>
+                            <Image source={require('../assets/images/profileName.png')} style={styles.ImageStyle} />
+                            <TextInput style={styles.name} // input field for name
+                                placeholder="Enter name"
+                                onChangeText={(name => this.setState({ name }))}
+                                underlineColorAndroid="transparent" />
+                        </View>
+
+                        <View style={styles.SectionStyleIntegers}>
+                            <Image source={require('../assets/images/profileHeight.png')} style={styles.ImageStyle} />
+                            <TextInput // input field for height
+                                style={styles.integerInput}
+                                placeholder="Height"
+                                keyboardType='numeric'
+                                onChangeText={(height) => this.onChangedHeight(height)}
+                                value={this.state.myHeightNumber}
+                                maxLength={8}  //limit for number of integers
+                                underlineColorAndroid="transparent" />
+                        </View>
+
+                        <View style={styles.SectionStyleIntegers}>
+                            <Image source={require('../assets/images/profileWeight.png')} style={styles.ImageStyle} />
+                            <TextInput // input field for weight
+                                style={styles.integerInput}
+                                placeholder="Weight"
+                                keyboardType='numeric'
+                                onChangeText={(weight) => this.onChangedWeight(weight)}
+                                value={this.state.myWeightNumber}
+                                maxLength={8}  //limit for number of integers
+                                underlineColorAndroid="transparent" />
+                        </View>
+                        {/*  </ImageBackground> */}
                     </View>
-                    <TextInput style={styles.userInfo} placeholder="E-mail" onChangeText={(email => this.setState({ email }))} keyboardType="email-address" />
-                    <TextInput style={styles.userInfo} placeholder="Town" onChangeText={(town => this.setState({ town }))} />
-                </KeyboardAvoidingView>
-            </ScrollView>
+
+                    <View style={styles.GrayContent}>
+                        <View style={styles.SectionStyleUserInfo}>
+                            <Image source={require('../assets/images/profileEmail.png')} style={styles.ImageStyle} />
+                            <TextInput style={styles.userInfo} // input field for e-mail
+                                placeholder="E-mail"
+                                onChangeText={(email => this.setState({ email }))}
+                                keyboardType="email-address"
+                                underlineColorAndroid="transparent" />
+                        </View>
+                        <View style={styles.SectionStyleUserInfo}>
+                            <Image source={require('../assets/images/profileTown.png')} style={styles.ImageStyle} />
+                            <TextInput style={styles.userInfo} // input field for town
+                                placeholder="Town"
+                                onChangeText={(town => this.setState({ town }))}
+                                underlineColorAndroid="transparent" />
+                        </View>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
 
+// styling
 const styles = StyleSheet.create({
 
-    headBackground: {
-        backgroundColor: 'powderblue',
+    avatar: {
+        width: 130,
+        height: 130,
+        borderRadius: 63,
+        borderWidth: 4,
+        borderColor: "#4d4d4d",
+        marginBottom: 20,
+    },
+
+    avatarImage: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    GrayContent: {
         width: 375,
         flex: 1,
-        alignItems: 'center',
+        padding: 10,
+    },
+
+    headBackground: {
+        backgroundColor: '#B0E0E6',
+        width: 375,
+        flex: 1,
         padding: 10,
         borderBottomWidth: 2,
-
     },
 
     headerText: {
@@ -103,55 +165,70 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         textAlign: 'center',
         padding: 15,
-
+        color: "#4d4d4d",
     },
 
-    scroll: {
-        flex: 1
-    },
-
-    viewContent: {
-        flex: 2,
-        alignItems: 'center',
-
-
-    },
-
-    avatar: {
-        width: 130,
-        height: 130,
-        borderRadius: 63,
-        borderWidth: 4,
-        borderColor: "white",
-        marginBottom: 20,
-    },
-    name: {
-        fontSize: 22,
-        color: "#000000",
-        fontWeight: '700',
-        width: 200,
-        padding: 10,
-        textAlign: 'center',
-
-
-    },
-    userInfo: {
-        fontSize: 16,
-        color: "#778899",
-        fontWeight: '600',
-        width: 200,
-        padding: 10,
-        textAlign: 'center',
+    ImageStyle: {
+        marginRight: 15,
+        height: 35,
+        width: 35,
+        resizeMode: 'stretch',
     },
 
     integerInput: {
+        flex: 1,
         fontSize: 15,
         color: "#778899",
         fontWeight: '600',
-        width: 80,
-        padding: 6,
-        textAlign: 'center',
-    }
+        borderBottomWidth: 1,
+        borderColor: '#69868a',
+    },
 
+    name: {
+        flex: 1,
+        fontSize: 20,
+        color: "#4d4d4d",
+        fontWeight: '700',
+        borderBottomWidth: 2,
+        borderColor: '#587073',
+    },
+
+    userInfo: {
+        fontSize: 14,
+        color: "#778899",
+        fontWeight: '600',
+        flex: 1,
+        borderBottomWidth: .5,
+        borderColor: '#8D8D8D',
+    },
+
+    /* ImageBackground: {
+         width: 375,
+         flex: 1,
+         alignItems: 'center',
+         padding: 10,
+         borderBottomWidth: 2,
+     },*/
+
+    SectionStyleIntegers: {
+        flexDirection: 'row',
+        height: 30,
+        margin: 10,
+        width: 125,
+    },
+
+    SectionStyleName: {
+        flexDirection: 'row',
+        height: 30,
+        margin: 10,
+        width: 300,
+    },
+
+    SectionStyleUserInfo: {
+        flexDirection: 'row',
+        height: 30,
+        margin: 10,
+        width: 250,
+    },
 
 });
