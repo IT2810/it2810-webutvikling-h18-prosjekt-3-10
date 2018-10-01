@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {
   Image,
   Platform,
+  FlatList,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableHighlight,
   View,
@@ -12,10 +12,12 @@ import {
   Button,
   AsyncStorage
 } from 'react-native';
-import { WebBrowser, Icon } from 'expo';
+
+import { Avatar, Header, List, ListItem, Text } from 'react-native-elements';
+
+import { WebBrowser, Icon, Contacts, Permissions } from 'expo';
 import Colors from '../constants/Colors'
 import { MonoText } from '../components/StyledText';
-import t from 'tcomb-form-native';
 
 export default class ContactsScreen extends Component {
   static navigationOptions = {
@@ -23,99 +25,166 @@ export default class ContactsScreen extends Component {
   };
 
   state = {
-    addContactModalVisible: false,
+    contactModalVisible: false,
+    contacts: {data: []},
+    fetchingContacts: true,
   }
 
-
+  componentDidMount = () => {
+    // Check if user already has accepted sharing contacts
+    // If not the contacts page will show an option to import from contacts
+    // which will in turn ask for Contacts-permission. 
+    Permissions.getAsync(Permissions.CONTACTS)
+    .then(({status}) => {
+      if (status === 'granted') {
+        this.retrieveContacts();
+      } else {
+        this.setState({
+          fetchingContacts: false,
+        })
+      }
+    })
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps='handled'>
-          
-          {this.emptyContactsList()}
-          {this.addContactModal()}
-
+          <Button title="Simulate remove permissions" onPress={() => {this.setState({contacts: {data: []}})}}/>
+          {
+            this.state.fetchingContacts ?
+            (this.showLoading()) :
+            (this.state.contacts.data.length == 0 ? this.showEmptyContactsList() : this.showContacts())
+          }
+          {
+              this.contactModal()
+          }
         </ScrollView>
       </View>
     );
   }
 
-  handleSubmit = () => {
-    const value = this.formRef.getValue(); // use that ref to get the form value
-    console.log('Trying to save: ', value);
-    this.saveContact(value);
+  retrieveContacts = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CONTACTS);
+    if (status === 'granted') {
+      const data = await Contacts.getContactsAsync();
+      this.setState({
+        contacts: data,
+        fetchingContacts: false,
+      })
+    } else {
+      throw new Error('Contact read permission not granted');
+    } 
   }
 
-  async saveContact(contact) {
-    console.log("trying to save")
-    await AsyncStorage.setItem("contacts", JSON.stringify(contact))
-    console.log("saved")
+  contactModal = () => {
+    if (this.state.activeContact && this.state.contactModalVisible) {
+      let contact = this.state.activeContact;
+      console.log(contact)
+      return (
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.contactModalVisible}
+          onRequestClose={() => {this.setState({contactModalVisible: false})}}>
+          <Header
+            innerContainerStyles={{alignItems: 'center'}}
+            leftComponent={{ icon: 'keyboard-arrow-down', color: '#fff', size: 32, onPress: () => {this.setState({contactModalVisible: false})} }}
+          />
+          <View style={styles.modalContent}>
+            <Avatar
+              avatarStyle={styles.avatar}
+              xlarge
+              rounded
+              source={contact.imageAvailable ? {uri: contact.image.uri} : require('../assets/images/robot-prod.png')}
+            />
+            <View style={styles.textWithLabel}>
+              <Text h4 style={styles.lightText}>Name</Text>
+              <Text h3>{`${contact.firstName} ${contact.lastName}`}</Text>
+            </View>
+            <View style={styles.textWithLabel}>
+              <Text h4 style={styles.lightText}>Number</Text>
+              <Text h3>{contact.phoneNumbers && contact.phoneNumbers[0].number}</Text>
+            </View>
+          </View>
+          
+          
+        </Modal>
+      )
+    } 
   }
 
-  async retrieveContacts() {
-    const retrievedItem = await AsyncStorage.getItem("contacts");
-    const item = JSON.parse(retrievedItem);
-    console.log(item);
-  }
-
-  addContactModal = () => {
-    const Contact = t.struct({
-      name: t.String,
-      email: t.String
-    })
-    const Form = t.form.Form;
-
+  showEmptyContactsList = () => {
     return (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={this.state.addContactModalVisible}
-        onRequestClose={() => {this.setState({addContactModalVisible: false})}}>
-        <Text style={styles.modalTitle}>Add contact</Text>
-        <View style={styles.formContainer}>
-          <Form type={Contact} ref={form => this.formRef = form}/>
-        </View>
-        <Button onPress={this.handleSubmit} title="Add" style={{width: 40}}/>
-        <Button onPress={this.retrieveContacts} title="Retrieve" style={{width: 40}}/>
-      </Modal>
-    )
-  }
-
-  emptyContactsList = () => {
-    return (
-      <View style={styles.welcomeContainer}>
+      <View style={[styles.welcomeContainer, {alignItems: "center"}]}>
         <Image
           source={
-            __DEV__
-              ? require('../assets/images/alone.gif')
-              : require('../assets/images/alone.gif')
+            require('../assets/images/alone.gif')
           }
           style={styles.welcomeImage}
         />
 
         <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>It looks like your contacts list is empty.</Text>
-          <Text style={styles.getStartedText}>Let's add some!</Text>
+          <Button title="Import from phone" onPress={this.retrieveContacts}/>
         </View>
 
-        <View>
-          <TouchableHighlight hitSlop={{top: 20, right: 20, left: 20, bottom: 20}}>
-            <Icon.Ionicons
-              name="ios-add-circle"
-              size={32}
-              style={{ marginTop: 20 }}
-              color={Colors.tintColor}
-              onPress={() => this.setState({addContactModalVisible: true})}
-            />
-          </TouchableHighlight>
-        </View>
+      </View>
+    )
+  }
+
+  showContacts = () => {
+    return (
+      <View style={styles.welcomeContainer}>
+        <List>
+          <FlatList
+            data={this.state.contacts.data}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              // TODO: Don't show undefined if name is not found
+              (item.lastName || item.firstName) &&
+              <ListItem 
+                roundAvatar
+                title={`${item.firstName} ${item.lastName}`}
+                avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/robot-prod.png')}
+                onPress={() => {
+                  this.setState({
+                    contactModalVisible: true,
+                    activeContact: item,
+                  })
+                }}
+              />
+            )}
+          />
+        </List>
+      </View>
+    )
+  }
+
+  showLoading = () => {
+    return (
+      <View>
+        <Text>Loading</Text>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  modalContent: {
+    padding: 20,
+    alignItems: "center",
+  },
+  textWithLabel: {
+    marginTop: 20,
+    alignSelf: "flex-start"
+  },
+  avatar: {
+    marginVertical: 20,
+  },
+  lightText: {
+    color: 'rgba(96,100,109, 1)',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -129,21 +198,20 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     padding: 20,
-    fontSize: 17,
+    fontSize: 24,
     color: 'rgba(96,100,109, 1)',
     textAlign: 'center',
   },
   welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    margin: 20,
+  },
+  item: {
+    margin: 30,
   },
   welcomeImage: {
     width: 400,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
   },
   getStartedContainer: {
     alignItems: 'center',
@@ -158,24 +226,5 @@ const styles = StyleSheet.create({
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
     textAlign: 'center',
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
 });
