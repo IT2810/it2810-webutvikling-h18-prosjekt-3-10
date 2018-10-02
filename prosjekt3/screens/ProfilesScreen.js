@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { Avatar } from 'react-native-elements';
+import { Avatar, Button } from 'react-native-elements';
 import {
     StyleSheet,
-    Text,
     View,
     Image,
     TextInput,
     ScrollView,
     KeyboardAvoidingView,
-    ImageBackground,
-
+    AsyncStorage,
 } from 'react-native';
 
 export default class UserProfileView extends Component {
@@ -19,13 +17,44 @@ export default class UserProfileView extends Component {
             name: '',
             email: '',
             town: '',
-            height: '',
-            weight: '',
+            myHeightNumber: '',
+            myWeightNumber: '',
         };
     }
     static navigationOptions = {
-        header: null, // remove initial white-area header
+        title: "Profile",
+        headerStyle: { // styling the header
+            backgroundColor: '#69868a',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
     };
+
+    // loading saved profile info
+    componentDidMount = () => {
+        this.retrieveData()
+    }
+
+
+    // retrieves stored profile info
+    retrieveData = async () => {
+        try {
+            const result = await AsyncStorage.getItem('profile')
+            const data = JSON.parse(result)
+            this.setState({
+                name: data.name,
+                email: data.email,
+                town: data.town,
+                myHeightNumber: data.myHeightNumber,
+                myWeightNumber: data.myWeightNumber,
+            })
+        }
+        catch (error) {
+            alert('Error retrieving data')
+        }
+    }
 
     /* function that restrict user to only input integers for height input field */
     onChangedHeight(height) {
@@ -49,21 +78,27 @@ export default class UserProfileView extends Component {
         }
         this.setState({ myWeightNumber: newWeight });
     }
+    // saving profile info
+    saveState = async () => {
+        const data = this.state;
+        try {
+            await AsyncStorage.setItem("profile", JSON.stringify(data))
+        } catch (error) {
+            alert('Error saving data')
+        }
+    }
 
     render() {
         let profilePicture = {
             uri: 'https://bootdey.com/img/Content/avatar/avatar4.png' // link to profile image/avatar
         }
-        // let backgroundImage = "../assets/images/profileBackground.jpg"
 
         return (
             <KeyboardAvoidingView behavior="position" enabled>
                 <ScrollView>
-                    <View style={styles.headBackground}>
-                        {/* <ImageBackground style={styles.ImageBackground} source={require(backgroundImage) }> */}
 
-                        <Text style={styles.headerText}>Profile</Text>
-                        <View style={styles.avatarImage}>
+                    <View style={styles.headBackground}>
+                        <View style={styles.centerContent}>
                             <Avatar // using react native elements - external libary
                                 xlarge
                                 rounded
@@ -76,6 +111,7 @@ export default class UserProfileView extends Component {
                             <Image source={require('../assets/images/profileName.png')} style={styles.ImageStyle} />
                             <TextInput style={styles.name} // input field for name
                                 placeholder="Enter name"
+                                value={this.state.name}
                                 onChangeText={(name => this.setState({ name }))}
                                 underlineColorAndroid="transparent" />
                         </View>
@@ -103,7 +139,6 @@ export default class UserProfileView extends Component {
                                 maxLength={8}  //limit for number of integers
                                 underlineColorAndroid="transparent" />
                         </View>
-                        {/*  </ImageBackground> */}
                     </View>
 
                     <View style={styles.GrayContent}>
@@ -112,6 +147,7 @@ export default class UserProfileView extends Component {
                             <TextInput style={styles.userInfo} // input field for e-mail
                                 placeholder="E-mail"
                                 onChangeText={(email => this.setState({ email }))}
+                                value={this.state.email}
                                 keyboardType="email-address"
                                 underlineColorAndroid="transparent" />
                         </View>
@@ -119,10 +155,17 @@ export default class UserProfileView extends Component {
                             <Image source={require('../assets/images/profileTown.png')} style={styles.ImageStyle} />
                             <TextInput style={styles.userInfo} // input field for town
                                 placeholder="Town"
+                                value={this.state.town}
                                 onChangeText={(town => this.setState({ town }))}
                                 underlineColorAndroid="transparent" />
                         </View>
                     </View>
+                    <View style={styles.centerContent}>
+                        <Button buttonStyle={styles.saveButton}
+                            title='SAVE'
+                            onPress={this.saveState} />
+                    </View>
+
                 </ScrollView>
             </KeyboardAvoidingView>
         );
@@ -132,16 +175,7 @@ export default class UserProfileView extends Component {
 // styling
 const styles = StyleSheet.create({
 
-    avatar: {
-        width: 130,
-        height: 130,
-        borderRadius: 63,
-        borderWidth: 4,
-        borderColor: "#4d4d4d",
-        marginBottom: 20,
-    },
-
-    avatarImage: {
+    centerContent: {
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -164,7 +198,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: '700',
         textAlign: 'center',
-        padding: 15,
+        padding: 10,
         color: "#4d4d4d",
     },
 
@@ -202,13 +236,13 @@ const styles = StyleSheet.create({
         borderColor: '#8D8D8D',
     },
 
-    /* ImageBackground: {
-         width: 375,
-         flex: 1,
-         alignItems: 'center',
-         padding: 10,
-         borderBottomWidth: 2,
-     },*/
+    saveButton: {
+        margin: 10,
+        backgroundColor: "#129919",
+        borderWidth: 0,
+        borderRadius: 5,
+        width: 200,
+    },
 
     SectionStyleIntegers: {
         flexDirection: 'row',
