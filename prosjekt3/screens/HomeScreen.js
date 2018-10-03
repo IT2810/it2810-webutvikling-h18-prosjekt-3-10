@@ -52,7 +52,7 @@ export default class HomeScreen extends React.Component {
                 type: 'font-awesome',
                 size: 30
               }}
-              title="PROFILE"
+              title=" PROFILE"
 
               onPress={() => this.props.navigation.navigate('Profile')} />
           </View>
