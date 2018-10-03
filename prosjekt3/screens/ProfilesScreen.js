@@ -8,6 +8,8 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     AsyncStorage,
+    Alert,
+    Modal,
 } from 'react-native';
 
 export default class UserProfileView extends Component {
@@ -19,6 +21,7 @@ export default class UserProfileView extends Component {
             town: '',
             myHeightNumber: '',
             myWeightNumber: '',
+            modalVisible: false,
         };
     }
     static navigationOptions = {
@@ -88,6 +91,10 @@ export default class UserProfileView extends Component {
         }
     }
 
+    _onPressButton() {
+        Alert.alert('User info saved')
+    }
+
     render() {
         let profilePicture = {
             uri: 'https://bootdey.com/img/Content/avatar/avatar4.png' // link to profile image/avatar
@@ -96,6 +103,7 @@ export default class UserProfileView extends Component {
         return (
             <KeyboardAvoidingView behavior="position" enabled>
                 <ScrollView>
+
 
                     <View style={styles.headBackground}>
                         <View style={styles.centerContent}>
@@ -163,7 +171,8 @@ export default class UserProfileView extends Component {
                     <View style={styles.centerContent}>
                         <Button buttonStyle={styles.saveButton}
                             title='SAVE'
-                            onPress={this.saveState} />
+                            onPress={this.saveState}
+                            onPress={this._onPressButton} />
                     </View>
 
                 </ScrollView>
