@@ -18,16 +18,16 @@
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-advanced-forms": "^1.1.6",
-    "react-native-datepicker": "^1.7.2",
-    "react-native-elements": "^0.19.1",
     "react-native-input-scroll-view": "^1.7.0",
     "react-native-keyboard-aware-scroll-view": "^0.7.2",
     "react-native-keyboard-aware-scrollview": "^2.0.0",
+    "tcomb-form-native": "^0.6.17",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-elements": "^0.19.1",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-progress-circle": "^2.0.0",
     "react-native-vector-icons": "^5.0.0",
-    "react-navigation": "^2.17.0",
-    "tcomb-form-native": "^0.6.17"
+    "react-navigation": "^2.17.0"
   },
   "devDependencies": {
     "jest": "^23.6.0",
