@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,16 +7,30 @@ import {
   Modal,
   TouchableHighlight,
   ImageBackground,
+  Colors,
+  AlertIOSStatic,
+  Platform,
+
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Icon } from 'react-native-elements';
 import ProgressCircle from 'react-native-progress-circle';
 import TodoScreen from '../screens/TodoScreen';
+import outputOnOtherScreen from '../screens/TodoScreen';
+
+
 
 export default class HomeScreen extends React.Component {
   state = {
     modalVisible: false,
+    todo: "",
+
   };
+
+  constructor(props) {
+    super(props);
+    //Obj = new TodoScreen();
+  }
 
   // header and styling of it
   static navigationOptions = {
@@ -34,6 +48,25 @@ export default class HomeScreen extends React.Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+
+  /*TodoFuncTest = () => {
+    TodoOutput.itemsOutput();
+  }*/
+
+
+  /*CallFunction_1 = () => {
+
+    Obj.itemsOutput();
+
+  }*/
+
+  componentDidMount() {
+
+    this.setState({ todo: new TodoScreen().itemsOutput() });
+
+  }
+
+
 
   render() {
     return (
@@ -95,9 +128,28 @@ export default class HomeScreen extends React.Component {
           <View style={styles.todoContent}>
 
             <Text>ToDo</Text>
+            <View>
+
+              <View
+                style={{ height: 400 }}
+              >
+                <View style={{ margin: 10, height: 500 }}>
+
+                  {/* {this.CallFunction_1()}*/}
+                  <Button title="Todo" onPress={this.CallFunction_1} />
+
+                  {/*{this.CallFunction_1()}*/}
+
+                  <TodoScreen todo={this.state.todo} />
 
 
-            {/*{this.props.itemsOutput()}>*/}
+                </View>
+
+                {/*<TodoScreen ref={ref => (this.todo = ref)} />*/}
+              </View>
+            </View>
+
+
 
           </View>
         </View>
@@ -214,7 +266,8 @@ const styles = StyleSheet.create({
   },
 
   todoContent: {
-
+    height: 300,
+    width: 300,
   }
 
 
