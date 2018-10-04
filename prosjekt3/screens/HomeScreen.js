@@ -11,6 +11,7 @@ import {
 import { Button } from 'react-native-elements';
 import { Icon } from 'react-native-elements';
 import ProgressCircle from 'react-native-progress-circle';
+import TodoScreen from '../screens/TodoScreen';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -94,6 +95,10 @@ export default class HomeScreen extends React.Component {
           <View style={styles.todoContent}>
 
             <Text>ToDo</Text>
+
+
+            {this.props.itemsOutput()}>
+
           </View>
         </View>
 
