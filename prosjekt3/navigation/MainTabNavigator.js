@@ -7,6 +7,7 @@ import CalenderScreen from '../screens/CalenderScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import TodoScreen from '../screens/TodoScreen';
 import ContactScreen from '../screens/ContactScreen';
+import ProfileScreen from '../screens/ProfilesScreen';
 
 
 const HomeStack = createStackNavigator({
@@ -38,7 +39,7 @@ CalenderStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios'
         ? `ios-calendar${focused ? ''
-        : '-outline'}` : 'md-calendar'}
+          : '-outline'}` : 'md-calendar'}
     />
   ),
 };
@@ -85,10 +86,31 @@ ContactStack.navigationOptions = {
   ),
 };
 
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
+});
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+
+
 export default createBottomTabNavigator({
   HomeStack,
   CalenderStack,
   ActivityStack,
   TodoStack,
   ContactStack,
+  ProfileStack
 });
