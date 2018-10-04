@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TextInput,
-  ListView, Image, FlatList, AsyncStorage } from 'react-native';
+import { View, StyleSheet, TextInput, Image, FlatList, AsyncStorage } from 'react-native';
 import { List, ListItem, Button, Text } from 'react-native-elements';
-import { Constants } from 'expo';
 import DatePicker from 'react-native-datepicker';
 
 
@@ -23,12 +21,14 @@ export default class TodoScreen extends React.Component {
     this.handleDeleteButtonPress = this.handleDeleteButtonPress.bind(this);
   }
 
+  // Updating inputValue on textchange
   handleTextChange = (value) => {
     this.setState(() => ({
       inputValue: value,
     }));
   }
 
+  // Finding an id not in use
   getNewId = () => {
     const list = this.state.list;
     let id = 0;
@@ -40,6 +40,7 @@ export default class TodoScreen extends React.Component {
     return id;
   }
 
+  // Adding an item to the list
   handleSendButtonPress = () => {
     const input = this.state.inputValue;
     const date = this.state.date;
@@ -63,6 +64,7 @@ export default class TodoScreen extends React.Component {
     this.storeData();
   };
 
+  // Deleting an item from the list
   handleDeleteButtonPress = (item) => {
     const list = this.state.list.filter(listItem => listItem.id != item.id)
     // returns new array with item filtered out
@@ -72,11 +74,11 @@ export default class TodoScreen extends React.Component {
       );
   }
 
+  // List object with todo items
   itemsOutput = () => {
     return (
-      <List style={styles.todoItemsContainer}>
+      <List>
         <FlatList
-          style={styles.todoItems}
           data={this.state.list}
           keyExtractor={(item) => item.id.toString()}
           extraData={this.state}
@@ -90,6 +92,7 @@ export default class TodoScreen extends React.Component {
                 style: {
                   marginRight: 15,
                   fontSize: 22,
+                  color: '#2f95dc',
                 },
               }}
               onPressRightIcon={() => this.handleDeleteButtonPress(item)}
@@ -100,6 +103,7 @@ export default class TodoScreen extends React.Component {
     )
   }
 
+  // Date picker object
   datePicker = () => {
     return (
       <DatePicker
@@ -133,6 +137,7 @@ export default class TodoScreen extends React.Component {
     )
   }
 
+  // Function to save data to local storage
   storeData = async () => {
   const data = this.state.list;
     try {
@@ -147,6 +152,7 @@ export default class TodoScreen extends React.Component {
     this.retrieveData()
   }
 
+  // Function to retrieve data from local storage
   retrieveData = async () => {
     try {
       const getData = await AsyncStorage.getItem('Todo-list');
@@ -163,7 +169,7 @@ export default class TodoScreen extends React.Component {
       }
     }
     catch (error) {
-      // Error retrieving data
+      alert('Error retrieving data')
     }
   }
 
@@ -172,7 +178,6 @@ export default class TodoScreen extends React.Component {
     return (
       <View style={styles.container}>
 
-        /* Input text, date and add button */
         <View style={styles.formView}>
           <Image
             style={styles.listImage}
@@ -186,18 +191,15 @@ export default class TodoScreen extends React.Component {
             placeholder="What todo"
           />
 
-          /* Date Picker */
           {this.datePicker()}
 
           <Button
             title="Add"
             onPress={this.handleSendButtonPress}
             buttonStyle={styles.addBtn}
-            titleStyle={styles.addBtnTitle}
           />
         </View>
 
-        /* Todo tasks */
         {this.itemsOutput()}
 
       </View>
@@ -225,12 +227,6 @@ export default class TodoScreen extends React.Component {
       marginBottom: 8,
       textAlign: 'center',
     },
-    todoItemsContainer: {
-
-    },
-    todoItems: {
-
-    },
     listImage: {
       position: 'absolute',
       left: 0,
@@ -242,10 +238,7 @@ export default class TodoScreen extends React.Component {
     addBtn: {
       marginLeft: 36,
       width: 285,
-      backgroundColor: "rgba(92, 99,216, 1)",
+      backgroundColor: '#2f95dc',
     },
-    addBtnTitle: {
-
-    }
 
   });
