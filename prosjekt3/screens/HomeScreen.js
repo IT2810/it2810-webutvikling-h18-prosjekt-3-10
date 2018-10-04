@@ -97,7 +97,7 @@ export default class HomeScreen extends React.Component {
             <Text>ToDo</Text>
 
 
-            {this.props.itemsOutput()}>
+            {/*{this.props.itemsOutput()}>*/}
 
           </View>
         </View>
