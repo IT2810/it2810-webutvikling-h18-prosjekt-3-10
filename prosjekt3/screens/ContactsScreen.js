@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import AddContactModal from '../components/AddContactModal';
+
 import {
   Alert,
   Image,
@@ -47,7 +49,8 @@ export default class ContactsScreen extends Component {
       }
     })
   }
-
+  
+  // Saves a contact in AsyncStorage
   saveContact = contact => {
     AsyncStorage.getItem('contacts')
     .then(result => {
@@ -69,7 +72,9 @@ export default class ContactsScreen extends Component {
     })
   }
 
+  // Removes contact from AsyncStorage
   removeContact = contact => {
+    // First gets all the saved contacts
     AsyncStorage.getItem('contacts')
     .then(result => {
       if (result == null) {
@@ -79,14 +84,15 @@ export default class ContactsScreen extends Component {
         return JSON.parse(result)
       }
     })
+    // Then deletes the contact from that list
     .then(data => {
-      console.log("Trying to delete", contact, "from", data)
       data = data.filter(savedContact => savedContact.id != contact.id)
       this.setState({
         addedContacts: data,
       })
       return JSON.stringify(data)
     })
+    // And finally updates storage with the contact removed
     .then(contacts => {
       AsyncStorage.setItem('contacts', contacts)
     })
@@ -97,7 +103,9 @@ export default class ContactsScreen extends Component {
     let addedContacts = []
     AsyncStorage.getItem('contacts')
     .then(result => {
-      addedContacts = JSON.parse(result)
+      if (result !== null) {
+        addedContacts = JSON.parse(result)
+      }
       this.setState({
         addedContacts,
         fetchingContacts: false,
@@ -108,18 +116,18 @@ export default class ContactsScreen extends Component {
   // Imports contacts saved on the phone
   importContacts = async () => {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
-    let importedContacts = {data: []}
     if (status === 'granted') {
       importedContacts = await Contacts.getContactsAsync();
+      this.setState({
+        importedContacts: importedContacts.data,
+        fetchingContacts: false,
+      })
     } else {
-      throw new Error('Contact read permission not granted');
+      console.error('Contact read permission not granted, no changes made')
     }
-    this.setState({
-      importedContacts: importedContacts.data,
-      fetchingContacts: false,
-    })
   }
 
+  // This is the modal that shows a more detailed view of chosen contact. 
   contactModal = () => {
     if (this.state.activeContact && this.state.contactModalVisible) {
       let contact = this.state.activeContact;
@@ -149,77 +157,9 @@ export default class ContactsScreen extends Component {
               <Text h3>{contact.phoneNumbers && contact.phoneNumbers[0].number}</Text>
             </View>
           </View>
-          
-          
         </Modal>
       )
     } 
-  }
-
-  addContactModal = () => {
-    if (this.state.addContactModalVisible) {
-      let contact = {}
-      return (
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.addContactModalVisible}
-          onRequestClose={() => {this.setState({addContactModalVisible: false})}}>
-          <Header
-            innerContainerStyles={{alignItems: 'center'}}
-            leftComponent={{ icon: 'keyboard-arrow-down', color: '#fff', size: 32, onPress: () => {this.setState({addContactModalVisible: false})} }}
-            centerComponent={{ text: 'Add contact', style: { color: '#fff' } }}
-          />
-          <KeyboardAvoidingView behavior="position" enabled>
-                <ScrollView>
-
-
-                    <View style={styles.headBackground}>
-                        <View style={styles.centerContent}>
-                            <Avatar // using react native elements - external libary
-                                xlarge
-                                rounded
-                                source={require('../assets/images/loading.gif')}
-                                activeOpacity={0.7}
-                            />
-                        </View>
-
-                        <View style={styles.SectionStyleName}>
-                            <TextInput style={styles.name} // input field for name
-                                placeholder="Enter name"
-                                value={contact.name}
-                                onChangeText={name => {contact.name = name}}
-                                underlineColorAndroid="transparent" />
-                        </View>
-
-                        <View style={styles.SectionStyleIntegers}>
-                            <TextInput // input field for height
-                                style={styles.integerInput}
-                                placeholder="Phone Number"
-                                keyboardType='numeric'
-                                onChangeText={(number) => {contact.number = number}}
-                                value={contact.number}
-                                maxLength={8}  //limit for number of integers
-                                underlineColorAndroid="transparent" />
-                        </View>
-                    </View>
-                    <View style={styles.centerContent}>
-                        <Button 
-                          onPress={()=>{
-                            this.saveContact(contact)
-                            this.setState({addContactModalVisible: false})
-                          }} 
-                          title="Add"
-                        />
-                    </View>
-
-                </ScrollView>
-            </KeyboardAvoidingView>
-          
-          
-        </Modal>
-      )
-    }
   }
 
   showEmptyContactsList = () => {
@@ -235,7 +175,7 @@ export default class ContactsScreen extends Component {
         <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>It looks like your contacts list is empty.</Text>
           <View style={styles.buttonContainer}>
-            <Button title="Import from phone" onPress={this.retrieveContacts}/>
+            <Button title="Import from phone" onPress={this.importContacts}/>
           </View>
           <View style={styles.buttonContainer}>
             <Button title="Add Contact" onPress={() => {this.setState({addContactModalVisible: true})}}/>
@@ -272,14 +212,14 @@ export default class ContactsScreen extends Component {
                 containerStyle={{padding: 20}}
                 roundAvatar
                 title={`${item.firstName} ${item.lastName}`}
-                avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/robot-prod.png')}
+                avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/profile.png')}
                 onPress={() => {
                   this.setState({
                     contactModalVisible: true,
                     activeContact: item,
                   })
                 }}
-                onLongPress={(item) => this.handleDelete(item)}
+                onLongPress={() => this.handleDelete(item)}
               />
             )}
           />
@@ -290,12 +230,15 @@ export default class ContactsScreen extends Component {
   showContacts = () => {
     return (
       <View style={styles.contactsContainer}>
-        <View style={{marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={styles.contactsHeader}>
           <Text h4>Added contacts:</Text>
           <Button title="Add Contact" onPress={() => {this.setState({addContactModalVisible: true})}}/>
         </View>
         {this.renderContactsList(this.state.addedContacts)}
-        <Text h4>Imported contacts:</Text>
+        <View style={styles.contactsHeader}>
+          <Text h4>Imported contacts:</Text>
+          <Button title="Import" onPress={this.importContacts}/>
+        </View>
         {this.renderContactsList(this.state.importedContacts)}
       </View>
     )
@@ -322,7 +265,6 @@ export default class ContactsScreen extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps='handled'>
@@ -332,8 +274,9 @@ export default class ContactsScreen extends Component {
             (this.hasContacts() ? this.showContacts() : this.showEmptyContactsList())
           }
           {
-            this.contactModal() || this.addContactModal()
+            this.contactModal()
           }
+            <AddContactModal onSave={(contact) => this.saveContact(contact)} closeCallback={() => this.setState({addContactModalVisible: false})} visible={this.state.addContactModalVisible}/>
         </ScrollView>
       </View>
     );
@@ -367,6 +310,14 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 10,
   },
+
+  contactsHeader: {
+    marginHorizontal: 20, 
+    marginTop: 20,
+    flexDirection: 'row', 
+    justifyContent: 'space-between'
+  },
+
   formContainer: {
     justifyContent: 'center',
     padding: 20,
@@ -406,90 +357,80 @@ const styles = StyleSheet.create({
   centerContent: {
     alignItems: 'center',
     justifyContent: 'center',
-},
+  },
 
-GrayContent: {
+  GrayContent: {
     width: 375,
     flex: 1,
     padding: 10,
-},
-
-headBackground: {
-    backgroundColor: '#B0E0E6',
+  },
+  
+  headBackground: {
     width: 375,
     flex: 1,
     padding: 10,
-    borderBottomWidth: 2,
-},
-
-headerText: {
+  },
+  
+  headerText: {
     fontSize: 30,
     fontWeight: '700',
     textAlign: 'center',
     padding: 10,
     color: "#4d4d4d",
-},
-
-ImageStyle: {
-    marginRight: 15,
-    height: 35,
-    width: 35,
-    resizeMode: 'stretch',
-},
-
-integerInput: {
+  },
+  
+  integerInput: {
     flex: 1,
     fontSize: 15,
     color: "#778899",
     fontWeight: '600',
     borderBottomWidth: 1,
     borderColor: '#69868a',
-},
-
-name: {
-    flex: 1,
+  },
+  
+  name: {
     fontSize: 20,
-    color: "#4d4d4d",
+    color: "#1c1c1c",
     fontWeight: '700',
     borderBottomWidth: 2,
     borderColor: '#587073',
-},
-
-userInfo: {
-    fontSize: 14,
-    color: "#778899",
-    fontWeight: '600',
-    flex: 1,
-    borderBottomWidth: .5,
-    borderColor: '#8D8D8D',
-},
-
-saveButton: {
-    margin: 10,
-    backgroundColor: "#129919",
-    borderWidth: 0,
-    borderRadius: 5,
-    width: 200,
-},
-
-SectionStyleIntegers: {
-    flexDirection: 'row',
-    height: 30,
-    margin: 10,
-    width: 125,
-},
-
-SectionStyleName: {
-    flexDirection: 'row',
-    height: 30,
-    margin: 10,
-    width: 300,
-},
-
-SectionStyleUserInfo: {
-    flexDirection: 'row',
-    height: 30,
-    margin: 10,
-    width: 250,
-},
-});
+  },
+  
+  userInfo: {
+      fontSize: 14,
+      color: "#778899",
+      fontWeight: '600',
+      flex: 1,
+      borderBottomWidth: .5,
+      borderColor: '#8D8D8D',
+  },
+  
+  saveButton: {
+      margin: 10,
+      backgroundColor: "#129919",
+      borderWidth: 0,
+      borderRadius: 5,
+      width: 200,
+  },
+  
+  SectionStyleIntegers: {
+      flexDirection: 'row',
+      height: 30,
+      margin: 10,
+      width: 125,
+  },
+  
+  SectionStyleName: {
+      flexDirection: 'row',
+      height: 30,
+      margin: 10,
+      width: 300,
+  },
+  
+  SectionStyleUserInfo: {
+      flexDirection: 'row',
+      height: 30,
+      margin: 10,
+      width: 250,
+  },
+})
