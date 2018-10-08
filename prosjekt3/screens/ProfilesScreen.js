@@ -38,14 +38,16 @@ export default class UserProfileView extends Component {
     retrieveData = async () => {
         try {
             const result = await AsyncStorage.getItem('profile')
-            const data = JSON.parse(result)
-            this.setState({
-                name: data.name,
-                email: data.email,
-                town: data.town,
-                myHeightNumber: data.myHeightNumber,
-                myWeightNumber: data.myWeightNumber,
-            })
+            if (result !== null) {
+                const data = JSON.parse(result)
+                this.setState({
+                    name: data.name,
+                    email: data.email,
+                    town: data.town,
+                    myHeightNumber: data.myHeightNumber,
+                    myWeightNumber: data.myWeightNumber,
+                })
+            }
         }
         catch (error) {
             alert('Error retrieving data')
