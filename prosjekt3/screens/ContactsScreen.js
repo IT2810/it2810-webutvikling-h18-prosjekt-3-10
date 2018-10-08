@@ -112,7 +112,19 @@ export default class ContactsScreen extends Component {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
     if (status === 'granted') {
       importedContacts = await Contacts.getContactsAsync();
-      importedContacts.data.sort((a, b) => a.firstName < b.firstName ? -1 : 1)
+      importedContacts.data = 
+        importedContacts.data
+        // Filter away the contacts without any name
+        .filter(contact => contact.firstName || contact.lastName)  
+        // Give each contact-object an empty string for first or last name if they lack it
+        .map(contact => {  
+          const {firstName, lastName} = contact
+          contact.firstName = firstName ? firstName : ""
+          contact.lastName = lastName ? lastName : ""
+          return contact
+        })
+        // Sort by first name
+        .sort((a, b) => a.firstName < b.firstName ? -1 : 1) 
       this.setState({
         importedContacts: importedContacts.data,
         fetchingContacts: false,
@@ -163,28 +175,28 @@ export default class ContactsScreen extends Component {
 
   renderContactsList = (contacts) => {
     return (
-        <List>
-          <FlatList
-            data={contacts}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              // TODO: Don't show undefined if name is not found
-              <ListItem 
-                containerStyle={{padding: 20}}
-                roundAvatar
-                title={`${item.firstName} ${item.lastName}`}
-                avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/profile.png')}
-                onPress={() => {
-                  this.setState({
-                    contactModalVisible: true,
-                    activeContact: item,
-                  })
-                }}
-                onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => this.handleDelete(item)}
-              />
-            )}
-          />
-        </List>
+      <List>
+        <FlatList
+          data={contacts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            // TODO: Don't show undefined if name is not found
+            <ListItem 
+              containerStyle={{padding: 20}}
+              roundAvatar
+              title={`${item.firstName} ${item.lastName}`}
+              avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/profile.png')}
+              onPress={() => {
+                this.setState({
+                  contactModalVisible: true,
+                  activeContact: item,
+                })
+              }}
+              onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => this.handleDelete(item)}
+            />
+          )}
+        />
+      </List>
     )
   }
 
