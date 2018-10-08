@@ -1,13 +1,13 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CalenderScreen from '../screens/CalenderScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import TodoScreen from '../screens/TodoScreen';
 import ContactsScreen from '../screens/ContactsScreen';
+import ProfileScreen from '../screens/ProfilesScreen';
 
 
 const HomeStack = createStackNavigator({
@@ -39,7 +39,7 @@ CalenderStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios'
         ? `ios-calendar${focused ? ''
-        : '-outline'}` : 'md-calendar'}
+          : '-outline'}` : 'md-calendar'}
     />
   ),
 };
@@ -86,10 +86,31 @@ ContactsStack.navigationOptions = {
   ),
 };
 
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
+});
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+
+
 export default createBottomTabNavigator({
   HomeStack,
   CalenderStack,
   ActivityStack,
   TodoStack,
   ContactsStack,
+  ProfileStack
 });
