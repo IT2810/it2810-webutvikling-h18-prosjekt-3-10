@@ -1,28 +1,21 @@
 import React, { Component } from 'react';
 import AddContactModal from '../components/AddContactModal';
+import ContactInformationModal from '../components/ContactInformationModal';
 
 import {
   Alert,
   Image,
-  Platform,
   FlatList,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  TouchableHighlight,
-  TextInput,
   View,
-  Modal,
   Button,
   AsyncStorage
 } from 'react-native';
 
-import { Avatar, Header, List, ListItem, Text } from 'react-native-elements';
+import { List, ListItem, Text } from 'react-native-elements';
 
-import { WebBrowser, Icon, Contacts, Permissions } from 'expo';
-import Colors from '../constants/Colors'
-import { MonoText } from '../components/StyledText';
+import { Contacts, Permissions } from 'expo';
 
 export default class ContactsScreen extends Component {
   static navigationOptions = {
@@ -45,7 +38,7 @@ export default class ContactsScreen extends Component {
     Permissions.getAsync(Permissions.CONTACTS)
     .then(({status}) => {
       if (status === 'granted') {
-        this.retrieveContacts();
+        this.importContacts();
       }
     })
   }
@@ -62,6 +55,7 @@ export default class ContactsScreen extends Component {
     })
     .then(data => {
       data.push(contact)
+      data.sort((a,b) => a.firstName < b.firstName ? -1 : 1) 
       this.setState({
         addedContacts: data,
       })
@@ -118,6 +112,7 @@ export default class ContactsScreen extends Component {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
     if (status === 'granted') {
       importedContacts = await Contacts.getContactsAsync();
+      importedContacts.data.sort((a, b) => a.firstName < b.firstName ? -1 : 1)
       this.setState({
         importedContacts: importedContacts.data,
         fetchingContacts: false,
@@ -128,40 +123,6 @@ export default class ContactsScreen extends Component {
   }
 
   // This is the modal that shows a more detailed view of chosen contact. 
-  contactModal = () => {
-    if (this.state.activeContact && this.state.contactModalVisible) {
-      let contact = this.state.activeContact;
-      return (
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.contactModalVisible}
-          onRequestClose={() => {this.setState({contactModalVisible: false})}}>
-          <Header
-            innerContainerStyles={{alignItems: 'center'}}
-            leftComponent={{ icon: 'keyboard-arrow-down', color: '#fff', size: 32, onPress: () => {this.setState({contactModalVisible: false})} }}
-          />
-          <View style={styles.modalContent}>
-            <Avatar
-              avatarStyle={styles.avatar}
-              xlarge
-              rounded
-              source={contact.imageAvailable ? {uri: contact.image.uri} : require('../assets/images/robot-prod.png')}
-            />
-            <View style={styles.textWithLabel}>
-              <Text h4 style={styles.lightText}>Name</Text>
-              <Text h3>{`${contact.firstName} ${contact.lastName}`}</Text>
-            </View>
-            <View style={styles.textWithLabel}>
-              <Text h4 style={styles.lightText}>Number</Text>
-              <Text h3>{contact.phoneNumbers && contact.phoneNumbers[0].number}</Text>
-            </View>
-          </View>
-        </Modal>
-      )
-    } 
-  }
-
   showEmptyContactsList = () => {
     return (
       <View style={[styles.welcomeContainer, {alignItems: "center"}]}>
@@ -219,7 +180,7 @@ export default class ContactsScreen extends Component {
                     activeContact: item,
                   })
                 }}
-                onLongPress={() => this.handleDelete(item)}
+                onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => this.handleDelete(item)}
               />
             )}
           />
@@ -237,7 +198,9 @@ export default class ContactsScreen extends Component {
         {this.renderContactsList(this.state.addedContacts)}
         <View style={styles.contactsHeader}>
           <Text h4>Imported contacts:</Text>
-          <Button title="Import" onPress={this.importContacts}/>
+          {
+            this.state.importedContacts.length == 0 && <Button title="Import" onPress={this.importContacts}/>
+          }
         </View>
         {this.renderContactsList(this.state.importedContacts)}
       </View>
@@ -273,9 +236,7 @@ export default class ContactsScreen extends Component {
             (this.showLoading()) :
             (this.hasContacts() ? this.showContacts() : this.showEmptyContactsList())
           }
-          {
-            this.contactModal()
-          }
+            <ContactInformationModal contact={this.state.activeContact} closeCallback={() => this.setState({contactModalVisible: false})} visible={this.state.contactModalVisible} />
             <AddContactModal onSave={(contact) => this.saveContact(contact)} closeCallback={() => this.setState({addContactModalVisible: false})} visible={this.state.addContactModalVisible}/>
         </ScrollView>
       </View>
