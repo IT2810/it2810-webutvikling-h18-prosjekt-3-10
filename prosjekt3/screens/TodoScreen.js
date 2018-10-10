@@ -32,7 +32,7 @@ export default class TodoScreen extends React.Component {
   getNewId = () => {
     const list = this.state.list;
     let id = 0;
-    for(let i = 0; i < list.length; i++){
+    for (let i = 0; i < list.length; i++) {
       if (list[i].id == id) {
         id += 1;
       }
@@ -50,10 +50,10 @@ export default class TodoScreen extends React.Component {
       return;
     }
     if (!date) {
-      list.push({id: id, input: input, date: null})
+      list.push({ id: id, input: input, date: null })
     }
     else {
-      list.push({id: id, input: input, date: date});
+      list.push({ id: id, input: input, date: date });
     }
     this.setState(() => ({
       list,
@@ -71,7 +71,7 @@ export default class TodoScreen extends React.Component {
     this.setState(
       { list },
       () => this.storeData()
-      );
+    );
   }
 
   // List object with todo items
@@ -103,6 +103,7 @@ export default class TodoScreen extends React.Component {
     )
   }
 
+
   // Date picker object
   datePicker = () => {
     return (
@@ -132,14 +133,14 @@ export default class TodoScreen extends React.Component {
             marginLeft: 36
           }
         }}
-        onDateChange={(date) => {this.setState({date: date})}}
+        onDateChange={(date) => { this.setState({ date: date }) }}
       />
     )
   }
 
   // Function to save data to local storage
   storeData = async () => {
-  const data = this.state.list;
+    const data = this.state.list;
     try {
       await AsyncStorage.setItem('Todo-list', JSON.stringify(data));
     }
@@ -211,40 +212,40 @@ export default class TodoScreen extends React.Component {
   }
 }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 15,
-      backgroundColor: Colors.backgroundColor,
-    },
-    formView: {
-      alignItems: 'center',
-      borderColor: '#ccc',
-      paddingBottom: 8,
-    },
-    txtinput: {
-      width: 320,
-    },
-    inputForm: {
-      marginLeft: 36,
-      backgroundColor: '#fff',
-      height: 40,
-      padding: 8,
-      marginBottom: 8,
-      textAlign: 'center',
-    },
-    listImage: {
-      position: 'absolute',
-      left: 0,
-      top: 6,
-      marginLeft: 0,
-      width: 25,
-      height: 25,
-    },
-    addBtn: {
-      marginLeft: 36,
-      width: 285,
-      backgroundColor: '#2f95dc',
-    },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 15,
+    backgroundColor: Colors.backgroundColor,
+  },
+  formView: {
+    alignItems: 'center',
+    borderColor: '#ccc',
+    paddingBottom: 8,
+  },
+  txtinput: {
+    width: 320,
+  },
+  inputForm: {
+    marginLeft: 36,
+    backgroundColor: '#fff',
+    height: 40,
+    padding: 8,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  listImage: {
+    position: 'absolute',
+    left: 0,
+    top: 6,
+    marginLeft: 0,
+    width: 25,
+    height: 25,
+  },
+  addBtn: {
+    marginLeft: 36,
+    width: 285,
+    backgroundColor: '#2f95dc',
+  },
 
-  });
+});
