@@ -6,7 +6,7 @@ import HomeScreen from '../screens/HomeScreen';
 import CalenderScreen from '../screens/CalenderScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import TodoScreen from '../screens/TodoScreen';
-import ContactScreen from '../screens/ContactScreen';
+import ContactsScreen from '../screens/ContactsScreen';
 import ProfileScreen from '../screens/ProfilesScreen';
 
 
@@ -72,11 +72,11 @@ TodoStack.navigationOptions = {
   ),
 };
 
-const ContactStack = createStackNavigator({
-  Contact: ContactScreen,
+const ContactsStack = createStackNavigator({
+  Contacts: ContactsScreen,
 });
 
-ContactStack.navigationOptions = {
+ContactsStack.navigationOptions = {
   tabBarLabel: 'Contacts',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -111,6 +111,6 @@ export default createBottomTabNavigator({
   CalenderStack,
   ActivityStack,
   TodoStack,
-  ContactStack,
+  ContactsStack,
   ProfileStack
 });

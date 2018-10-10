@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, Button } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import {
     StyleSheet,
     View,
@@ -8,6 +8,9 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     AsyncStorage,
+    TouchableHighlight,
+    Text,
+    ImageBackground,
 } from 'react-native';
 
 export default class UserProfileView extends Component {
@@ -19,17 +22,11 @@ export default class UserProfileView extends Component {
             town: '',
             myHeightNumber: '',
             myWeightNumber: '',
+            modalVisible: false,
         };
     }
     static navigationOptions = {
-        title: "Profile",
-        headerStyle: { // styling the header
-            backgroundColor: '#69868a',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
+        header: null,
     };
 
     // loading saved profile info
@@ -37,19 +34,20 @@ export default class UserProfileView extends Component {
         this.retrieveData()
     }
 
-
     // retrieves stored profile info
     retrieveData = async () => {
         try {
             const result = await AsyncStorage.getItem('profile')
-            const data = JSON.parse(result)
-            this.setState({
-                name: data.name,
-                email: data.email,
-                town: data.town,
-                myHeightNumber: data.myHeightNumber,
-                myWeightNumber: data.myWeightNumber,
-            })
+            if (result !== null) {
+                const data = JSON.parse(result)
+                this.setState({
+                    name: data.name,
+                    email: data.email,
+                    town: data.town,
+                    myHeightNumber: data.myHeightNumber,
+                    myWeightNumber: data.myWeightNumber,
+                })
+            }
         }
         catch (error) {
             alert('Error retrieving data')
@@ -96,25 +94,29 @@ export default class UserProfileView extends Component {
         return (
             <KeyboardAvoidingView behavior="position" enabled>
                 <ScrollView>
+                    <ImageBackground source={require('../assets/images/profileBackground3.jpg')} style={styles.backgroundImage}>
+                        <View style={styles.headBackground}>
+                            <View style={styles.centerContent}>
+                                <Avatar avatarStyle={styles.avatar}// using react native elements - external libary
+                                    xlarge
+                                    rounded
+                                    source={profilePicture}
+                                    activeOpacity={0.7}
+                                />
+                            </View>
 
-                    <View style={styles.headBackground}>
-                        <View style={styles.centerContent}>
-                            <Avatar // using react native elements - external libary
-                                xlarge
-                                rounded
-                                source={profilePicture}
-                                activeOpacity={0.7}
-                            />
+                            <View>
+                                <TextInput style={[styles.name, styles.centerContent]} // input field for name
+                                    placeholder="Enter name"
+                                    placeholderTextColor="#4f545b"
+                                    value={this.state.name}
+                                    onChangeText={(name => this.setState({ name }))}
+                                    underlineColorAndroid="transparent" />
+                            </View>
                         </View>
+                    </ImageBackground>
 
-                        <View style={styles.SectionStyleName}>
-                            <Image source={require('../assets/images/profileName.png')} style={styles.ImageStyle} />
-                            <TextInput style={styles.name} // input field for name
-                                placeholder="Enter name"
-                                value={this.state.name}
-                                onChangeText={(name => this.setState({ name }))}
-                                underlineColorAndroid="transparent" />
-                        </View>
+                    <View style={styles.GrayContent}>
 
                         <View style={styles.SectionStyleIntegers}>
                             <Image source={require('../assets/images/profileHeight.png')} style={styles.ImageStyle} />
@@ -139,9 +141,6 @@ export default class UserProfileView extends Component {
                                 maxLength={8}  //limit for number of integers
                                 underlineColorAndroid="transparent" />
                         </View>
-                    </View>
-
-                    <View style={styles.GrayContent}>
                         <View style={styles.SectionStyleUserInfo}>
                             <Image source={require('../assets/images/profileEmail.png')} style={styles.ImageStyle} />
                             <TextInput style={styles.userInfo} // input field for e-mail
@@ -160,12 +159,17 @@ export default class UserProfileView extends Component {
                                 underlineColorAndroid="transparent" />
                         </View>
                     </View>
+                    {/*  Save  button */}
                     <View style={styles.centerContent}>
-                        <Button buttonStyle={styles.saveButton}
-                            title='SAVE'
-                            onPress={this.saveState} />
+                        <View style={styles.saveButton}>
+                            <TouchableHighlight
+                                onPress={this.saveState} >
+                                <View style={styles.eventIconText}>
+                                    <Text style={styles.saveText}>Save</Text>
+                                </View>
+                            </TouchableHighlight>
+                        </View>
                     </View>
-
                 </ScrollView>
             </KeyboardAvoidingView>
         );
@@ -175,23 +179,30 @@ export default class UserProfileView extends Component {
 // styling
 const styles = StyleSheet.create({
 
+    avatar: {
+        borderWidth: 2,
+        borderColor: "#4d4d4d"
+    },
+
+    backgroundImage: {
+        flex: 1,
+    },
+
     centerContent: {
         alignItems: 'center',
         justifyContent: 'center',
     },
 
     GrayContent: {
-        width: 375,
         flex: 1,
         padding: 10,
     },
 
     headBackground: {
-        backgroundColor: '#B0E0E6',
-        width: 375,
         flex: 1,
         padding: 10,
         borderBottomWidth: 2,
+        marginTop: 40,
     },
 
     headerText: {
@@ -219,12 +230,11 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        flex: 1,
         fontSize: 20,
         color: "#4d4d4d",
         fontWeight: '700',
-        borderBottomWidth: 2,
-        borderColor: '#587073',
+        margin: 15,
+        textAlign: "center"
     },
 
     userInfo: {
@@ -244,18 +254,19 @@ const styles = StyleSheet.create({
         width: 200,
     },
 
+    saveText: {
+        fontSize: 16,
+        color: "#ffffff",
+        justifyContent: 'center',
+        textAlign: 'center',
+        margin: 15,
+    },
+
     SectionStyleIntegers: {
         flexDirection: 'row',
         height: 30,
         margin: 10,
         width: 125,
-    },
-
-    SectionStyleName: {
-        flexDirection: 'row',
-        height: 30,
-        margin: 10,
-        width: 300,
     },
 
     SectionStyleUserInfo: {
