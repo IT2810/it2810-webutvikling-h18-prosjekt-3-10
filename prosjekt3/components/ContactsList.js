@@ -7,7 +7,6 @@ import {
     Alert,
     FlatList,
     Button,
-    Image,
 } from 'react-native'
 
 import {

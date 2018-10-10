@@ -48,6 +48,8 @@ export default class HomeScreen extends React.Component {
     this._subscribe();
   }
 
+
+
   // retrieving data from todo and activity screens
   retrieveData = async () => {
     try {
