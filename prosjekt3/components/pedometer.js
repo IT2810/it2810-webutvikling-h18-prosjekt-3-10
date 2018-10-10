@@ -107,11 +107,14 @@ export default class PedometerSensor extends React.Component {
 
   // Function to set or update daily goal
   setGoal = () => {
-    this.setState({
-      goal: this.state.inputGoal,
-      inputGoal: '' },
-      () => this.storeData()
-    );
+    const goal = this.state.inputGoal;
+    if (goal != '') {
+      this.setState({
+        goal: goal,
+        inputGoal: '' },
+        () => this.storeData()
+      );
+    }
   }
 
   // Function to save daily goal data to local storage
