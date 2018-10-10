@@ -1,35 +1,28 @@
 import React, { Component } from 'react';
 import {
-  ScrollView,
   StyleSheet,
   View,
   Text,
   Modal,
   TouchableHighlight,
   ImageBackground,
-  Colors,
-  AlertIOSStatic,
-  Platform,
+  AsyncStorage,
+  FlatList,
+  ScrollView,
 
 } from 'react-native';
-import { Button } from 'react-native-elements';
-import { Icon } from 'react-native-elements';
+import { Button, List, Icon, ListItem } from 'react-native-elements';
 import ProgressCircle from 'react-native-progress-circle';
 import TodoScreen from '../screens/TodoScreen';
-import outputOnOtherScreen from '../screens/TodoScreen';
-
-
 
 export default class HomeScreen extends React.Component {
-  state = {
-    modalVisible: false,
-    todo: "",
-
-  };
-
   constructor(props) {
     super(props);
-    //Obj = new TodoScreen();
+    Obj = new TodoScreen();
+    this.state = {
+      modalVisible: false,
+      todo: [],
+    }
   }
 
   // header and styling of it
@@ -49,30 +42,52 @@ export default class HomeScreen extends React.Component {
     this.setState({ modalVisible: visible });
   }
 
-  /*TodoFuncTest = () => {
-    TodoOutput.itemsOutput();
-  }*/
-
-
-  /*CallFunction_1 = () => {
-
-    Obj.itemsOutput();
-
-  }*/
-
   componentDidMount() {
-
-    this.setState({ todo: new TodoScreen().itemsOutput() });
-
+    this.retrieveData()
   }
 
+  retrieveData = async () => {
+    try {
+      const getData = await AsyncStorage.getItem('Todo-list');
+      const data = JSON.parse(getData);
+      if (data != null) {
+        this.setState({
+          todo: data,
+        });
+      }
+      else {
+        this.setState({
+          todo: [],
+        })
+      }
+    }
+    catch (error) {
+      alert('Error retrieving data')
+    }
+  }
 
+  itemsOutput = () => {
+    return (
+      <List containerStyle={styles.todoList}>
+        <ScrollView>
+          <FlatList containerStyle={styles.todoList}
+            data={this.state.todo}
+            keyExtractor={(item) => item.id.toString()}
+            extraData={this.state}
+            renderItem={({ item }) => (
+              <ListItem
+                title={item.input}
+                subtitle={item.date}
+                hideChevron={true} />
+            )} />
+        </ScrollView>
+      </List>
+    )
+  }
 
   render() {
     return (
       <ImageBackground source={require('../assets/images/homeBackground4.jpg')} style={styles.centerContent}>
-
-
         <View style={styles.events}>
 
           {/* the modal for upcoming events*/}
@@ -122,38 +137,29 @@ export default class HomeScreen extends React.Component {
               bgColor="#333333">
               <Text style={styles.progressCircleText}>{'70%'}</Text>
             </ProgressCircle>
-
           </View>
+
 
           <View style={styles.todoContent}>
+            <Text style={styles.todoHeader}>ToDo</Text>
 
-            <Text>ToDo</Text>
-            <View>
-
-              <View
-                style={{ height: 400 }}
-              >
-                <View style={{ margin: 10, height: 500 }}>
-
-                  {/* {this.CallFunction_1()}*/}
-                  <Button title="Todo" onPress={this.CallFunction_1} />
-
-                  {/*{this.CallFunction_1()}*/}
-
-                  <TodoScreen todo={this.state.todo} />
+            <View
+            >
+              <View >
 
 
-                </View>
+                {this.itemsOutput()}
 
-                {/*<TodoScreen ref={ref => (this.todo = ref)} />*/}
+
+
+
+
+
               </View>
             </View>
-
-
-
           </View>
-        </View>
 
+        </View>
 
         {/* Button for profile*/}
         <View style={styles.profileButtonPosition}>
@@ -166,13 +172,11 @@ export default class HomeScreen extends React.Component {
             title=" PROFILE"
             onPress={() => this.props.navigation.navigate('Profile')} />
         </View>
-
-
       </ImageBackground>
-
     );
   }
 }
+
 
 const styles = StyleSheet.create({
 
@@ -266,9 +270,39 @@ const styles = StyleSheet.create({
   },
 
   todoContent: {
-    height: 300,
-    width: 300,
-  }
+    flex: 1,
+    backgroundColor: '#5F7C80',
+    margin: 15,
+    marginRight: 10,
+    padding: 10,
+    borderRadius: 5,
+    maxHeight: 200,
+
+
+
+
+
+
+  },
+
+  todoHeader: {
+    textAlign: "center",
+    color: "#ffffff",
+    fontSize: 16,
+
+  },
+
+  todoList: {
+    borderWidth: 1,
+    marginBottom: 20,
+
+
+
+
+
+
+
+  },
 
 
 });
