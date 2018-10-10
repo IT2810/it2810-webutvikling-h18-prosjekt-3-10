@@ -1,54 +1,41 @@
 {
-  "name": "my-new-project",
-  "main": "node_modules/expo/AppEntry.js",
-  "private": true,
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
-  },
-  "jest": {
-    "preset": "jest-expo"
-  },
-  "dependencies": {
-    "@expo/samples": "2.1.1",
-    "expo": "^30.0.1",
-    "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
-<<<<<<< HEAD
-    "react-native-advanced-forms": "^1.1.6",
-=======
-    "react-native-elements": "^0.19.1",
-    "react-navigation": "^2.16.0",
-    "tcomb-form-native": "^0.6.17",
-    "react-native-advanced-forms": "^1.1.6",
-    "react-native-circular-progress": "^1.0.1",
->>>>>>> cdef1174858b87437846b2bca67185a29b710352
-    "react-native-datepicker": "^1.7.2",
-    "react-native-elements": "^0.19.1",
-    "react-native-input-scroll-view": "^1.7.0",
-    "react-native-keyboard-aware-scroll-view": "^0.7.2",
-    "react-native-keyboard-aware-scrollview": "^2.0.0",
-    "react-native-modal-datetime-picker": "^6.0.0",
-<<<<<<< HEAD
-    "react-native-progress-circle": "^2.0.0",
-    "react-native-vector-icons": "^5.0.0",
-    "react-navigation": "^2.17.0",
-=======
-    "react-native-pedometer": "0.0.7",
-    "react-native-progress-circle": "^2.0.0",
-    "react-native-svg": "^7.0.3",
-    "react-native-vector-icons": "^5.0.0",
-    "react-navigation": "^2.16.0",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
->>>>>>> cdef1174858b87437846b2bca67185a29b710352
-    "tcomb-form-native": "^0.6.17"
-  },
-  "devDependencies": {
-    "jest": "^23.6.0",
-    "jest-expo": "30.0.0"
-  }
+    "name": "my-new-project",
+    "main": "node_modules/expo/AppEntry.js",
+    "private": true,
+    "scripts": {
+        "start": "expo start",
+        "android": "expo start --android",
+        "ios": "expo start --ios",
+        "eject": "expo eject",
+        "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    },
+    "jest": {
+        "preset": "jest-expo"
+    },
+    "dependencies": {
+        "@expo/samples": "2.1.1",
+        "expo": "^30.0.1",
+        "react": "16.3.1",
+        "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+        "react-native-elements": "^0.19.1",
+        "tcomb-form-native": "^0.6.17",
+        "react-native-advanced-forms": "^1.1.6",
+        "react-native-circular-progress": "^1.0.1",
+        "react-native-datepicker": "^1.7.2",
+        "react-native-input-scroll-view": "^1.7.0",
+        "react-native-keyboard-aware-scroll-view": "^0.7.2",
+        "react-native-keyboard-aware-scrollview": "^2.0.0",
+        "react-native-modal-datetime-picker": "^6.0.0",
+        "react-navigation": "^2.17.0",
+        "react-native-pedometer": "0.0.7",
+        "react-native-progress-circle": "^2.0.0",
+        "react-native-svg": "^7.0.3",
+        "react-native-vector-icons": "^5.0.0",
+        "react-redux": "^5.0.7",
+        "redux": "^4.0.0"
+    },
+    "devDependencies": {
+        "jest": "^23.6.0",
+        "jest-expo": "30.0.0"
+    }
 }
