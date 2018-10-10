@@ -36,7 +36,7 @@ export default class ContactsScreen extends Component {
     this.loadContacts()
     // Check if user already has accepted sharing contacts
     // If not the contacts page will show an option to import from contacts
-    // which will in turn ask for Contacts-permission. 
+    // which will in turn ask for Contacts-permission.
     Permissions.getAsync(Permissions.CONTACTS)
     .then(({status}) => {
       if (status === 'granted') {
@@ -44,7 +44,7 @@ export default class ContactsScreen extends Component {
       }
     })
   }
-  
+
   // Saves a contact in AsyncStorage
   saveContact = contact => {
     AsyncStorage.getItem('contacts')
@@ -57,7 +57,7 @@ export default class ContactsScreen extends Component {
     })
     .then(data => {
       data.push(contact)
-      data.sort((a,b) => a.firstName < b.firstName ? -1 : 1) 
+      data.sort((a,b) => a.firstName < b.firstName ? -1 : 1)
       this.setState({
         addedContacts: data,
       })
@@ -93,7 +93,7 @@ export default class ContactsScreen extends Component {
       AsyncStorage.setItem('contacts', contacts)
     })
   }
-  
+
   // Loads added contacts from AsyncStorage
   loadContacts = () => {
     let addedContacts = []
@@ -114,19 +114,19 @@ export default class ContactsScreen extends Component {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
     if (status === 'granted') {
       result = await Contacts.getContactsAsync();
-      importedContacts = 
+      importedContacts =
         result.data
         // Filter away the contacts without any name
-        .filter(contact => contact.firstName || contact.lastName)  
+        .filter(contact => contact.firstName || contact.lastName)
         // Give each contact-object an empty string for first or last name if they lack it
-        .map(contact => {  
+        .map(contact => {
           const {firstName, lastName} = contact
           contact.firstName = firstName ? firstName : ""
           contact.lastName = lastName ? lastName : ""
           return contact
         })
         // Sort by first name
-        .sort((a, b) => a.firstName < b.firstName ? -1 : 1) 
+        .sort((a, b) => a.firstName < b.firstName ? -1 : 1)
       this.setState({
         importedContacts,
         fetchingContacts: false,
@@ -163,11 +163,11 @@ export default class ContactsScreen extends Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps='handled'>
           {
             // This checks if phone is currently fetching contacts and if so displays loading, if not displays list of contacts
-            this.state.fetchingContacts 
+            this.state.fetchingContacts
             ?
-            <Loading /> 
+            <Loading />
             :
-            <ContactsList 
+            <ContactsList
               addedContacts={this.state.addedContacts}
               importedContacts={this.state.importedContacts}
               handleContactPress={this.handleContactPress}
@@ -215,9 +215,9 @@ const styles = StyleSheet.create({
   },
 
   contactsHeader: {
-    marginHorizontal: 20, 
+    marginHorizontal: 20,
     marginTop: 20,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     justifyContent: 'space-between'
   },
 
@@ -267,13 +267,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  
+
   headBackground: {
     width: 375,
     flex: 1,
     padding: 10,
   },
-  
+
   headerText: {
     fontSize: 30,
     fontWeight: '700',
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: "#4d4d4d",
   },
-  
+
   integerInput: {
     flex: 1,
     fontSize: 15,
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#69868a',
   },
-  
+
   name: {
     fontSize: 20,
     color: "#1c1c1c",
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: '#587073',
   },
-  
+
   userInfo: {
       fontSize: 14,
       color: "#778899",
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: .5,
       borderColor: '#8D8D8D',
   },
-  
+
   saveButton: {
       margin: 10,
       backgroundColor: "#129919",
@@ -315,21 +315,21 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       width: 200,
   },
-  
+
   SectionStyleIntegers: {
       flexDirection: 'row',
       height: 30,
       margin: 10,
       width: 125,
   },
-  
+
   SectionStyleName: {
       flexDirection: 'row',
       height: 30,
       margin: 10,
       width: 300,
   },
-  
+
   SectionStyleUserInfo: {
       flexDirection: 'row',
       height: 30,

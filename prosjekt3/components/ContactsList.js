@@ -9,9 +9,9 @@ import {
     Button,
 } from 'react-native'
 
-import { 
-    List, 
-    ListItem, 
+import {
+    List,
+    ListItem,
 } from 'react-native-elements';
 
 const ContactsList = ({ addedContacts = [], importedContacts = [], handleContactPress, handleDelete, importContacts, addContact }) => {
@@ -24,7 +24,7 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
                 data={contacts}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <ListItem 
+                    <ListItem
                     containerStyle={{padding: 20}}
                     roundAvatar
                     title={`${item.firstName} ${item.lastName}`}
@@ -54,7 +54,7 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
                     importedContacts.length == 0 && <Button title="Import" onPress={importContacts}/>
                 }
                 </View>
-                {listContacts(importedContacts)}                
+                {listContacts(importedContacts)}
             </View>
         )
     } else {
@@ -81,7 +81,7 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
             </View>
         )
     }
-} 
+}
 
 const styles = StyleSheet.create({
     centerContent: {
