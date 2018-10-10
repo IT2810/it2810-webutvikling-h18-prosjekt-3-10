@@ -16,6 +16,8 @@ import {
 import { List, ListItem, Text } from 'react-native-elements';
 
 import { Contacts, Permissions } from 'expo';
+import ContactsList from '../components/ContactsList';
+import Loading from '../components/Loading';
 
 export default class ContactsScreen extends Component {
   static navigationOptions = {
@@ -72,7 +74,7 @@ export default class ContactsScreen extends Component {
     AsyncStorage.getItem('contacts')
     .then(result => {
       if (result == null) {
-        console.error("No contacts are saved?!")
+        console.error("There's no saved contacts")
         return []
       } else {
         return JSON.parse(result)
@@ -107,13 +109,13 @@ export default class ContactsScreen extends Component {
     })
   }
 
-  // Imports contacts saved on the phone
+  // Imports contacts from phone contact list
   importContacts = async () => {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
     if (status === 'granted') {
-      importedContacts = await Contacts.getContactsAsync();
-      importedContacts.data = 
-        importedContacts.data
+      result = await Contacts.getContactsAsync();
+      importedContacts = 
+        result.data
         // Filter away the contacts without any name
         .filter(contact => contact.firstName || contact.lastName)  
         // Give each contact-object an empty string for first or last name if they lack it
@@ -126,37 +128,12 @@ export default class ContactsScreen extends Component {
         // Sort by first name
         .sort((a, b) => a.firstName < b.firstName ? -1 : 1) 
       this.setState({
-        importedContacts: importedContacts.data,
+        importedContacts,
         fetchingContacts: false,
       })
     } else {
       console.error('Contact read permission not granted, no changes made')
     }
-  }
-
-  // This is the modal that shows a more detailed view of chosen contact. 
-  showEmptyContactsList = () => {
-    return (
-      <View style={[styles.welcomeContainer, {alignItems: "center"}]}>
-        <Image
-          source={
-            require('../assets/images/alone.gif')
-          }
-          style={styles.welcomeImage}
-        />
-
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>It looks like your contacts list is empty.</Text>
-          <View style={styles.buttonContainer}>
-            <Button title="Import from phone" onPress={this.importContacts}/>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Add Contact" onPress={() => {this.setState({addContactModalVisible: true})}}/>
-          </View>
-        </View>
-
-      </View>
-    )
   }
 
   handleDelete = (contact) => {
@@ -173,70 +150,11 @@ export default class ContactsScreen extends Component {
     )
   }
 
-  renderContactsList = (contacts) => {
-    return (
-      <List>
-        <FlatList
-          data={contacts}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            // TODO: Don't show undefined if name is not found
-            <ListItem 
-              containerStyle={{padding: 20}}
-              roundAvatar
-              title={`${item.firstName} ${item.lastName}`}
-              avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/profile.png')}
-              onPress={() => {
-                this.setState({
-                  contactModalVisible: true,
-                  activeContact: item,
-                })
-              }}
-              onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => this.handleDelete(item)}
-            />
-          )}
-        />
-      </List>
-    )
-  }
-
-  showContacts = () => {
-    return (
-      <View style={styles.contactsContainer}>
-        <View style={styles.contactsHeader}>
-          <Text h4>Added contacts:</Text>
-          <Button title="Add Contact" onPress={() => {this.setState({addContactModalVisible: true})}}/>
-        </View>
-        {this.renderContactsList(this.state.addedContacts)}
-        <View style={styles.contactsHeader}>
-          <Text h4>Imported contacts:</Text>
-          {
-            this.state.importedContacts.length == 0 && <Button title="Import" onPress={this.importContacts}/>
-          }
-        </View>
-        {this.renderContactsList(this.state.importedContacts)}
-      </View>
-    )
-  }
-
-  showLoading = () => {
-    return (
-      <View style={{alignItems: "center", justifyContent: "center"}}>
-        <Image
-          source={
-            require('../assets/images/loading.gif')
-          }
-          style={styles.welcomeImage}
-        />
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>Loading...</Text>
-        </View>
-      </View>
-    )
-  }
-
-  hasContacts = () => {
-    return this.state.importedContacts.length !== 0 || this.state.addedContacts.length !== 0
+  handleContactPress = contact => {
+    this.setState({
+      contactModalVisible: true,
+      activeContact: contact,
+    })
   }
 
   render() {
@@ -244,10 +162,22 @@ export default class ContactsScreen extends Component {
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps='handled'>
           {
-            this.state.fetchingContacts ?
-            (this.showLoading()) :
-            (this.hasContacts() ? this.showContacts() : this.showEmptyContactsList())
+            // This checks if phone is currently fetching contacts and if so displays loading, if not displays list of contacts
+            this.state.fetchingContacts 
+            ?
+            <Loading /> 
+            :
+            <ContactsList 
+              addedContacts={this.state.addedContacts}
+              importedContacts={this.state.importedContacts}
+              handleContactPress={this.handleContactPress}
+              handleDelete={this.handleDelete}
+              importContacts={this.importContacts}
+              addContact={() => this.setState({addContactModalVisible: true})}
+            />
           }
+
+            {/*Modals not shown on screen until their visibility is set to true in state*/}
             <ContactInformationModal contact={this.state.activeContact} closeCallback={() => this.setState({contactModalVisible: false})} visible={this.state.contactModalVisible} />
             <AddContactModal onSave={(contact) => this.saveContact(contact)} closeCallback={() => this.setState({addContactModalVisible: false})} visible={this.state.addContactModalVisible}/>
         </ScrollView>
