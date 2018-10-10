@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TextInput, Image, FlatList, AsyncStorage } from 'react-native';
+import { View, StyleSheet, TextInput, Image, FlatList,
+  AsyncStorage, ScrollView } from 'react-native';
 import { List, ListItem, Button, Text } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
@@ -205,7 +206,9 @@ export default class TodoScreen extends React.Component {
           />
         </View>
 
-        {this.itemsOutput()}
+        <ScrollView>
+          {this.itemsOutput()}
+        </ScrollView>
 
       </View>
     );

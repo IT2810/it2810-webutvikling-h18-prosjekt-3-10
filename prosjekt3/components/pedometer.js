@@ -85,7 +85,6 @@ export default class PedometerSensor extends React.Component {
         color="#2f95dc"
         shadowColor="#999"
         bgColor="#eee"
-        title="Steps"
       >
         <Text style={{ fontSize: 40, fontWeight: 'bold' }}> {steps} </Text>
         <Text style={{ fontSize: 15 }}> {'Goal: ' + goal} </Text>
