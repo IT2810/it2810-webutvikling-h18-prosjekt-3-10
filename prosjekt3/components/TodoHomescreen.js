@@ -22,6 +22,10 @@ export default class TodoHomescreen extends React.Component {
     this.retrieveData()
   }
 
+  componentDidUpdate() {
+    this.retrieveData()
+  }
+
   retrieveData = async () => {
     try {
       const getData = await AsyncStorage.getItem('Todo-list');

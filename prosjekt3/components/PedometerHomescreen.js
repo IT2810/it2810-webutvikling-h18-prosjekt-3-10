@@ -18,6 +18,11 @@ export default class PedometerHomescreen extends React.Component {
         this._subscribe();
     }
 
+    /* componentDidUpdate() {
+         this.retrieveData()
+         this._subscribe();
+     }*/
+
     retrieveData = async () => {
         try {
             const data = await AsyncStorage.getItem('Goal');

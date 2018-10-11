@@ -21,6 +21,7 @@ export default class HomeScreen extends React.Component {
       todayStepCount: 0,
       goal: '',
     }
+    Obj = new TodoHomescreen();
   }
 
   // header and styling of it
@@ -39,6 +40,12 @@ export default class HomeScreen extends React.Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+
+  componentDidUpdate() {
+    this.Obj.retrieveData();
+    //this._subscribe();
+  }
+
 
   render() {
     return (
