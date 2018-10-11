@@ -137,7 +137,7 @@ export default class PedometerSensor extends React.Component {
       }
       else {
         this.setState({
-          goal: '',
+          goal: '10000',
         })
       }
     }
