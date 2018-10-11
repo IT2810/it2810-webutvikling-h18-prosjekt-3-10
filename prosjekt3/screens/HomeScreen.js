@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -13,15 +13,16 @@ import {
 } from 'react-native';
 import { Button, List, Icon, ListItem } from 'react-native-elements';
 import ProgressCircle from 'react-native-progress-circle';
-import TodoScreen from '../screens/TodoScreen';
+import { Pedometer } from "expo";
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
-    Obj = new TodoScreen();
     this.state = {
       modalVisible: false,
       todo: [],
+      todayStepCount: 0,
+      goal: '',
     }
   }
 
@@ -44,20 +45,29 @@ export default class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.retrieveData()
+    this._subscribe();
   }
 
+
+
+  // retrieving data from todo and activity screens
   retrieveData = async () => {
     try {
       const getData = await AsyncStorage.getItem('Todo-list');
+      const getActivityData = await AsyncStorage.getItem('Goal');
       const data = JSON.parse(getData);
-      if (data != null) {
+      const activityData = JSON.parse(getActivityData);
+
+      if (data != null || activityData != null) {
         this.setState({
           todo: data,
+          goal: activityData,
         });
       }
       else {
         this.setState({
           todo: [],
+          goal: '',
         })
       }
     }
@@ -66,6 +76,7 @@ export default class HomeScreen extends React.Component {
     }
   }
 
+  // output from todo screen
   itemsOutput = () => {
     return (
       <List containerStyle={styles.todoList}>
@@ -84,6 +95,29 @@ export default class HomeScreen extends React.Component {
       </List>
     )
   }
+
+  // function for step counter
+  _subscribe = () => {
+    this._subscription = Pedometer.watchStepCount(result => {
+      this.setState({
+        currentStepCount: result.steps
+      });
+    });
+    const end = new Date();
+    const start = new Date();
+    start.setHours(end.getHours() - end.getHours());
+    start.setMinutes(end.getMinutes() - end.getMinutes());
+    Pedometer.getStepCountAsync(start, end).then(
+      result => {
+        this.setState({ todayStepCount: result.steps });
+      },
+      error => {
+        this.setState({
+          pastStepCount: "Could not get stepCount: " + error
+        });
+      }
+    );
+  };
 
   render() {
     return (
@@ -127,38 +161,34 @@ export default class HomeScreen extends React.Component {
 
         {/* progress cycle*/}
         <View style={styles.middleContent}>
-          <View>
-            <ProgressCircle
-              percent={70}
-              radius={70}
-              borderWidth={15}
-              color='#e68a00'
-              shadowColor="#ffffff"
-              bgColor="#333333">
-              <Text style={styles.progressCircleText}>{'70%'}</Text>
-            </ProgressCircle>
-          </View>
+          <View style={styles.activityContent}>
+            <Text style={styles.activityHeader}>Steps</Text>
+            <View>
 
+              <ProgressCircle
+                percent={70}
+                radius={70}
+                borderWidth={15}
+                color='#e68a00'
+                shadowColor="#ffffff"
+                bgColor="#333333"
+              >
+                <Text style={styles.stepsText}> {this.state.todayStepCount} </Text>
+                <Text style={styles.progressCircleText}>{Math.ceil(100 * this.state.todayStepCount / this.state.goal) + "%"}</Text>
+              </ProgressCircle>
 
-          <View style={styles.todoContent}>
-            <Text style={styles.todoHeader}>ToDo</Text>
-
-            <View
-            >
-              <View >
-
-
-                {this.itemsOutput()}
-
-
-
-
-
-
-              </View>
             </View>
           </View>
 
+          {/* ToDo view content*/}
+          <View style={styles.todoContent}>
+            <Text style={styles.todoHeader}>ToDo</Text>
+            <View>
+              <View >
+                {this.itemsOutput()}
+              </View>
+            </View>
+          </View>
         </View>
 
         {/* Button for profile*/}
@@ -177,8 +207,24 @@ export default class HomeScreen extends React.Component {
   }
 }
 
-
 const styles = StyleSheet.create({
+
+  activityContent: {
+    flex: 1,
+    backgroundColor: '#5F7C80',
+    margin: 15,
+    marginLeft: 10,
+    padding: 10,
+    borderRadius: 5,
+    height: 200,
+  },
+
+  activityHeader: {
+    textAlign: "center",
+    color: "#ffffff",
+    fontSize: 16,
+    marginBottom: 15,
+  },
 
   /* backgroundImage: {
      width: '100%',
@@ -258,16 +304,21 @@ const styles = StyleSheet.create({
     margin: 8,
   },
 
-
-
   progressCircleText: {
     fontSize: 18,
-    color: "#ffffff"
+    color: "#999999"
   },
 
   middleContent: {
     flexDirection: "row",
   },
+
+  stepsText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: "#595959",
+  },
+
 
   todoContent: {
     flex: 1,
@@ -277,12 +328,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     maxHeight: 200,
-
-
-
-
-
-
   },
 
   todoHeader: {
@@ -295,14 +340,5 @@ const styles = StyleSheet.create({
   todoList: {
     borderWidth: 1,
     marginBottom: 20,
-
-
-
-
-
-
-
   },
-
-
 });
