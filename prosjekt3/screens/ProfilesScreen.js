@@ -141,21 +141,21 @@ export default class UserProfileView extends Component {
                                 maxLength={8}  //limit for number of integers
                                 underlineColorAndroid="transparent" />
                         </View>
-                        <View style={styles.SectionStyleUserInfo}>
+                        <View style={styles.SectionStyleUserInfoTown}>
+                            <Image source={require('../assets/images/profileTown.png')} style={styles.ImageStyle} />
+                            <TextInput style={styles.userInfo} // input field for town
+                                placeholder="Town"
+                                value={this.state.town}
+                                onChangeText={(town => this.setState({ town }))}
+                                underlineColorAndroid="transparent" />
+                        </View>
+                        <View style={styles.SectionStyleUserInfoEmail}>
                             <Image source={require('../assets/images/profileEmail.png')} style={styles.ImageStyle} />
                             <TextInput style={styles.userInfo} // input field for e-mail
                                 placeholder="E-mail"
                                 onChangeText={(email => this.setState({ email }))}
                                 value={this.state.email}
                                 keyboardType="email-address"
-                                underlineColorAndroid="transparent" />
-                        </View>
-                        <View style={styles.SectionStyleUserInfo}>
-                            <Image source={require('../assets/images/profileTown.png')} style={styles.ImageStyle} />
-                            <TextInput style={styles.userInfo} // input field for town
-                                placeholder="Town"
-                                value={this.state.town}
-                                onChangeText={(town => this.setState({ town }))}
                                 underlineColorAndroid="transparent" />
                         </View>
                     </View>
@@ -269,7 +269,14 @@ const styles = StyleSheet.create({
         width: 125,
     },
 
-    SectionStyleUserInfo: {
+    SectionStyleUserInfoEmail: {
+        flexDirection: 'row',
+        height: 30,
+        margin: 10,
+        width: 320,
+    },
+
+    SectionStyleUserInfoTown: {
         flexDirection: 'row',
         height: 30,
         margin: 10,
