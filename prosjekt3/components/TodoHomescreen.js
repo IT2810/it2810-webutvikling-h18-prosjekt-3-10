@@ -18,14 +18,17 @@ export default class TodoHomescreen extends React.Component {
     }
   }
 
+  // mounting stored todo data
   componentDidMount() {
     this.retrieveData()
   }
 
+  // updating todo between screens in the same session
   componentDidUpdate() {
     this.retrieveData()
   }
 
+  // retrieving todo data from TodoScreen and displaying it on HomeScreen
   retrieveData = async () => {
     try {
       const getData = await AsyncStorage.getItem('Todo-list');
@@ -74,7 +77,6 @@ export default class TodoHomescreen extends React.Component {
       </View>
     )
   }
-
 }
 
 const styles = StyleSheet.create({

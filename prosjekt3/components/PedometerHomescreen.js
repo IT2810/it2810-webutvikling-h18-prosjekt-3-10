@@ -13,16 +13,18 @@ export default class PedometerHomescreen extends React.Component {
         }
     }
 
+    // mounting stored activity data
     componentDidMount() {
         this.retrieveData()
         this._subscribe();
     }
 
-    /* componentDidUpdate() {
-         this.retrieveData()
-         this._subscribe();
-     }*/
+    // updating steps between activity and homescreen in one the same session
+    componentDidUpdate() {
+        this.retrieveData()
+    }
 
+    // retrieving to days steps
     retrieveData = async () => {
         try {
             const data = await AsyncStorage.getItem('Goal');
@@ -33,7 +35,7 @@ export default class PedometerHomescreen extends React.Component {
             }
             else {
                 this.setState({
-                    goal: '',
+                    goal: '10000',
                 })
             }
         }
