@@ -86,8 +86,10 @@ ContactsStack.navigationOptions = {
   ),
 };
 
+
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
+
 });
 
 ProfileStack.navigationOptions = {

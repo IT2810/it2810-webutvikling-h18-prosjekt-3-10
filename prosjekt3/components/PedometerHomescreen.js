@@ -72,7 +72,9 @@ export default class PedometerHomescreen extends React.Component {
         const steps = this.state.todayStepCount;
         const goal = this.state.goal;
         const perc = (parseInt(steps, 10) / parseInt(goal, 10) * 100);
+        const percentText = (Math.floor(100 * steps / goal));
         const empty = (this.state.goal === "0");
+        const toLarge = (steps >= goal)
         return (
             <ProgressCircle
                 percent={perc}
@@ -83,7 +85,7 @@ export default class PedometerHomescreen extends React.Component {
                 bgColor="#333333"
             >
                 <Text style={styles.stepsText}> {steps} </Text>
-                <Text style={styles.progressCircleText}>{empty ? "100%" : Math.ceil(100 * steps / goal) + "%"}</Text>
+                <Text style={styles.progressCircleText}>{empty || toLarge ? "100%" : percentText + "%"}</Text>
             </ProgressCircle>
         )
     }
