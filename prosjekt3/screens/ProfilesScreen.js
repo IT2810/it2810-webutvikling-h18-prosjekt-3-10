@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import { Avatar, Icon } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import {
     StyleSheet,
     View,
     Image,
     TextInput,
     ScrollView,
-    KeyboardAvoidingView,
     AsyncStorage,
     TouchableHighlight,
     Text,
     ImageBackground,
 } from 'react-native';
-
 
 export default class UserProfileView extends Component {
     constructor(props) {
@@ -86,13 +84,6 @@ export default class UserProfileView extends Component {
             alert('Error saving data')
         }
     }
-
-
-    // setModalVisible(visible) {
-    //     this.setState({ modalVisible: visible });
-    // }
-
-
 
     render() {
         let profilePicture = {
@@ -179,22 +170,7 @@ export default class UserProfileView extends Component {
                     </View>
                 </View>
 
-                {/* <TouchableHighlight style={styles.closeModalButton}
-                    onPress={() => { // closing modal when close-button is pressed
-                        this.setModalVisible(!this.state.modalVisible);
-                    }}>
-                    <Icon iconStyle={styles.closeModalButton}
-                        reverse
-                        type='entypo'
-                        name='back'
-                        color="#cc0000"
-                    /> */}
-                {/* <Text style={styles.closeModalButtonText}>Close</Text> */}
-                {/* </TouchableHighlight> */}
-
-
             </ScrollView >
-            // </KeyboardAvoidingView>
         );
     }
 }

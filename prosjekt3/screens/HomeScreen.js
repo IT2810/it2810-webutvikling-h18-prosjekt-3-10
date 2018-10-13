@@ -6,7 +6,6 @@ import {
   ImageBackground,
 
 } from 'react-native';
-import { Button } from 'react-native-elements';
 import PedometerHomescreen from '../components/PedometerHomescreen';
 import TodoHomescreen from '../components/TodoHomescreen';
 import AppointmentModalHomescreen from '../components/AppointmentInfoHomescreenModal';
@@ -35,7 +34,6 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-
       <ImageBackground source={require('../assets/images/homeBackground4.jpg')} style={styles.centerContent}>
 
         {/* "upcoming events modal */}
@@ -61,23 +59,9 @@ export default class HomeScreen extends React.Component {
           </View>
 
         </View>
-
-        {/* Button for profile*
-        <View style={styles.profileButtonPosition}>
-          {/*<Button buttonStyle={styles.profileButton}
-            icon={{
-              name: 'user',
-              type: 'font-awesome',
-              size: 30
-            }}
-            title=" PROFILE"
-            onPress={() => this.props.navigation.navigate('Profile')} />
-          */}
-
-
+        {/* button to profile */}
         <ProfileModal />
 
-        {/* </View> */}
       </ImageBackground>
     );
   }
@@ -111,18 +95,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: '#ffffff'
-  },
-
-  profileButton: {
-    backgroundColor: '#517fa4',
-    borderWidth: 0,
-    borderRadius: 10,
-    height: 75,
-  },
-
-  profileButtonPosition: {
-    width: '100%',
-    margin: 8,
   },
 
   middleContent: {
