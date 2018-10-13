@@ -15,9 +15,6 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todo: [],
-      todayStepCount: 0,
-      goal: '',
     }
   }
 
