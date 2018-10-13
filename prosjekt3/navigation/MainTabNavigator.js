@@ -114,5 +114,5 @@ export default createBottomTabNavigator({
   ActivityStack,
   TodoStack,
   ContactsStack,
-  ProfileStack
+  //ProfileStack
 });
