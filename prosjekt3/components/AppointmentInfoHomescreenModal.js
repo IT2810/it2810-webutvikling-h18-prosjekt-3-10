@@ -5,12 +5,9 @@ import {
     Text,
     Modal,
     TouchableHighlight,
-    ImageBackground,
-
 } from 'react-native';
-import { Button, Icon, } from 'react-native-elements';
-import PedometerHomescreen from '../components/PedometerHomescreen';
-import TodoHomescreen from '../components/TodoHomescreen';
+import { Icon, } from 'react-native-elements';
+
 
 
 export default class AppointmentModalHomescreen extends React.Component {
@@ -24,8 +21,6 @@ export default class AppointmentModalHomescreen extends React.Component {
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
-
-
 
     AppointmentModal = () => {
         return (
@@ -68,7 +63,6 @@ export default class AppointmentModalHomescreen extends React.Component {
 
         )
     }
-
     render() {
         return (
             <View>

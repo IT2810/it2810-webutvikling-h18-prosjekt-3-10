@@ -10,6 +10,7 @@ import { Button } from 'react-native-elements';
 import PedometerHomescreen from '../components/PedometerHomescreen';
 import TodoHomescreen from '../components/TodoHomescreen';
 import AppointmentModalHomescreen from '../components/AppointmentInfoHomescreenModal';
+import ProfileModal from '../components/ProfileModal';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -61,9 +62,9 @@ export default class HomeScreen extends React.Component {
 
         </View>
 
-        {/* Button for profile*/}
+        {/* Button for profile*
         <View style={styles.profileButtonPosition}>
-          <Button buttonStyle={styles.profileButton}
+          {/*<Button buttonStyle={styles.profileButton}
             icon={{
               name: 'user',
               type: 'font-awesome',
@@ -71,7 +72,12 @@ export default class HomeScreen extends React.Component {
             }}
             title=" PROFILE"
             onPress={() => this.props.navigation.navigate('Profile')} />
-        </View>
+          */}
+
+
+        <ProfileModal />
+
+        {/* </View> */}
       </ImageBackground>
     );
   }
