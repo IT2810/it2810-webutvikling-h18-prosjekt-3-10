@@ -3,20 +3,18 @@ import {
   StyleSheet,
   View,
   Text,
-  Modal,
-  TouchableHighlight,
   ImageBackground,
 
 } from 'react-native';
-import { Button, Icon, } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import PedometerHomescreen from '../components/PedometerHomescreen';
 import TodoHomescreen from '../components/TodoHomescreen';
+import AppointmentModalHomescreen from '../components/AppointmentInfoHomescreenModal';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
       todo: [],
       todayStepCount: 0,
       goal: '',
@@ -26,6 +24,7 @@ export default class HomeScreen extends React.Component {
   // header and styling of it
   static navigationOptions = {
     title: "Home",
+    tabBarVisible: false,
     header: null, // removing the header
     headerStyle: { // styling the header
       backgroundColor: '#69868a',
@@ -36,56 +35,19 @@ export default class HomeScreen extends React.Component {
     },
   };
 
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-
   render() {
     return (
+
       <ImageBackground source={require('../assets/images/homeBackground4.jpg')} style={styles.centerContent}>
-        <View style={styles.events}>
 
-          {/* the modal for upcoming events*/}
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.modalVisible}
-            presentationStyle="formSheet"
-            onRequestClose={() => { // required on android, making it posible to use hardware back-button
-              this.setModalVisible(!this.state.modalVisible);
-            }}>
-            <View style={styles.centerContent}>
-              <Text>{"appointment info here"}</Text>
+        {/* "upcoming events modal */}
+        <AppointmentModalHomescreen />
 
-              <TouchableHighlight style={styles.closeModalButton}
-                onPress={() => { // closing modal when close-button is pressed
-                  this.setModalVisible(!this.state.modalVisible);
-                }}>
-                <Text style={styles.closeModalButtonText}>Close</Text>
-              </TouchableHighlight>
-            </View>
-          </Modal>
-          <TouchableHighlight
-            onPress={() => { // opens modal when event-object is pressed
-              this.setModalVisible(true);
-            }}>
-            <View style={styles.eventIconText}>
-              <Icon
-                reverse
-                name='event'
-                color='#5F7C80'
-              />
-              <Text style={styles.eventText}>Upcoming Event: {'TBA'}</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-
-        {/* progress cycle*/}
+        {/* activity and todo content, middle of the screen */}
         <View style={styles.middleContent}>
 
-
+          {/* progress cycle*/}
           <View style={styles.activityContent}>
-
             <Text style={styles.activityHeader}>Steps</Text>
             <View>
               <PedometerHomescreen />
@@ -99,6 +61,7 @@ export default class HomeScreen extends React.Component {
               <TodoHomescreen />
             </View>
           </View>
+
         </View>
 
         {/* Button for profile*/}
@@ -136,17 +99,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  /* backgroundImage: {
-     width: '100%',
-     height: '100%',
-     alignItems: 'center',
-     justifyContent: 'center',
-     flex: 1,
-     flexDirection: 'column',
-     justifyContent: 'space-between',
-     backgroundColor: '#ffffff'
-   },*/
-
   centerContent: {
     width: '100%',
     height: '100%',
@@ -156,50 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: '#ffffff'
-  },
-
-  closeModalButton: {
-    margin: 10,
-    backgroundColor: "#cc0000",
-    borderWidth: 0,
-    borderRadius: 5,
-    width: 200,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 50,
-  },
-
-  closeModalButtonText: {
-    fontSize: 18,
-    color: "#ffffff",
-
-  },
-
-  events: {
-    backgroundColor: '#5F7C80',
-    borderWidth: 0,
-    width: "95%",
-    height: 75,
-    borderRadius: 10,
-    borderWidth: 0,
-    margin: 8,
-    marginTop: 40,
-
-  },
-
-  eventIconText: {
-    flexDirection: 'row',
-  },
-
-  eventText: {
-    fontSize: 18,
-    color: "#ffffff",
-    height: 75,
-    justifyContent: 'center',
-    margin: 20,
-    marginLeft: 0,
   },
 
   profileButton: {
@@ -214,21 +122,9 @@ const styles = StyleSheet.create({
     margin: 8,
   },
 
-  /* progressCircleText: {
-     fontSize: 18,
-     color: "#999999"
-   },*/
-
   middleContent: {
     flexDirection: "row",
   },
-
-  /*stepsText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: "#595959",
-  },*/
-
 
   todoContent: {
     flex: 1,
@@ -240,16 +136,9 @@ const styles = StyleSheet.create({
     maxHeight: 200,
   },
 
-
   todoHeader: {
     textAlign: "center",
     color: "#ffffff",
     fontSize: 16,
-
-  },
-
-  todoList: {
-    borderWidth: 1,
-    marginBottom: 20,
   },
 });
