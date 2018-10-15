@@ -5,7 +5,6 @@ import ContactInformationModal from '../components/ContactInformationModal';
 import {
   Alert,
   ScrollView,
-  StyleSheet,
   View,
   AsyncStorage
 } from 'react-native';
@@ -77,6 +76,7 @@ export default class ContactsScreen extends Component {
     })
     // Then deletes the contact from that list
     .then(data => {
+      console.log("Removing contact", contact)
       data = data.filter(savedContact => savedContact.id != contact.id)
       this.setState({
         addedContacts: data,
@@ -154,8 +154,8 @@ export default class ContactsScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps='handled'>
+      <View>
+        <ScrollView keyboardShouldPersistTaps='handled'>
           {
             // This checks if phone is currently fetching contacts and if so displays loading, if not displays list of contacts
             this.state.fetchingContacts 
@@ -180,8 +180,3 @@ export default class ContactsScreen extends Component {
     );
   }
 }
-
-
-const styles = StyleSheet.create({
-  
-})

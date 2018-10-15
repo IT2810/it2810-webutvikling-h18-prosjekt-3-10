@@ -28,6 +28,12 @@ export default class AddContactModal extends Component {
         }
     }
 
+    generateId = () => {
+        const id = `${this.state.firstName}${this.state.lastName}${this.state.number}`
+        console.log("ID set to", id)
+        return id
+    }
+
     render() {
         return (
             <Modal
@@ -86,7 +92,6 @@ export default class AddContactModal extends Component {
                         keyboardType='numeric'
                         onChangeText={(number) => {
                             this.setState({
-                                id: number,
                                 number,
                             })
                         }}
@@ -103,21 +108,28 @@ export default class AddContactModal extends Component {
                                 firstName,
                                 lastName,
                                 number,
-                                id
                             } = this.state
+
+                            // Construct contact-object
                             const contact = {
                                 firstName,
                                 lastName,
-                                id,
+                                id: this.generateId(),
                                 phoneNumbers: [{number: number}]
                             }
+
+                            // Reset modal
                             this.setState({
                                 firstName: '',
                                 lastName: '',
                                 number: '',
                                 id: '',
                             })
+
+                            // Pass contact to save-method
                             this.props.onSave(contact)
+
+                            // Notify ready to close
                             this.props.closeCallback()
                         }} 
                         title="Add"

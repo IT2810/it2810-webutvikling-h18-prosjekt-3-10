@@ -2,16 +2,17 @@ import React from 'react';
 
 import {
     View,
-    Text,
     StyleSheet,
     Alert,
     FlatList,
     Button,
+    Image,
 } from 'react-native'
 
 import { 
     List, 
     ListItem, 
+    Text,
 } from 'react-native-elements';
 
 const ContactsList = ({ addedContacts = [], importedContacts = [], handleContactPress, handleDelete, importContacts, addContact }) => {
@@ -25,13 +26,13 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <ListItem 
-                    containerStyle={{padding: 20}}
-                    roundAvatar
-                    title={`${item.firstName} ${item.lastName}`}
-                    avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/profile.png')}
-                    onPress={() => handleContactPress(item)}
-                    // Only imported contacts has a lookupKey, so that's an easy way to check which type the contact is
-                    onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => handleDelete(item)}
+                        containerStyle={styles.listItem}
+                        roundAvatar
+                        title={`${item.firstName} ${item.lastName}`}
+                        avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/profile.png')}
+                        onPress={() => handleContactPress(item)}
+                        // Only imported contacts has a lookupKey, so that's an easy way to check which type the contact is
+                        onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => handleDelete(item)}
                     />
                 )}
                 />
@@ -44,15 +45,15 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
         return (
             <View style={styles.contactsContainer}>
                 <View style={styles.contactsHeader}>
-                <Text h4>Added contacts:</Text>
-                <Button title="Add Contact" onPress={addContact}/>
+                    <Text h4>Added contacts</Text>
+                    <Button title="Add Contact" onPress={addContact}/>
                 </View>
                 {listContacts(addedContacts)}
                 <View style={styles.contactsHeader}>
-                <Text h4>Imported contacts:</Text>
-                {
-                    importedContacts.length == 0 && <Button title="Import" onPress={importContacts}/>
-                }
+                    <Text h4>Imported contacts</Text>
+                    {
+                        importedContacts.length == 0 && <Button title="Import" onPress={importContacts}/>
+                    }
                 </View>
                 {listContacts(importedContacts)}                
             </View>
@@ -86,6 +87,12 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
 const styles = StyleSheet.create({
     centerContent: {
         width: '100%',
+    },
+    contactsHeader: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 20,
+        paddingBottom: 0,
     }
 })
 
