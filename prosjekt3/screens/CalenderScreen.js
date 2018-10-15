@@ -1,8 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View, FlatList, TextInput,
-  TouchableHighlight, Modal, Alert, AsyncStorage } from 'react-native';
+  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { List, ListItem, Button, Text } from 'react-native-elements';
+import { List, ListItem, Button, Text, Header, Icon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
 import TodoScreen from './TodoScreen';
@@ -15,14 +15,17 @@ export default class CalenderScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
+      addModalVisible: false,
+      updateModalVisible: false,
       inputValue: '',
       date: '',
+      time: '',
       items: {},
+      selectedItem: {},
     };
   }
 
-
+  // Calender agenda object
   myAgenda = () => {
     return (
       <Agenda
@@ -31,8 +34,16 @@ export default class CalenderScreen extends React.Component {
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
+        theme={{
+          agendaKnobColor: '#2f95dc'
+        }}
       />
     )
+  }
+
+  // Runs first time screen opens
+  componentDidMount = () => {
+    this.retrieveData()
   }
 
   // Function to save data to local storage
@@ -45,10 +56,6 @@ export default class CalenderScreen extends React.Component {
       // Error saving data
     }
   };
-
-  componentDidMount = () => {
-    this.retrieveData()
-  }
 
   // Function to retrieve data from local storage
   retrieveData = async () => {
@@ -74,8 +81,8 @@ export default class CalenderScreen extends React.Component {
 
   loadItems(day) {
     setTimeout(() => {
-      for (let k = -15; k < 85; k++) {
-        const time = day.timestamp + k * 24 * 60 * 60 * 1000;
+      for (let i = -15; i < 85; i++) {
+        const time = day.timestamp + (i * 24 * 60 * 60 * 1000);
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
@@ -92,16 +99,115 @@ export default class CalenderScreen extends React.Component {
 
   renderItem(item) {
     return (
-      <View style={[styles.item, {height: item.height}]}>
-        <Text>{item.name}</Text>
+      <View style={[styles.item, { height: item.height }]}>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={() => {this.isSelected(item)}}
+        >
+          <Text style={styles.itemTime}> {item.time} </Text>
+          <Text style={styles.itemName}> {item.name} </Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
+  isSelected = (item) => {
+    this.setState(() => ({
+      selectedItem: item,
+    }));
+    this.setUpdateModalVisibility();
+  }
+
+  updateItemModal = () => {
+    return (
+      <Modal
+        animationType="fade"
+        transparent={false}
+        visible={this.state.updateModalVisible}
+        onRequestClose={() => {this.setUpdateModalVisibility()}}>
+
+        <View style={styles.modal}>
+          <View>
+
+            <Header
+              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setUpdateModalVisibility()} }}
+              centerComponent={{ text: 'Update item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
+              backgroundColor={'#fff'}
+            />
+
+            <TextInput
+              style={styles.inputForm}
+              value={this.state.inputValue}
+              onChangeText={this.handleTextChange}
+              placeholder="Whats happening"
+              underlineColorAndroid="transparent"
+            />
+
+            <View style={styles.modalDatePicker}>
+              {this.datePicker()}
+            </View>
+            <View style={styles.modalTimePicker}>
+              {this.timePicker()}
+            </View>
+
+            <Button
+              title="Update item"
+              onPress={this.updateItem}
+              buttonStyle={styles.addBtn}
+              containerViewStyle={{width: '100%', marginLeft: 0}}
+            />
+
+            <Button
+              title="Delete item"
+              onPress={this.removeItem}
+              buttonStyle={styles.deleteBtn}
+              containerViewStyle={{width: '100%', marginLeft: 0}}
+            />
+
+          </View>
+        </View>
+      </Modal>
+    )
+  }
+
+  updateItem = () => {
+    if (!this.state.inputValue == '' && !this.state.date == '') {
+      this.removeItem();
+      this.addItem();
+    }
+    else {
+      return;
+    }
+  }
+
+  removeItem = () => {
+    const items = this.state.items;
+    const item = this.state.selectedItem;
+    const date = item.date;
+    console.log(item);
+    items[date].pop(item)
+    this.setState(
+      { items, updateModalVisible: false,  },
+      () => this.storeData()
+    );
+
+  }
+
   renderEmptyDate() {
     return (
-      <View style={styles.emptyDate}><Text>This is an empty date!</Text></View>
+      <View style={styles.emptyDate}>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={() => {this.setAddModalVisibility()}}
+        >
+          <Text style={{color: '#bbb'}}>Click me to add new agenda!</Text>
+        </TouchableOpacity>
+      </View>
     );
+  }
+
+  selectedEmptyDate = () => {
+
   }
 
   rowHasChanged(r1, r2) {
@@ -118,27 +224,32 @@ export default class CalenderScreen extends React.Component {
     const input = this.state.inputValue;
     const date = this.state.date;
     const items = this.state.items;
+    const time = this.state.time;
+    const id = input + date;
     if (!input || !date) {
-      this.setModalVisibility();
+      return;
     }
     else {
       if (!items[date]) {
         items[date] = []
       }
-      items[date].push({name: input});
+      items[date].push({
+        name: input,
+        date: date,
+        id: id,
+        time: time,
+      });
     }
     this.setState(() => ({
       items,
       inputValue: '',
       date: '',
+      time: '',
+      addModalVisible: false,
+      updateModalVisible: false,
     }));
 
     this.storeData();
-    this.setModalVisibility();
-  }
-
-  setModalVisibility = () => {
-    this.setState({modalVisible: !this.state.modalVisible});
   }
 
   handleTextChange = (value) => {
@@ -147,17 +258,22 @@ export default class CalenderScreen extends React.Component {
     }));
   }
 
-  myModal = () => {
+  addItemModal = () => {
     return (
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={false}
-        visible={this.state.modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-        }}>
+        visible={this.state.addModalVisible}
+        onRequestClose={() => {this.setAddModalVisibility()}}>
+
         <View style={styles.modal}>
           <View>
+
+            <Header
+              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setAddModalVisibility()} }}
+              centerComponent={{ text: 'Add item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
+              backgroundColor={'#fff'}
+            />
 
             <TextInput
               style={styles.inputForm}
@@ -167,7 +283,12 @@ export default class CalenderScreen extends React.Component {
               underlineColorAndroid="transparent"
             />
 
-            {this.datePicker()}
+            <View style={styles.modalDatePicker}>
+              {this.datePicker()}
+            </View>
+            <View style={styles.modalTimePicker}>
+              {this.timePicker()}
+            </View>
 
             <Button
               title="Add it"
@@ -182,7 +303,6 @@ export default class CalenderScreen extends React.Component {
     )
   }
 
-
   // Date picker object
   datePicker = () => {
     return (
@@ -192,9 +312,8 @@ export default class CalenderScreen extends React.Component {
           paddingBottom: 10,
         }}
         date={this.state.date}
-        value={this.state.date}
         mode="date"
-        placeholder="Set date if you want"
+        placeholder="Set date"
         format="YYYY-MM-DD"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
@@ -217,7 +336,54 @@ export default class CalenderScreen extends React.Component {
     )
   }
 
+  // Time picker object
+  timePicker = () => {
+    return (
+      <DatePicker
+        style={{
+          width: 320,
+          paddingBottom: 10,
+        }}
+        date={this.state.time}
+        value={this.state.time}
+        mode="time"
+        placeholder="Set time if you want"
+        format="HH:mm"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        is24Hour={true}
+        iconSource={require('../assets/images/watch.png')}
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            backgroundColor: '#fff',
+            borderColor: '#fff',
+            marginLeft: 36
+          }
+        }}
+        onDateChange={(date) => {this.setState({time: date})}}
+      />
+    )
+  }
 
+  setAddModalVisibility = () => {
+    this.setState(() => ({
+      addModalVisible: !this.state.addModalVisible,
+    }));
+  }
+
+  setUpdateModalVisibility = () => {
+    this.setState(() => ({
+      updateModalVisible: !this.state.updateModalVisible,
+    }));
+  }
+
+  // RENDER
   render() {
     return (
       <View>
@@ -225,14 +391,15 @@ export default class CalenderScreen extends React.Component {
         <View>
           <Button
             title="Add new agenda"
-            onPress={this.setModalVisibility}
+            onPress={this.setAddModalVisibility}
             buttonStyle={styles.addBtn}
             containerViewStyle={{width: '100%', marginLeft: 0}}
           />
         </View>
 
         <View>
-          {this.myModal()}
+          {this.addItemModal()}
+          {this.updateItemModal()}
         </View>
 
         <View style={{height: 800}}>
@@ -246,9 +413,6 @@ export default class CalenderScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
-  modal: {
-    marginTop: 22,
-  },
   item: {
     backgroundColor: 'white',
     flex: 1,
@@ -262,13 +426,43 @@ const styles = StyleSheet.create({
     flex:1,
     paddingTop: 30
   },
+  itemTime: {
+    fontSize: 12,
+    color: '#666666',
+  },
+  itemName: {
+    fontSize: 16,
+  },
   addBtn: {
     backgroundColor: '#2f95dc',
   },
-  inputForm: {
+  deleteBtn: {
+    backgroundColor: '#2f95dc',
+    marginTop: 8,
+  },
+  modal: {
+    flex: 1,
+    paddingTop: 0,
     backgroundColor: Colors.backgroundColor,
-    height: 100,
-    marginTop: 30,
+  },
+  inputForm: {
+    width: 400,
+    backgroundColor: '#fff',
+    height: 50,
+    marginTop: 40,
+    marginBottom: 12,
     textAlign: 'center',
   },
+  modalDatePicker: {
+    width: 320,
+    marginLeft: 12,
+  },
+  modalTimePicker: {
+    width: 320,
+    marginLeft: 12,
+    marginBottom: 8,
+  },
+
+
+
 });
