@@ -3,29 +3,30 @@ import React from 'react';
 import {
     Modal,
     View,
-    Text,
     StyleSheet,
 } from 'react-native'
 
 import {
     Avatar,
     Header,
+    Text,
 } from 'react-native-elements'
 
 const contactModal = ({ contact = {}, visible, closeCallback }) => {
     return (
     <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={false}
         visible={visible}
         onRequestClose={closeCallback}>
         <View style={styles.modalContent}>
             <Header
+            outerContainerStyles={styles.header}
             innerContainerStyles={{alignItems: 'center'}}
             leftComponent={{ icon: 'keyboard-arrow-down', color: '#fff', size: 32, onPress: closeCallback }}
             />
             <Avatar
-                avatarStyle={styles.avatar}
+                containerStyle={styles.avatar}
                 xlarge
                 rounded
                 source={contact.imageAvailable ? {uri: contact.image.uri} : require('../assets/images/profile.png')}
@@ -44,12 +45,23 @@ const contactModal = ({ contact = {}, visible, closeCallback }) => {
 } 
 
 const styles = StyleSheet.create({
-    centerContent: {
-        width: '100%',
+    modalContent: {
+        alignItems: "center",
+    },
+    header: {
+        width: "100%",
     },
     avatar: {
-        alignSelf: "center"
+        margin: 10,
+        marginBottom: 40,
     },
+    textWithLabel: {
+        width: "80%",
+        marginBottom: 20,
+    },
+    lightText: {
+        color: "#696969"
+    }
 })
 
 export default contactModal

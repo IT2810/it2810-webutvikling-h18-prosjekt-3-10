@@ -61,22 +61,22 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
     } else {
         // Show an empty contact list
         return(
-            <View style={[styles.welcomeContainer, {alignItems: "center"}]}>
+            <View style={styles.mainContainer}>
                 <Image
                 source={
                     require('../assets/images/alone.gif')
                 }
-                style={styles.welcomeImage}
+                style={styles.lonelyImage}
                 />
 
-                <View style={styles.getStartedContainer}>
-                <Text style={styles.getStartedText}>It looks like your contacts list is empty.</Text>
-                <View style={styles.buttonContainer}>
-                    <Button title="Import from phone" onPress={importContacts}/>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <Button title="Add Contact" onPress={addContact}/>
-                </View>
+                <View style={styles.ontainer}>
+                    <Text style={styles.text}>It looks like your contacts list is empty.</Text>
+                    <View style={styles.buttonContainer}>
+                        <Button title="Add Contact" onPress={addContact}/>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <Button title="Import from phone" onPress={importContacts}/>
+                    </View>
                 </View>
 
             </View>
@@ -85,14 +85,22 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
 } 
 
 const styles = StyleSheet.create({
-    centerContent: {
-        width: '100%',
+    mainContainer: {
+        alignItems: "center",
     },
     contactsHeader: {
         flexDirection: "row",
         justifyContent: "space-around",
         padding: 20,
         paddingBottom: 0,
+    },
+    buttonContainer: {
+        margin: 10,
+    },
+    lonelyImage: {
+        width: 400,
+        height: 200,
+        marginBottom: 50,
     }
 })
 
