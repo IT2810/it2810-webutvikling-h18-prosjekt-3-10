@@ -107,12 +107,15 @@ export default class PedometerSensor extends React.Component {
 
   // Function to set or update daily goal
   setGoal = () => {
-    this.setState({
-      goal: this.state.inputGoal,
-      inputGoal: ''
-    },
-      () => this.storeData()
-    );
+    const goal = this.state.inputGoal;
+    if (goal != '') {
+      this.setState({
+        goal: this.state.inputGoal,
+        inputGoal: ''
+      },
+        () => this.storeData()
+      );
+    }
   }
 
   // Function to save daily goal data to local storage
@@ -167,7 +170,16 @@ export default class PedometerSensor extends React.Component {
     const goal = this.state.goal;
     const perc = (parseInt(steps, 10) / parseInt(goal, 10) * 100);
 
-    if (perc > 10 && 25 > perc) {
+    if (perc > 0 && 10 > perc) {
+      return (
+        <Text style={styles.motivationQuote}>
+          You are on the go!
+          Why not take a morning walk!
+        </Text>
+      )
+    }
+
+    else if (perc > 10 && 25 > perc) {
       return (
         <Text style={styles.motivationQuote}>
           That is a good start!

@@ -88,8 +88,7 @@ export default class TodoScreen extends React.Component {
               title={item.input}
               subtitle={item.date}
               rightIcon={{
-                name: 'times',
-                type: 'font-awesome',
+                name: 'close',
                 style: {
                   marginRight: 15,
                   fontSize: 22,
