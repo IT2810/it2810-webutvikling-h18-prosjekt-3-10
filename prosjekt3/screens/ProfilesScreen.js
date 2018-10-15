@@ -6,7 +6,6 @@ import {
     Image,
     TextInput,
     ScrollView,
-    KeyboardAvoidingView,
     AsyncStorage,
     TouchableHighlight,
     Text,
@@ -92,86 +91,86 @@ export default class UserProfileView extends Component {
         }
 
         return (
-            <KeyboardAvoidingView behavior="position" enabled>
-                <ScrollView>
-                    <ImageBackground source={require('../assets/images/profileBackground3.jpg')} style={styles.backgroundImage}>
-                        <View style={styles.headBackground}>
-                            <View style={styles.centerContent}>
-                                <Avatar avatarStyle={styles.avatar}// using react native elements - external libary
-                                    xlarge
-                                    rounded
-                                    source={profilePicture}
-                                    activeOpacity={0.7}
-                                />
-                            </View>
-
-                            <View>
-                                <TextInput style={[styles.name, styles.centerContent]} // input field for name
-                                    placeholder="Enter name"
-                                    placeholderTextColor="#4f545b"
-                                    value={this.state.name}
-                                    onChangeText={(name => this.setState({ name }))}
-                                    underlineColorAndroid="transparent" />
-                            </View>
-                        </View>
-                    </ImageBackground>
-
-                    <View style={styles.GrayContent}>
-
-                        <View style={styles.SectionStyleIntegers}>
-                            <Image source={require('../assets/images/profileHeight.png')} style={styles.ImageStyle} />
-                            <TextInput // input field for height
-                                style={styles.integerInput}
-                                placeholder="Height"
-                                keyboardType='numeric'
-                                onChangeText={(height) => this.onChangedHeight(height)}
-                                value={this.state.myHeightNumber}
-                                maxLength={8}  //limit for number of integers
-                                underlineColorAndroid="transparent" />
+            //<KeyboardAvoidingView behavior="position" enabled>
+            <ScrollView>
+                <ImageBackground source={require('../assets/images/profileBackground3.jpg')} style={styles.backgroundImage}>
+                    <View style={styles.headBackground}>
+                        <View style={styles.centerContent}>
+                            <Avatar avatarStyle={styles.avatar}// using react native elements - external libary
+                                xlarge
+                                rounded
+                                source={profilePicture}
+                                activeOpacity={0.7}
+                            />
                         </View>
 
-                        <View style={styles.SectionStyleIntegers}>
-                            <Image source={require('../assets/images/profileWeight.png')} style={styles.ImageStyle} />
-                            <TextInput // input field for weight
-                                style={styles.integerInput}
-                                placeholder="Weight"
-                                keyboardType='numeric'
-                                onChangeText={(weight) => this.onChangedWeight(weight)}
-                                value={this.state.myWeightNumber}
-                                maxLength={8}  //limit for number of integers
-                                underlineColorAndroid="transparent" />
-                        </View>
-                        <View style={styles.SectionStyleUserInfoTown}>
-                            <Image source={require('../assets/images/profileTown.png')} style={styles.ImageStyle} />
-                            <TextInput style={styles.userInfo} // input field for town
-                                placeholder="Town"
-                                value={this.state.town}
-                                onChangeText={(town => this.setState({ town }))}
-                                underlineColorAndroid="transparent" />
-                        </View>
-                        <View style={styles.SectionStyleUserInfoEmail}>
-                            <Image source={require('../assets/images/profileEmail.png')} style={styles.ImageStyle} />
-                            <TextInput style={styles.userInfo} // input field for e-mail
-                                placeholder="E-mail"
-                                onChangeText={(email => this.setState({ email }))}
-                                value={this.state.email}
-                                keyboardType="email-address"
+                        <View>
+                            <TextInput style={[styles.name, styles.centerContent]} // input field for name
+                                placeholder="Enter name"
+                                placeholderTextColor="#4f545b"
+                                value={this.state.name}
+                                onChangeText={(name => this.setState({ name }))}
                                 underlineColorAndroid="transparent" />
                         </View>
                     </View>
-                    {/*  Save  button */}
-                    <View style={styles.centerContent}>
-                        <View style={styles.saveButton}>
-                            <TouchableHighlight
-                                onPress={this.saveState} >
-                                <View style={styles.eventIconText}>
-                                    <Text style={styles.saveText}>Save</Text>
-                                </View>
-                            </TouchableHighlight>
-                        </View>
+                </ImageBackground>
+
+                <View style={styles.GrayContent}>
+
+                    <View style={styles.SectionStyleIntegers}>
+                        <Image source={require('../assets/images/profileHeight.png')} style={styles.ImageStyle} />
+                        <TextInput // input field for height
+                            style={styles.integerInput}
+                            placeholder="Height"
+                            keyboardType='numeric'
+                            onChangeText={(height) => this.onChangedHeight(height)}
+                            value={this.state.myHeightNumber}
+                            maxLength={8}  //limit for number of integers
+                            underlineColorAndroid="transparent" />
                     </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+
+                    <View style={styles.SectionStyleIntegers}>
+                        <Image source={require('../assets/images/profileWeight.png')} style={styles.ImageStyle} />
+                        <TextInput // input field for weight
+                            style={styles.integerInput}
+                            placeholder="Weight"
+                            keyboardType='numeric'
+                            onChangeText={(weight) => this.onChangedWeight(weight)}
+                            value={this.state.myWeightNumber}
+                            maxLength={8}  //limit for number of integers
+                            underlineColorAndroid="transparent" />
+                    </View>
+                    <View style={styles.SectionStyleUserInfoTown}>
+                        <Image source={require('../assets/images/profileTown.png')} style={styles.ImageStyle} />
+                        <TextInput style={styles.userInfo} // input field for town
+                            placeholder="Town"
+                            value={this.state.town}
+                            onChangeText={(town => this.setState({ town }))}
+                            underlineColorAndroid="transparent" />
+                    </View>
+                    <View style={styles.SectionStyleUserInfoEmail}>
+                        <Image source={require('../assets/images/profileEmail.png')} style={styles.ImageStyle} />
+                        <TextInput style={styles.userInfo} // input field for e-mail
+                            placeholder="E-mail"
+                            onChangeText={(email => this.setState({ email }))}
+                            value={this.state.email}
+                            keyboardType="email-address"
+                            underlineColorAndroid="transparent" />
+                    </View>
+                </View>
+                {/*  Save  button */}
+                <View style={styles.centerContent}>
+                    <View style={styles.saveButton}>
+                        <TouchableHighlight
+                            onPress={this.saveState} >
+                            <View style={styles.eventIconText}>
+                                <Text style={styles.saveText}>Save</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+
+            </ScrollView >
         );
     }
 }
@@ -281,6 +280,17 @@ const styles = StyleSheet.create({
         height: 30,
         margin: 10,
         width: 250,
+    },
+
+    closeModalButton: {
+        position: 'absolute',
+        bottom: 10,
+    },
+
+    closeModalButtonText: {
+        fontSize: 18,
+        color: "#ffffff",
+
     },
 
 });

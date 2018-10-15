@@ -86,8 +86,10 @@ ContactsStack.navigationOptions = {
   ),
 };
 
+
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
+
 });
 
 ProfileStack.navigationOptions = {
@@ -112,5 +114,5 @@ export default createBottomTabNavigator({
   ActivityStack,
   TodoStack,
   ContactsStack,
-  ProfileStack
+  //ProfileStack
 });

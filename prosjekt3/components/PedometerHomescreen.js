@@ -13,11 +13,18 @@ export default class PedometerHomescreen extends React.Component {
         }
     }
 
+    // mounting stored activity data
     componentDidMount() {
         this.retrieveData()
         this._subscribe();
     }
 
+    // updating steps between activity and homescreen in one the same session
+    componentDidUpdate() {
+        this.retrieveData()
+    }
+
+    // retrieving to days steps
     retrieveData = async () => {
         try {
             const data = await AsyncStorage.getItem('Goal');
@@ -28,7 +35,7 @@ export default class PedometerHomescreen extends React.Component {
             }
             else {
                 this.setState({
-                    goal: '',
+                    goal: '10000',
                 })
             }
         }
@@ -65,7 +72,9 @@ export default class PedometerHomescreen extends React.Component {
         const steps = this.state.todayStepCount;
         const goal = this.state.goal;
         const perc = (parseInt(steps, 10) / parseInt(goal, 10) * 100);
+        const percentText = (Math.floor(100 * steps / goal));
         const empty = (this.state.goal === "0");
+        const toLarge = (steps >= goal)
         return (
             <ProgressCircle
                 percent={perc}
@@ -76,7 +85,7 @@ export default class PedometerHomescreen extends React.Component {
                 bgColor="#333333"
             >
                 <Text style={styles.stepsText}> {steps} </Text>
-                <Text style={styles.progressCircleText}>{empty ? "100%" : Math.ceil(100 * steps / goal) + "%"}</Text>
+                <Text style={styles.progressCircleText}>{empty || toLarge ? "100%" : percentText + "%"}</Text>
             </ProgressCircle>
         )
     }
