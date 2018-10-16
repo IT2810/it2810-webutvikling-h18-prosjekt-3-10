@@ -79,15 +79,15 @@ export default class PedometerSensor extends React.Component {
 
     return (
       <ProgressCircle
-          percent={perc}
-          radius={100}
-          borderWidth={10}
-          color="#2f95dc"
-          shadowColor="#999"
-          bgColor="#eee"
+        percent={perc}
+        radius={100}
+        borderWidth={10}
+        color="#2f95dc"
+        shadowColor="#999"
+        bgColor="#eee"
       >
-          <Text style={{ fontSize: 40, fontWeight: 'bold' }}> {steps} </Text>
-          <Text style={{ fontSize: 15 }}> {'Goal: ' + goal} </Text>
+        <Text style={{ fontSize: 40, fontWeight: 'bold' }}> {steps} </Text>
+        <Text style={{ fontSize: 15 }}> {'Goal: ' + goal} </Text>
 
       </ProgressCircle>
     )
@@ -107,16 +107,20 @@ export default class PedometerSensor extends React.Component {
 
   // Function to set or update daily goal
   setGoal = () => {
-    this.setState({
-      goal: this.state.inputGoal,
-      inputGoal: '' },
-      () => this.storeData()
-    );
+    const goal = this.state.inputGoal;
+    if (goal != '') {
+      this.setState({
+        goal: this.state.inputGoal,
+        inputGoal: ''
+      },
+        () => this.storeData()
+      );
+    }
   }
 
   // Function to save daily goal data to local storage
   storeData = async () => {
-  const data = this.state.goal;
+    const data = this.state.goal;
     try {
       await AsyncStorage.setItem('Goal', data);
     }
@@ -136,7 +140,7 @@ export default class PedometerSensor extends React.Component {
       }
       else {
         this.setState({
-          goal: '',
+          goal: '10000',
         })
       }
     }
@@ -149,13 +153,13 @@ export default class PedometerSensor extends React.Component {
   checkAvailablity = () => {
     if (this.state.isPedometerAvailable == 'true') {
       return (
-        <View style={{width: 500, height: 5, backgroundColor: '#1A6A1F'}}>
+        <View style={{ width: 500, height: 5, backgroundColor: '#1A6A1F' }}>
         </View>
       )
     }
     else {
       return (
-        <View style={{width: 500, height: 5, backgroundColor: '#842126'}}>
+        <View style={{ width: 500, height: 5, backgroundColor: '#842126' }}>
         </View>
       )
     }
@@ -166,7 +170,16 @@ export default class PedometerSensor extends React.Component {
     const goal = this.state.goal;
     const perc = (parseInt(steps, 10) / parseInt(goal, 10) * 100);
 
-    if (perc > 10 && 25 > perc) {
+    if (perc > 0 && 10 > perc) {
+      return (
+        <Text style={styles.motivationQuote}>
+          You are on the go!
+          Why not take a morning walk!
+        </Text>
+      )
+    }
+
+    else if (perc > 10 && 25 > perc) {
       return (
         <Text style={styles.motivationQuote}>
           That is a good start!
@@ -202,37 +215,37 @@ export default class PedometerSensor extends React.Component {
 
   render() {
     return (
-          <View style={styles.elements}>
-            {this.checkAvailablity()}
+      <View style={styles.elements}>
+        {this.checkAvailablity()}
 
-            <Text style={styles.todayStepTxt}>
-              Todays steps:
+        <Text style={styles.todayStepTxt}>
+          Todays steps:
             </Text>
 
-            <View style={styles.progressCircle}>
-              {this.progressCircle()}
-            </View>
+        <View style={styles.progressCircle}>
+          {this.progressCircle()}
+        </View>
 
-            {this.motivationQuote()}
+        {this.motivationQuote()}
 
-            <View>
-              <TextInput
-                style={styles.inputForm}
-                value={this.state.inputGoal}
-                onChangeText={this.handleInputGoal}
-                placeholder="Input your daily goal"
-                underlineColorAndroid="transparent"
-                keyboardType='numeric'
-              />
-            </View>
+        <View>
+          <TextInput
+            style={styles.inputForm}
+            value={this.state.inputGoal}
+            onChangeText={this.handleInputGoal}
+            placeholder="Input your daily goal"
+            underlineColorAndroid="transparent"
+            keyboardType='numeric'
+          />
+        </View>
 
-              <Button
-                title="Set goal"
-                onPress={this.setGoal}
-                buttonStyle={styles.addBtn}
-              />
+        <Button
+          title="Set goal"
+          onPress={this.setGoal}
+          buttonStyle={styles.addBtn}
+        />
 
-          </View>
+      </View>
 
 
 

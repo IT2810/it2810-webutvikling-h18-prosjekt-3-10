@@ -1,188 +1,119 @@
 import React from 'react';
 import {
-  Image,
-  Platform,
-  ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
+  Text,
+  ImageBackground,
 
-import { MonoText } from '../components/StyledText';
+} from 'react-native';
+import PedometerHomescreen from '../components/PedometerHomescreen';
+import TodoHomescreen from '../components/TodoHomescreen';
+import AppointmentModalHomescreen from '../components/AppointmentInfoHomescreenModal';
+import ProfileModal from '../components/ProfileModal';
 
 export default class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
+
+  // header and styling of it
   static navigationOptions = {
-    header: null,
+    title: "Home",
+    tabBarVisible: false,
+    header: null, // removing the header
+    headerStyle: { // styling the header
+      backgroundColor: '#69868a',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
+      <ImageBackground source={require('../assets/images/homeBackground4.jpg')} style={styles.centerContent}>
 
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
+        {/* "upcoming events modal */}
+        <AppointmentModalHomescreen />
 
-            <Text style={styles.getStartedText}>Get started by opening</Text>
+        {/* activity and todo content, middle of the screen */}
+        <View style={styles.middleContent}>
 
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
+          {/* progress cycle*/}
+          <View style={styles.activityContent}>
+            <Text style={styles.activityHeader}>Steps</Text>
+            <View>
+              <PedometerHomescreen />
             </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically re
-            </Text>
           </View>
 
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
+          {/* ToDo view content*/}
+          <View style={styles.todoContent}>
+            <Text style={styles.todoHeader}>ToDo</Text>
+            <View>
+              <TodoHomescreen />
+            </View>
           </View>
-        </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
         </View>
-      </View>
+        {/* button to profile */}
+        <ProfileModal />
+
+      </ImageBackground>
     );
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
-  container: {
+
+  activityContent: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#5F7C80',
+    margin: 15,
+    marginLeft: 10,
+    padding: 10,
+    borderRadius: 5,
+    height: 200,
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+
+  activityHeader: {
+    textAlign: "center",
+    color: "#ffffff",
+    fontSize: 16,
+    marginBottom: 15,
   },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
+
+  centerContent: {
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    backgroundColor: '#ffffff'
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
+
+  middleContent: {
+    flexDirection: "row",
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
+
+  todoContent: {
+    flex: 1,
+    backgroundColor: '#5F7C80',
+    margin: 15,
+    marginRight: 10,
+    padding: 10,
+    borderRadius: 5,
+    maxHeight: 200,
   },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+
+  todoHeader: {
+    textAlign: "center",
+    color: "#ffffff",
+    fontSize: 16,
   },
 });

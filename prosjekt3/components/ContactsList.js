@@ -55,7 +55,7 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
                         importedContacts.length == 0 && <Button title="Import" onPress={importContacts}/>
                     }
                 </View>
-                {listContacts(importedContacts)}                
+                {listContacts(importedContacts)}
             </View>
         )
     } else {
@@ -82,7 +82,7 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
             </View>
         )
     }
-} 
+}
 
 const styles = StyleSheet.create({
     mainContainer: {
