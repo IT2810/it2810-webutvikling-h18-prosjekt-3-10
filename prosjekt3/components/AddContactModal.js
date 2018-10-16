@@ -3,12 +3,10 @@ import React, { Component } from 'react';
 import {
     Modal,
     KeyboardAvoidingView,
-    ScrollView,
     View,
     TextInput,
     Button,
     StyleSheet,
-    Text,
 } from 'react-native'
 
 import {
@@ -28,6 +26,9 @@ export default class AddContactModal extends Component {
         }
     }
 
+    // Generates ID from first and last name combined with number
+    // NOTE: This means it's possible (though unlikely) that two or more contacts can
+    // share an ID.
     generateId = () => {
         const id = `${this.state.firstName}${this.state.lastName}${this.state.number}`
         return id
@@ -41,7 +42,7 @@ export default class AddContactModal extends Component {
                 visible={this.props.visible}
                 onRequestClose={this.props.closeCallback}
             >
-                <KeyboardAvoidingView behavior="position" enabled>
+                <KeyboardAvoidingView behavior="position">
                     <Header
                         innerContainerStyles={{alignItems: 'center'}}
                         leftComponent={{ icon: 'keyboard-arrow-down', color: '#fff', size: 32, onPress: this.props.closeCallback }}
@@ -56,7 +57,7 @@ export default class AddContactModal extends Component {
                             activeOpacity={0.7}
                         />
         
-                        <View style={styles.SectionStyleName}>
+                        <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
                             placeholder="First name"
                             value={this.state.firstName}
@@ -69,7 +70,7 @@ export default class AddContactModal extends Component {
                             />
                         </View>
         
-                        <View>
+                        <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
                             placeholder="Last name"
                             value={this.state.lastName}
@@ -82,9 +83,9 @@ export default class AddContactModal extends Component {
                             />
                         </View>
         
-                        <View style={styles.SectionStyleIntegers}>
+                        <View style={styles.numberInput}>
                             <TextInput
-                                style={styles.integerInput}
+                                style={styles.number}
                                 placeholder="Phone Number"
                                 keyboardType='numeric'
                                 onChangeText={(number) => {
@@ -97,40 +98,41 @@ export default class AddContactModal extends Component {
                                 underlineColorAndroid="transparent" 
                             />
                         </View>
-                    </View>
-                    <View style={styles.centerContent}>
-                        <Button 
-                            onPress={()=>{
-                                const {
-                                    firstName,
-                                    lastName,
-                                    number,
-                                } = this.state
+                        <View style={styles.buttonWrapper}>
+                            <Button 
+                                onPress={()=>{
+                                    const {
+                                        firstName,
+                                        lastName,
+                                        number,
+                                    } = this.state
 
-                                // Construct contact-object
-                                const contact = {
-                                    firstName,
-                                    lastName,
-                                    id: this.generateId(),
-                                    phoneNumbers: [{number: number}]
-                                }
+                                    // Construct contact-object
+                                    // Trim spaces from both ends of names
+                                    const contact = {
+                                        firstName: firstName.trim(),
+                                        lastName: lastName.trim(),
+                                        id: this.generateId(),
+                                        phoneNumbers: [{number: number}]
+                                    }
 
-                                // Reset modal
-                                this.setState({
-                                    firstName: '',
-                                    lastName: '',
-                                    number: '',
-                                    id: '',
-                                })
+                                    // Reset modal
+                                    this.setState({
+                                        firstName: '',
+                                        lastName: '',
+                                        number: '',
+                                        id: '',
+                                    })
 
-                                // Pass contact to save-method
-                                this.props.onSave(contact)
+                                    // Pass contact to save-method
+                                    this.props.onSave(contact)
 
-                                // Notify ready to close
-                                this.props.closeCallback()
-                            }} 
-                            title="Add"
-                        />
+                                    // Notify ready to close
+                                    this.props.closeCallback()
+                                }} 
+                                title="Add"
+                            />
+                        </View>
                     </View>
                 </KeyboardAvoidingView>
             </Modal>
@@ -146,11 +148,9 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     avatar: {
-        margin: 10,
-        marginBottom: 40,
+        margin: 20,
     },
     textWithLabel: {
-        width: "80%",
         marginBottom: 20,
     },
     lightText: {
@@ -161,6 +161,21 @@ const styles = StyleSheet.create({
         color: "#4d4d4d",
         fontWeight: '700',
         margin: 15,
-        width: "80%",
     },
+    number: {
+        fontSize: 20,
+        color: "#4d4d4d",
+        fontWeight: '700',
+        margin: 15,
+    },
+    nameInput: {
+        width: 300,
+    },
+    numberInput: {
+        width: 300,
+    },
+    buttonWrapper: {
+        width: 200,
+        marginBottom: 30,
+    }
 })
