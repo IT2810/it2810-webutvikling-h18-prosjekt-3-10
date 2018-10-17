@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TextInput, Image, FlatList, AsyncStorage } from 'react-native';
+import { View, StyleSheet, TextInput, Image, FlatList,
+  AsyncStorage, ScrollView } from 'react-native';
 import { List, ListItem, Button, Text } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
-
+import Colors from '../constants/Colors'
 
 export default class TodoScreen extends React.Component {
   static navigationOptions = {
@@ -87,8 +88,7 @@ export default class TodoScreen extends React.Component {
               title={item.input}
               subtitle={item.date}
               rightIcon={{
-                name: 'times',
-                type: 'font-awesome',
+                name: 'close',
                 style: {
                   marginRight: 15,
                   fontSize: 22,
@@ -102,6 +102,7 @@ export default class TodoScreen extends React.Component {
       </List>
     )
   }
+
 
   // Date picker object
   datePicker = () => {
@@ -179,17 +180,21 @@ export default class TodoScreen extends React.Component {
       <View style={styles.container}>
 
         <View style={styles.formView}>
-          <Image
-            style={styles.listImage}
-            source={require('../assets/images/list-icon.png')}
-          />
 
-          <TextInput
-            style={styles.inputForm}
-            value={this.state.inputValue}
-            onChangeText={this.handleTextChange}
-            placeholder="What todo"
-          />
+          <View style={styles.txtinput}>
+            <Image
+              style={styles.listImage}
+              source={require('../assets/images/list-icon.png')}
+            />
+
+            <TextInput
+              style={styles.inputForm}
+              value={this.state.inputValue}
+              onChangeText={this.handleTextChange}
+              placeholder="What todo"
+              underlineColorAndroid="transparent"
+            />
+          </View>
 
           {this.datePicker()}
 
@@ -200,7 +205,9 @@ export default class TodoScreen extends React.Component {
           />
         </View>
 
-        {this.itemsOutput()}
+        <ScrollView>
+          {this.itemsOutput()}
+        </ScrollView>
 
       </View>
     );
@@ -211,17 +218,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#eee',
+    backgroundColor: Colors.backgroundColor,
   },
   formView: {
     alignItems: 'center',
     borderColor: '#ccc',
     paddingBottom: 8,
   },
+  txtinput: {
+    width: 320,
+  },
   inputForm: {
     marginLeft: 36,
     backgroundColor: '#fff',
-    width: 284,
     height: 40,
     padding: 8,
     marginBottom: 8,
@@ -231,7 +240,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 6,
-    marginLeft: 30,
+    marginLeft: 0,
     width: 25,
     height: 25,
   },
