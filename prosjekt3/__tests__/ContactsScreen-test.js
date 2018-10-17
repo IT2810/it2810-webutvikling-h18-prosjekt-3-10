@@ -38,6 +38,7 @@ describe('Unit testing', () => {
         mock();
         await contactsScreen.saveContact(contact);
         expect(contactsScreen.state.addedContacts.length).toEqual(1);
+        expect(contactsScreen.state.addedContacts[0].firstName).toEqual("Hello")
     })
     it('should have saved contact in AsyncStorage', async () => {
         const value = await AsyncStorage.getItem('contacts')
@@ -48,14 +49,23 @@ describe('Unit testing', () => {
         const value = await AsyncStorage.getItem('contacts')
         expect(value).toBe(JSON.stringify([contact, contact]))
     })
-    it('should delete contacts', async () => {
+    it('should be able to load contacts from AsyncStorage', async () => {
+        contactsScreen.setState({addedContacts: []})
+        expect(contactsScreen.state.addedContacts.length).toEqual(0)        
+        await contactsScreen.loadContacts();
+        expect(contactsScreen.state.addedContacts.length).toBeGreaterThan(0)
+    }) 
+    it('should remove contacts from AsyncStorage', async () => {
         // This should delete all the contacts as they all share the same id
         await contactsScreen.removeContact(contact)
         const value = await AsyncStorage.getItem('contacts')
         expect(value).toBe("[]")
     })
-
-
-
-    release();
+    it('should handle contact press', () => {
+        contactsScreen.handleContactPress(contact);
+        expect(contactsScreen.state.contactModalVisible).toBe(true)
+        expect(contactsScreen.state.activeContact).toEqual(contact)
+    })
 });
+
+release();
