@@ -40,13 +40,5 @@ test('onClick function is being called once', () => {
     expect(fn.mock.calls.length).toBe(1);
 });
 
-test('function for checking only numbers', () => {
-    const mockCallback = renderer.create(<ProfileScreen />).getInstance();
-
-
-
-    expect(mockCallback.onChangedHeight().not.toBeNull())
-});
-
 
 

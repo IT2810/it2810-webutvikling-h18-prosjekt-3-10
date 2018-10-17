@@ -40,7 +40,7 @@ export default class ContactsScreen extends Component {
   }
 
   // Saves a contact in AsyncStorage
-  saveContact = contact => {
+  saveContact = async contact => {
     AsyncStorage.getItem('contacts')
       .then(result => {
         if (result == null) {
@@ -58,12 +58,12 @@ export default class ContactsScreen extends Component {
         return JSON.stringify(data)
       })
       .then(contacts => {
-        AsyncStorage.setItem('contacts', contacts)
+        return AsyncStorage.setItem('contacts', contacts)
       })
   }
 
   // Removes contact from AsyncStorage
-  removeContact = contact => {
+  removeContact = async contact => {
     // First gets all the saved contacts
     AsyncStorage.getItem('contacts')
       .then(result => {
@@ -84,7 +84,7 @@ export default class ContactsScreen extends Component {
       })
       // And finally updates storage with the contact removed
       .then(contacts => {
-        AsyncStorage.setItem('contacts', contacts)
+        return AsyncStorage.setItem('contacts', contacts)
       })
   }
 
