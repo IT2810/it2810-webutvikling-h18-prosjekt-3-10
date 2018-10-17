@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ProfileScreen snapshot renders the profile screen 1`] = `null`;
+
 exports[`renders button with passed props 1`] = `
 <View
   enabled={true}

@@ -5,6 +5,14 @@ import NavigationTestUtils from 'react-navigation/NavigationTestUtils';
 import { AsyncStorage } from 'react-native';
 import MockAsyncStorage from 'mock-async-storage';
 
+
+
+const mock = () => {
+    const mockImpl = new MockAsyncStorage()
+    jest.mock('AsyncStorage', () => mockImpl)
+}
+const release = () => jest.unmock('AsyncStorage')
+
 describe('ProfileScreen snapshot', () => {
     jest.useFakeTimers();
     beforeEach(() => {
@@ -19,7 +27,7 @@ describe('ProfileScreen snapshot', () => {
 
 
 describe('Unit testing', () => {
-    let profileScreen = renderer.create(<ContactsScreen />).getInstance();
+    let profileScreen = renderer.create(<ProfileScreen />).getInstance();
     const user = {
         name: 'Jens',
         email: 'test@testorini.com',
@@ -31,11 +39,14 @@ describe('Unit testing', () => {
 
     it('should save profileuser in state', async () => {
         mock();
-        await profileScreen.saveContact(user);
-        expect(profileScreen.state.saveState.length).toEqual(1);
-    })
-    it('should have saved contact in AsyncStorage', async () => {
+        await profileScreen.saveState(user);
         const value = await AsyncStorage.getItem('profile')
-        expect(value).toBe(JSON.stringify(contact))
+        //expect(profileScreen.state.saveState.length).toEqual(1);
+        expect(value).toBe(JSON.stringify(profileScreen))
     })
+
+
+    release();
+
+});
 
