@@ -11,42 +11,52 @@ const mock = () => {
     const mockImpl = new MockAsyncStorage()
     jest.mock('AsyncStorage', () => mockImpl)
 }
-const release = () => jest.unmock('AsyncStorage')
 
-describe('ProfileScreen snapshot', () => {
+// snapshot test
+const release = () => jest.unmock('AsyncStorage')
+describe('ContactsScreen snapshot', () => {
     jest.useFakeTimers();
     beforeEach(() => {
         NavigationTestUtils.resetInternalState();
     });
 
-    it('renders the profile screen', async () => {
+    it('renders the contacts screen', async () => {
         const tree = renderer.create(<ProfileScreen />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 });
 
-
-describe('Unit testing', () => {
-    let profileScreen = renderer.create(<ProfileScreen />).getInstance();
+describe("unit test save info", () => {
+    let profileInfo = renderer.create(<ProfileScreen />).getInstance();
     const user = {
         name: 'Jens',
-        email: 'test@testorini.com',
+        email: 'Test@Testorini.com',
         town: 'Trondheim',
         myHeightNumber: '180',
         myWeightNumber: '80',
         modalVisible: false,
     }
 
-    it('should save profileuser in state', async () => {
+    // testing saveState function
+    it('should save profile in AsyncStorage', async () => {
         mock();
-        await profileScreen.saveState(user);
+        profileInfo.setState(user)
+        await profileInfo.saveState();
         const value = await AsyncStorage.getItem('profile')
-        //expect(profileScreen.state.saveState.length).toEqual(1);
-        expect(value).toBe(JSON.stringify(profileScreen))
+        expect(value).toBe(JSON.stringify(user));
+
     })
 
+    // testing retrieveData function
+    it('should retrieve profile in AsyncStorage', async () => {
+        mock();
+        profileInfo.setState(user)
+        await profileInfo.retrieveData();
+        const value = await AsyncStorage.getItem('profile')
+        expect(value).toBe(JSON.stringify(user));
+    })
 
     release();
 
-});
+})
 
