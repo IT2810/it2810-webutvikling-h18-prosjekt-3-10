@@ -59,7 +59,7 @@ describe('Unit testing', () => {
         // This should delete all the contacts as they all share the same id
         await contactsScreen.removeContact(contact)
         const value = await AsyncStorage.getItem('contacts')
-        expect(value).toBe("[]")
+        expect(value).toEqual("[]")
     })
     it('should handle contact press', () => {
         contactsScreen.handleContactPress(contact);
