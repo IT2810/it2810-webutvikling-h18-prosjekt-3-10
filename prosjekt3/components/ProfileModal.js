@@ -23,7 +23,7 @@ export default class ProfileModal extends React.Component {
 
     ProfileMod = () => {
         return (
-            <KeyboardAvoidingView behavior="position" enabled>
+            <View>
 
                 {/* the modal for profile*/}
                 <Modal
@@ -71,7 +71,7 @@ export default class ProfileModal extends React.Component {
                         />
                     </View>
                 </TouchableHighlight>
-            </KeyboardAvoidingView>
+            </View>
         )
     }
     render() {

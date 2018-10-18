@@ -4,12 +4,14 @@ import {
   View,
   Text,
   ImageBackground,
+  ScrollView,
 
 } from 'react-native';
 import PedometerHomescreen from '../components/PedometerHomescreen';
 import TodoHomescreen from '../components/TodoHomescreen';
 import AppointmentModalHomescreen from '../components/AppointmentInfoHomescreenModal';
 import ProfileModal from '../components/ProfileModal';
+import { Header, } from 'react-native-elements';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -34,35 +36,53 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <ImageBackground source={require('../assets/images/homeBackground4.jpg')} style={styles.centerContent}>
+      <ScrollView>
 
-        {/* "upcoming events modal */}
-        <AppointmentModalHomescreen />
+        {/* <ImageBackground source={require('../assets/images/homeBackground4.jpg')} style={styles.centerContent}>  */}
+        <View style={styles.centerContent}>
+          <Header
+            centerComponent={{ text: 'Kult navn', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
+            backgroundColor={'#fff'}
+          />
 
-        {/* activity and todo content, middle of the screen */}
-        <View style={styles.middleContent}>
 
-          {/* progress cycle*/}
-          <View style={styles.activityContent}>
-            <Text style={styles.activityHeader}>Steps</Text>
-            <View>
-              <PedometerHomescreen />
+
+          {/* "upcoming events modal */}
+          <AppointmentModalHomescreen />
+
+
+          {/* activity and todo content, middle of the screen */}
+          <View style={styles.middleContent}>
+
+            {/* progress cycle*/}
+            <View style={styles.activityContent}>
+              {/* <Text style={styles.activityHeader}>Steps</Text> */}
+              <View>
+                <PedometerHomescreen />
+              </View>
             </View>
           </View>
 
-          {/* ToDo view content*/}
-          <View style={styles.todoContent}>
-            <Text style={styles.todoHeader}>ToDo</Text>
-            <View>
-              <TodoHomescreen />
+          <View style={styles.middleContent}>
+
+
+            {/* ToDo view content*/}
+            <View style={styles.todoContent}>
+              {/* <Text style={styles.todoHeader}>ToDo</Text> */}
+              <View>
+                <TodoHomescreen />
+              </View>
             </View>
+
           </View>
 
+          {/* button to profile */}
+          <ProfileModal />
         </View>
-        {/* button to profile */}
-        <ProfileModal />
 
-      </ImageBackground>
+      </ScrollView>
+
+      /* </ImageBackground> */
     );
   }
 }
@@ -70,13 +90,14 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
 
   activityContent: {
-    flex: 1,
-    backgroundColor: '#5F7C80',
-    margin: 15,
-    marginLeft: 10,
-    padding: 10,
-    borderRadius: 5,
-    height: 200,
+    // flex: 1,
+    backgroundColor: '#f2f2f2',
+    // margin: 10,
+    // marginLeft: 2,
+    padding: 5,
+    // borderRadius: 5,
+    // height: 250,
+    marginRight: 5,
   },
 
   activityHeader: {
@@ -87,28 +108,42 @@ const styles = StyleSheet.create({
   },
 
   centerContent: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    //justifyContent: 'center',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
+    alignItems: 'stretch',
     backgroundColor: '#ffffff'
   },
 
   middleContent: {
-    flexDirection: "row",
+    //flex: 1,
+    // flexDirection: "row",
+    // alignItems: 'stretch',
+    //justifyContent: 'center',
+    backgroundColor: "#e6e6e6",
+    borderColor: "#bfbfbf",
+    borderWidth: 1,
+    //padding: 20,
   },
 
   todoContent: {
-    flex: 1,
-    backgroundColor: '#5F7C80',
-    margin: 15,
-    marginRight: 10,
-    padding: 10,
-    borderRadius: 5,
-    maxHeight: 200,
+    //flex: 1,
+    backgroundColor: '#f2f2f2',
+    // margin: 10,
+    // marginRight: 0,
+    padding: 5,
+    // borderRadius: 5,
+    //maxHeight: 300,
+    height: 200,
+    // width: 200,
+    // flexDirection: 'column',
+    // alignItems: 'stretch',
+    // justifyContent: 'center',
+    marginLeft: 5,
   },
 
   todoHeader: {
