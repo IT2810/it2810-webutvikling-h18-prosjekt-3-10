@@ -56,7 +56,7 @@ export default class AddContactModal extends Component {
                             source={require('../assets/images/profile.png')}
                             activeOpacity={0.7}
                         />
-        
+
                         <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
                             placeholder="First name"
@@ -66,10 +66,10 @@ export default class AddContactModal extends Component {
                                     firstName: name,
                                 })
                             }}
-                            underlineColorAndroid="transparent" 
+                            underlineColorAndroid="transparent"
                             />
                         </View>
-        
+
                         <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
                             placeholder="Last name"
@@ -79,10 +79,10 @@ export default class AddContactModal extends Component {
                                     lastName: name
                                 })
                             }}
-                            underlineColorAndroid="transparent" 
+                            underlineColorAndroid="transparent"
                             />
                         </View>
-        
+
                         <View style={styles.numberInput}>
                             <TextInput
                                 style={styles.number}
@@ -95,11 +95,11 @@ export default class AddContactModal extends Component {
                                 }}
                                 value={this.state.number}
                                 maxLength={8}  // Limit for number of integers
-                                underlineColorAndroid="transparent" 
+                                underlineColorAndroid="transparent"
                             />
                         </View>
                         <View style={styles.buttonWrapper}>
-                            <Button 
+                            <Button
                                 onPress={()=>{
                                     const {
                                         firstName,
@@ -129,7 +129,7 @@ export default class AddContactModal extends Component {
 
                                     // Notify ready to close
                                     this.props.closeCallback()
-                                }} 
+                                }}
                                 title="Add"
                             />
                         </View>
