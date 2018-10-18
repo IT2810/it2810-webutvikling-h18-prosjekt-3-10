@@ -355,8 +355,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+=======
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+>>>>>>> dev
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -371,16 +376,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
+<span class="cline-any cline-yes">4x</span>
+=======
 <span class="cline-any cline-yes">2x</span>
+>>>>>>> dev
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+=======
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+>>>>>>> dev
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -418,20 +435,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+=======
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+>>>>>>> dev
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+=======
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+>>>>>>> dev
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -674,9 +705,15 @@ export default class UserProfileView extends Component {
     retrieveData = async () =&gt; {
         try {
             const result = await AsyncStorage.getItem('profile')
+<<<<<<< HEAD
+<span class="cstat-no" title="statement not covered" >            if (result !== null) {</span>
+                const data = <span class="cstat-no" title="statement not covered" >JSON.parse(result)</span>
+<span class="cstat-no" title="statement not covered" >                this.setState({</span>
+=======
             if (result !== null) {
                 const data = JSON.parse(result)
                 this.setState({
+>>>>>>> dev
                     name: data.name,
                     email: data.email,
                     town: data.town,
@@ -713,10 +750,17 @@ export default class UserProfileView extends Component {
 <span class="cstat-no" title="statement not covered" >        this.setState({ myWeightNumber: newWeight });</span>
     }
     // saving profile info
+<<<<<<< HEAD
+    saveState = <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
+        const data = <span class="cstat-no" title="statement not covered" >this.state;</span>
+<span class="cstat-no" title="statement not covered" >        try {</span>
+<span class="cstat-no" title="statement not covered" >            await AsyncStorage.setItem("profile", JSON.stringify(data))</span>
+=======
     saveState = async () =&gt; {
         const data = this.state;
         try {
             await AsyncStorage.setItem("profile", JSON.stringify(data))
+>>>>>>> dev
         } catch (error) {
 <span class="cstat-no" title="statement not covered" >            alert('Error saving data')</span>
         }
@@ -937,10 +981,17 @@ const styles = StyleSheet.create({
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
+<<<<<<< HEAD
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 17 2018 13:30:21 GMT+0200 (Vest-Europa (sommertid))
+</div>
+</div>
+<script src="..\prettify.js"></script>
+=======
   generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 17 2018 18:37:09 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../prettify.js"></script>
+>>>>>>> dev
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -948,6 +999,10 @@ window.onload = function () {
         }
 };
 </script>
+<<<<<<< HEAD
+<script src="..\sorter.js"></script>
+=======
 <script src="../sorter.js"></script>
+>>>>>>> dev
 </body>
 </html>
