@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
 
   headerInnerContainer: {
-    marginTop: 8,
+    marginTop: 15,
   },
 
   headerOuterContainer: {
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   todoHeader: {
     textAlign: "center",
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: 17,
     backgroundColor: "#425b84",
     borderColor: "#a6a6a6",
     borderRightWidth: 1,

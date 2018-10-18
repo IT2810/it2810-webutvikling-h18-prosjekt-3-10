@@ -22,6 +22,24 @@ export default class PedometerHomescreen extends React.Component {
     // updating steps between activity and homescreen in one the same session
     componentDidUpdate() {
         this.retrieveData()
+        _subscribe = () => {
+            this._subscription = Pedometer.watchStepCount(result => {
+                this.setState({
+                    currentStepCount: result.steps
+                });
+            });
+            Pedometer.getStepCountAsync(start, end).then(
+                result => {
+                    this.setState({ todayStepCount: result.steps });
+                },
+                error => {
+                    this.setState({
+                        pastStepCount: "Could not get stepCount: " + error
+                    });
+                }
+            );
+        };
+
     }
 
     // retrieving to days steps
