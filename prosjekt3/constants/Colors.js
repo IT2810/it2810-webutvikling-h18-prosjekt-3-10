@@ -13,7 +13,8 @@ export default {
   noticeText: '#fff',
   backgroundColor: '#eee',
   btnBlue: '#2f95dc',
-  btnRed: '',
+  btnRed: '#801515',
+  btnGreen: '#116611',
   inputBackground: '#fff',
   headerBackground: '#fff',
 };
