@@ -85,15 +85,18 @@ export default class TodoScreen extends React.Component {
           extraData={this.state}
           renderItem={({ item }) => (
             <ListItem
+              containerStyle={styles.listItems}
               title={item.input}
+              titleStyle={styles.listItemTitle}
               subtitle={item.date}
+              subtitleStyle={styles.listItemSubtitle}
+              leftIcon={{
+                name: 'chevron-right',
+                style: styles.listItemLeftIcon
+              }}
               rightIcon={{
-                name: 'close',
-                style: {
-                  marginRight: 15,
-                  fontSize: 22,
-                  color: '#2f95dc',
-                },
+                name: 'clear',
+                style: styles.listItemRightIcon,
               }}
               onPressRightIcon={() => this.handleDeleteButtonPress(item)}
             />
@@ -215,9 +218,11 @@ export default class TodoScreen extends React.Component {
           />
         </View>
 
-        <ScrollView>
-          {this.itemsOutput()}
-        </ScrollView>
+        <View style={styles.listItemContainer}>
+          <ScrollView>
+            {this.itemsOutput()}
+          </ScrollView>
+        </View>
 
       </View>
     );
@@ -259,6 +264,35 @@ const styles = StyleSheet.create({
     padding: 8,
     marginBottom: 8,
     textAlign: 'center',
+  },
+  listItemContainer: {
+    height: 350,
+    marginRight: 20,
+    marginLeft: 20,
+  },
+  listItems: {
+    borderBottomColor: '#ccc',
+    backgroundColor: Colors.backgroundColor,
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  listItemTitle: {
+    fontWeight: '400',
+
+  },
+  listItemSubtitle: {
+    fontWeight: '300',
+
+  },
+  listItemLeftIcon: {
+    marginRight: 10,
+    fontSize: 22,
+    color: Colors.black,
+  },
+  listItemRightIcon: {
+    marginRight: 10,
+    fontSize: 22,
+    color: Colors.btnRed,
   },
   listImage: {
     position: 'absolute',
