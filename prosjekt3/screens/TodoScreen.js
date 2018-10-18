@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TextInput, Image, FlatList,
   AsyncStorage, ScrollView } from 'react-native';
-import { List, ListItem, Button, Text } from 'react-native-elements';
+import { List, ListItem, Button, Text, Header } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
 
 export default class TodoScreen extends React.Component {
   static navigationOptions = {
-    title: 'Todo',
+    header: null,
   };
 
   constructor(props) {
@@ -179,6 +179,16 @@ export default class TodoScreen extends React.Component {
     return (
       <View style={styles.container}>
 
+        <Header
+          outerContainerStyles={styles.headerOuterContainer}
+          innerContainerStyles={styles.headerInnerContainer}
+          centerComponent={{
+            text: 'todo',
+            style: styles.header,
+          }}
+          backgroundColor={Colors.headerBackground}
+        />
+
         <View style={styles.formView}>
 
           <View style={styles.txtinput}>
@@ -215,22 +225,36 @@ export default class TodoScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  headerInnerContainer: {
+    marginTop: 13,
+  },
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+  },
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
   container: {
     flex: 1,
-    paddingTop: 15,
+    paddingTop: 0,
     backgroundColor: Colors.backgroundColor,
   },
   formView: {
     alignItems: 'center',
     borderColor: '#ccc',
     paddingBottom: 8,
+    paddingTop: 20,
   },
   txtinput: {
     width: 320,
   },
   inputForm: {
     marginLeft: 36,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.inputBackground,
     height: 40,
     padding: 8,
     marginBottom: 8,
@@ -247,7 +271,7 @@ const styles = StyleSheet.create({
   addBtn: {
     marginLeft: 36,
     width: 285,
-    backgroundColor: '#2f95dc',
+    backgroundColor: Colors.btnBlue,
   },
 
 });

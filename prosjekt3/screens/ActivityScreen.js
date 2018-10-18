@@ -6,7 +6,7 @@ import PedometerSensor from '../components/pedometer';
 
 export default class ActivityScreen extends React.Component {
   static navigationOptions = {
-    title: 'Goals / Activity',
+    header: null,
   };
 
   state = {

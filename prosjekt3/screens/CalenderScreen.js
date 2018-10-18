@@ -1,15 +1,14 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View, FlatList, TextInput,
-  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity } from 'react-native';
+  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity, Text } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { List, ListItem, Button, Text, Header, Icon } from 'react-native-elements';
+import { List, ListItem, Button, Header, Icon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
-import TodoScreen from './TodoScreen';
 
 export default class CalenderScreen extends React.Component {
   static navigationOptions = {
-    title: 'Calendar',
+    header: null,
   };
 
   constructor(props) {
@@ -35,7 +34,6 @@ export default class CalenderScreen extends React.Component {
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         theme={{
-          agendaKnobColor: '#2f95dc'
         }}
       />
     )
@@ -130,9 +128,20 @@ export default class CalenderScreen extends React.Component {
           <View>
 
             <Header
-              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setUpdateModalVisibility()} }}
-              centerComponent={{ text: 'Update item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
-              backgroundColor={'#fff'}
+              outerContainerStyles={styles.headerOuterContainer}
+              innerContainerStyles={styles.headerInnerContainer}
+              rightComponent={{
+                size: 25,
+                icon: 'close',
+                color: 'black',
+                style: styles.headerBtn,
+                onPress: () => {this.setUpdateModalVisibility()}
+              }}
+              centerComponent={{
+                text: 'update item',
+                style: styles.header,
+              }}
+              backgroundColor={Colors.headerBackground}
             />
 
             <TextInput
@@ -261,7 +270,7 @@ export default class CalenderScreen extends React.Component {
   addItemModal = () => {
     return (
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent={false}
         visible={this.state.addModalVisible}
         onRequestClose={() => {this.setAddModalVisibility()}}>
@@ -270,9 +279,20 @@ export default class CalenderScreen extends React.Component {
           <View>
 
             <Header
-              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setAddModalVisibility()} }}
-              centerComponent={{ text: 'Add item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
-              backgroundColor={'#fff'}
+              outerContainerStyles={styles.headerOuterContainer}
+              innerContainerStyles={styles.headerInnerContainer}
+              rightComponent={{
+                size: 25,
+                icon: 'close',
+                color: 'black',
+                style: styles.headerBtn,
+                onPress: () => {this.setAddModalVisibility()}
+              }}
+              centerComponent={{
+                text: 'add item',
+                style: styles.header,
+              }}
+              backgroundColor={Colors.headerBackground}
             />
 
             <TextInput
@@ -388,14 +408,22 @@ export default class CalenderScreen extends React.Component {
     return (
       <View>
 
-        <View>
-          <Button
-            title="Add new agenda"
-            onPress={this.setAddModalVisibility}
-            buttonStyle={styles.addBtn}
-            containerViewStyle={{width: '100%', marginLeft: 0}}
-          />
-        </View>
+        <Header
+          outerContainerStyles={styles.headerOuterContainer}
+          innerContainerStyles={styles.headerInnerContainer}
+          rightComponent={{
+            size: 28,
+            icon: 'add-circle',
+            color: Colors.btnBlue,
+            style: styles.headerBtn,
+            onPress: () => {this.setAddModalVisibility()}
+          }}
+          centerComponent={{
+            text: 'calender',
+            style: styles.header,
+          }}
+          backgroundColor={Colors.headerBackground}
+        />
 
         <View>
           {this.addItemModal()}
@@ -413,6 +441,21 @@ export default class CalenderScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
+  headerInnerContainer: {
+    marginTop: 13,
+  },
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+  },
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
+  headerBtn: {
+  },
   item: {
     backgroundColor: 'white',
     flex: 1,
@@ -434,10 +477,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   addBtn: {
-    backgroundColor: '#2f95dc',
+    backgroundColor: Colors.btnBlue,
   },
   deleteBtn: {
-    backgroundColor: '#2f95dc',
+    backgroundColor: Colors.btnBlue,
     marginTop: 8,
   },
   modal: {
@@ -447,7 +490,7 @@ const styles = StyleSheet.create({
   },
   inputForm: {
     width: 400,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.inputBackground,
     height: 50,
     marginTop: 40,
     marginBottom: 12,
