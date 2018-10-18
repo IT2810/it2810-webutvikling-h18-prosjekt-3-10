@@ -10,7 +10,11 @@ import {
     TouchableHighlight,
     Text,
     ImageBackground,
+    KeyboardAvoidingView,
+    Platform
 } from 'react-native';
+import Colors from '../constants/Colors'
+
 
 export default class UserProfileView extends Component {
     constructor(props) {
@@ -22,6 +26,7 @@ export default class UserProfileView extends Component {
             myHeightNumber: '',
             myWeightNumber: '',
             modalVisible: false,
+            navBarHeight: (Platform.OS === 'ios') ? 0 : -180,
         };
     }
     static navigationOptions = {
@@ -91,8 +96,8 @@ export default class UserProfileView extends Component {
         }
 
         return (
-            //<KeyboardAvoidingView behavior="position" enabled>
-            <ScrollView>
+            <KeyboardAvoidingView keyboardVerticalOffset={this.state.navBarHeight} behavior="position" enabled>
+            <ScrollView style={styles.container}>
                 <ImageBackground source={require('../assets/images/profileBackground3.jpg')} style={styles.backgroundImage}>
                     <View style={styles.headBackground}>
                         <View style={styles.centerContent}>
@@ -158,6 +163,7 @@ export default class UserProfileView extends Component {
                             underlineColorAndroid="transparent" />
                     </View>
                 </View>
+
                 {/*  Save  button */}
                 <View style={styles.centerContent}>
                     <View style={styles.saveButton}>
@@ -171,6 +177,7 @@ export default class UserProfileView extends Component {
                 </View>
 
             </ScrollView >
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -178,6 +185,8 @@ export default class UserProfileView extends Component {
 // styling
 const styles = StyleSheet.create({
 
+    container: {
+    },
     avatar: {
         borderWidth: 2,
         borderColor: "#4d4d4d"
@@ -247,7 +256,7 @@ const styles = StyleSheet.create({
 
     saveButton: {
         margin: 10,
-        backgroundColor: "#129919",
+        backgroundColor: Colors.btnBlue,
         borderWidth: 0,
         borderRadius: 5,
         width: 200,

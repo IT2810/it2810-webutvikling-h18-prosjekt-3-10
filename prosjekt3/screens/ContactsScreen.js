@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import AddContactModal from '../components/AddContactModal';
 import ContactInformationModal from '../components/ContactInformationModal';
-
 import {
   Alert,
   ScrollView,
   View,
-  AsyncStorage
+  AsyncStorage,
+  StyleSheet
 } from 'react-native';
 
 import { Contacts, Permissions } from 'expo';

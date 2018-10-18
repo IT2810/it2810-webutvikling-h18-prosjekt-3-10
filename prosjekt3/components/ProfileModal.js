@@ -6,8 +6,10 @@ import {
     TouchableHighlight,
     KeyboardAvoidingView,
 } from 'react-native';
-import { Icon, } from 'react-native-elements';
+import { Icon, Header } from 'react-native-elements';
 import ProfileScreen from '../screens/ProfilesScreen';
+import Colors from '../constants/Colors'
+
 
 export default class ProfileModal extends React.Component {
     constructor(props) {
@@ -23,8 +25,7 @@ export default class ProfileModal extends React.Component {
 
     ProfileMod = () => {
         return (
-            <KeyboardAvoidingView behavior="position" enabled>
-
+            <View>
                 {/* the modal for profile*/}
                 <Modal
                     animationType="slide"
@@ -34,23 +35,26 @@ export default class ProfileModal extends React.Component {
                     onRequestClose={() => { // required on android, making it posible to use hardware back-button
                         this.setModalVisible(!this.state.modalVisible);
                     }}>
+
+                    <Header
+                      outerContainerStyles={styles.headerOuterContainer}
+                      innerContainerStyles={styles.headerInnerContainer}
+                      rightComponent={{
+                        size: 28,
+                        icon: 'home',
+                        color: Colors.btnBlue,
+                        onPress: () => {this.setModalVisible(!this.state.modalVisible)}
+                      }}
+                      centerComponent={{
+                        text: 'profile',
+                        style: styles.header,
+                      }}
+                      backgroundColor={Colors.headerBackground}
+                    />
+
                     <View >
                         {/* get return screen */}
                         <ProfileScreen />
-
-                        <TouchableHighlight style={styles.closeModalButton}
-                            onPress={() => { // closing modal when close-button is pressed
-                                this.setModalVisible(!this.state.modalVisible);
-                            }}>
-                            {/* home button in profile screen */}
-                            <Icon
-                                reverse
-                                type='font-awesome'
-                                name='home'
-                                color="#cc0000"
-                                size={30}
-                            />
-                        </TouchableHighlight>
                     </View>
                 </Modal>
 
@@ -70,7 +74,7 @@ export default class ProfileModal extends React.Component {
                         />
                     </View>
                 </TouchableHighlight>
-            </KeyboardAvoidingView>
+            </View>
         )
     }
     render() {
@@ -83,13 +87,24 @@ export default class ProfileModal extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+    headerInnerContainer: {
+      marginTop: 13,
+    },
+    headerOuterContainer: {
+      borderBottomWidth: 2,
+      borderBottomColor: 'black',
+    },
+    header: {
+      color: 'black',
+      fontSize: 20,
+      fontWeight: '600',
+      fontVariant: ['small-caps'],
+    },
     closeModalButton: {
         position: 'absolute',
         top: "50%",
         right: 2,
     },
-
     modalProfile: {
         position: 'absolute',
         bottom: 3,
