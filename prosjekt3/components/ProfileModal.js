@@ -69,7 +69,7 @@ export default class ProfileModal extends React.Component {
                             reverse
                             type='font-awesome'
                             name='user'
-                            color='#5F7C80'
+                            color='#425b84'
                             size={40}
                         />
                     </View>

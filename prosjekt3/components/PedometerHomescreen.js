@@ -78,12 +78,13 @@ export default class PedometerHomescreen extends React.Component {
         return (
             <ProgressCircle
                 percent={perc}
-                radius={70}
+                radius={75}
                 borderWidth={15}
-                color='#e68a00'
-                shadowColor="#ffffff"
+                color='#5aa0dd'
+                shadowColor="#a6a6a6"
                 bgColor="#333333"
             >
+                <Text style={styles.progressCircleText}> {"Steps"} </Text>
                 <Text style={styles.stepsText}> {steps} </Text>
                 <Text style={styles.progressCircleText}>{empty || toLarge ? "100%" : percentText + "%"}</Text>
             </ProgressCircle>

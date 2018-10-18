@@ -81,28 +81,12 @@ export default class TodoHomescreen extends React.Component {
 
 const styles = StyleSheet.create({
 
-  // todoContent: {
-  //   flex: 1,
-  //   backgroundColor: '#000',
-  //   margin: 15,
-  //   marginRight: 10,
-  //   padding: 10,
-  //   borderRadius: 5,
-  //   maxHeight: 200,
-
-  // },
-
-  todoHeader: {
-    textAlign: "center",
-    color: "#ffffff",
-    fontSize: 16,
-
-  },
-
   todoList: {
     borderWidth: 1,
-    marginBottom: 20,
-    width: 200,
+    marginBottom: 10,
+    marginTop: 0,
+    width: 250,
+    maxHeight: 120,
   },
 })
 

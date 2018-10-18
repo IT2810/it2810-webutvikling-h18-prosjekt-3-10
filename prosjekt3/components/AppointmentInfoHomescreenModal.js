@@ -7,7 +7,7 @@ import {
     TouchableHighlight,
     AsyncStorage,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Header } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
 import Colors from '../constants/Colors'
 
@@ -138,11 +138,14 @@ export default class AppointmentModalHomescreen extends React.Component {
                         <Icon
                             reverse
                             name='event'
-                            color='#5F7C80'
+                            color='#425b84'
                         />
                         <Text style={styles.eventText}>Upcoming Events  </Text>
                     </View>
                 </TouchableHighlight>
+
+
+
             </View>
         )
     }
@@ -186,14 +189,13 @@ const styles = StyleSheet.create({
     },
 
     events: {
-        backgroundColor: '#5F7C80',
+        backgroundColor: '#425b84',
         borderWidth: 0,
         width: "95%",
         height: 75,
         borderRadius: 10,
         borderWidth: 0,
-        margin: 8,
-        marginTop: 40,
+        margin: 10,
     },
 
     eventIconText: {
