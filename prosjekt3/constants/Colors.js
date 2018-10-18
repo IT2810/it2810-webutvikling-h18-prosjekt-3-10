@@ -12,4 +12,8 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
   backgroundColor: '#eee',
+  btnBlue: '#2f95dc',
+  btnRed: '',
+  inputBackground: '#fff',
+  headerBackground: '#fff',
 };

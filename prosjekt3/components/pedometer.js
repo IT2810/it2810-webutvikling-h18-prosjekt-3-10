@@ -1,11 +1,12 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
-import { List, ListItem, Button, Text, Overlay } from 'react-native-elements';
-import { AsyncStorage, StyleSheet, View, TextInput, Alert, KeyboardAvoidingView, ScrollView } from "react-native";
+import { List, ListItem, Button, Text,
+  Overlay, Header } from 'react-native-elements';
+import { AsyncStorage, StyleSheet, View, TextInput, Alert,
+  KeyboardAvoidingView, ScrollView } from "react-native";
 import ProgressCircle from 'react-native-progress-circle'
 import Colors from '../constants/Colors';
-
 
 
 export default class PedometerSensor extends React.Component {
@@ -215,45 +216,69 @@ export default class PedometerSensor extends React.Component {
 
   render() {
     return (
-      <View style={styles.elements}>
-        {this.checkAvailablity()}
+      <View>
 
-        <Text style={styles.todayStepTxt}>
-          Todays steps:
-            </Text>
-
-        <View style={styles.progressCircle}>
-          {this.progressCircle()}
-        </View>
-
-        {this.motivationQuote()}
-
-        <View>
-          <TextInput
-            style={styles.inputForm}
-            value={this.state.inputGoal}
-            onChangeText={this.handleInputGoal}
-            placeholder="Input your daily goal"
-            underlineColorAndroid="transparent"
-            keyboardType='numeric'
-          />
-        </View>
-
-        <Button
-          title="Set goal"
-          onPress={this.setGoal}
-          buttonStyle={styles.addBtn}
+        <Header
+          outerContainerStyles={styles.headerOuterContainer}
+          innerContainerStyles={styles.headerInnerContainer}
+          centerComponent={{
+            text: 'goals / activity',
+            style: styles.header,
+          }}
+          backgroundColor={Colors.headerBackground}
         />
 
+        <View style={styles.elements}>
+
+          {this.checkAvailablity()}
+
+          <Text style={styles.todayStepTxt}>
+            Todays steps:
+              </Text>
+
+          <View style={styles.progressCircle}>
+            {this.progressCircle()}
+          </View>
+
+          {this.motivationQuote()}
+
+          <View>
+            <TextInput
+              style={styles.inputForm}
+              value={this.state.inputGoal}
+              onChangeText={this.handleInputGoal}
+              placeholder="Input your daily goal"
+              underlineColorAndroid="transparent"
+              keyboardType='numeric'
+            />
+          </View>
+
+          <Button
+            title="Set goal"
+            onPress={this.setGoal}
+            buttonStyle={styles.addBtn}
+          />
+
+        </View>
       </View>
-
-
-
     );
   }
 }
 
 const styles = StyleSheet.create({
+  headerInnerContainer: {
+    marginTop: 13,
+  },
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+  },
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
   elements: {
     alignItems: 'center',
 
