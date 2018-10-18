@@ -39,6 +39,7 @@ export default class ProfileModal extends React.Component {
                         <ProfileScreen />
 
                         <TouchableHighlight style={styles.closeModalButton}
+                            underlayColor={'transparent'}
                             onPress={() => { // closing modal when close-button is pressed
                                 this.setModalVisible(!this.state.modalVisible);
                             }}>

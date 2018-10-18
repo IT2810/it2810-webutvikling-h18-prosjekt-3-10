@@ -6,14 +6,10 @@ import {
     Modal,
     TouchableHighlight,
     AsyncStorage,
-    TouchableOpacity,
-
 } from 'react-native';
-import { Icon, } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
 import Colors from '../constants/Colors'
-
-
 
 export default class AppointmentModalHomescreen extends React.Component {
     constructor(props) {
@@ -27,7 +23,7 @@ export default class AppointmentModalHomescreen extends React.Component {
             time: '',
             items: {},
             selectedItem: {},
-        }
+        };
     }
 
     setModalVisible(visible) {
@@ -46,18 +42,15 @@ export default class AppointmentModalHomescreen extends React.Component {
         return (
             <Agenda
                 items={this.state.items}
-                loadItemsForMonth={this.loadItems.bind(this)}
                 renderItem={this.renderItem.bind(this)}
                 renderEmptyDate={this.renderEmptyDate.bind(this)}
                 rowHasChanged={this.rowHasChanged.bind(this)}
-                theme={{
-                    agendaKnobColor: '#2f95dc'
-                }}
+                hideKnob={true}
             />
         )
     }
 
-
+    // retrieving information from calendar
     retrieveData = async () => {
         try {
             const getAgenda = await AsyncStorage.getItem('Agenda');
@@ -74,57 +67,28 @@ export default class AppointmentModalHomescreen extends React.Component {
             }
         }
         catch (error) {
-            throw error
             alert('Error retrieving data')
         }
     }
 
-    loadItems(day) {
-        setTimeout(() => {
-            for (let i = -15; i < 85; i++) {
-                const time = day.timestamp + (i * 24 * 60 * 60 * 1000);
-                const strTime = this.timeToString(time);
-                if (!this.state.items[strTime]) {
-                    this.state.items[strTime] = [];
-                }
-            }
-            const newItems = {};
-            Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
-            this.setState({
-                items: newItems
-            });
-        }, 1000);
-        // https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
-    }
-
+    // renders the agenda item
     renderItem(item) {
         return (
             <View
-                style={[styles.item, { height: item.height }]}
-            >
+                style={[styles.item, { height: item.height }]}>
                 <Text style={styles.itemTime}> {item.time} </Text>
                 <Text style={styles.itemName}> {item.name} </Text>
             </View>
         );
     }
 
-    isSelected = (item) => {
-        this.setState(() => ({
-            selectedItem: item,
-        }));
-        this.setUpdateModalVisibility();
-    }
-
+    // renders the text for a day with no agenda
     renderEmptyDate() {
         return (
             <View style={styles.emptyDate}>
                 <Text style={{ color: '#bbb' }}>Nothing to do today</Text>
             </View>
         );
-    }
-
-    selectedEmptyDate = () => {
-
     }
 
     rowHasChanged(r1, r2) {
@@ -136,14 +100,7 @@ export default class AppointmentModalHomescreen extends React.Component {
         return date.toISOString().split('T')[0];
     }
 
-    handleTextChange = (value) => {
-        this.setState(() => ({
-            inputValue: value,
-        }));
-    }
-
-
-
+    // the modal content
     AppointmentModal = () => {
         return (
             <View style={styles.events}>
@@ -158,10 +115,9 @@ export default class AppointmentModalHomescreen extends React.Component {
                         this.setModalVisible(!this.state.modalVisible);
                     }}>
                     <View style={styles.centerContent}>
-                        <View style={{ height: 800, width: "100%" }}>
+                        <View style={styles.agendaContent}>
                             {this.myAgenda()}
                         </View>
-                        <Text>{"appointment info here"}</Text>
 
                         <TouchableHighlight style={styles.closeModalButton}
                             onPress={() => { // closing modal when close-button is pressed
@@ -171,7 +127,10 @@ export default class AppointmentModalHomescreen extends React.Component {
                         </TouchableHighlight>
                     </View>
                 </Modal>
+
+                {/* The button for accessing modal content */}
                 <TouchableHighlight
+                    underlayColor={'transparent'}
                     onPress={() => { // opens modal when event-object is pressed
                         this.setModalVisible(true);
                     }}>
@@ -182,12 +141,9 @@ export default class AppointmentModalHomescreen extends React.Component {
                             color='#5F7C80'
                         />
                         <Text style={styles.eventText}>Upcoming Events  </Text>
-
-
                     </View>
                 </TouchableHighlight>
             </View>
-
         )
     }
     render() {
@@ -200,6 +156,10 @@ export default class AppointmentModalHomescreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    agendaContent: {
+        width: "100%",
+        flex: 1,
+    },
 
     item: {
         backgroundColor: 'white',
@@ -209,51 +169,21 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginTop: 17
     },
+
     emptyDate: {
         height: 15,
         flex: 1,
         paddingTop: 30
     },
+
     itemTime: {
         fontSize: 12,
         color: '#666666',
     },
+
     itemName: {
         fontSize: 16,
     },
-    addBtn: {
-        backgroundColor: '#2f95dc',
-    },
-    deleteBtn: {
-        backgroundColor: '#2f95dc',
-        marginTop: 8,
-    },
-    modal: {
-        flex: 1,
-        paddingTop: 0,
-        backgroundColor: Colors.backgroundColor,
-    },
-    inputForm: {
-        width: 400,
-        backgroundColor: '#fff',
-        height: 50,
-        marginTop: 40,
-        marginBottom: 12,
-        textAlign: 'center',
-    },
-    modalDatePicker: {
-        width: 320,
-        marginLeft: 12,
-    },
-    modalTimePicker: {
-        width: 320,
-        marginLeft: 12,
-        marginBottom: 8,
-    },
-
-
-
-
 
     events: {
         backgroundColor: '#5F7C80',
@@ -264,7 +194,6 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         margin: 8,
         marginTop: 40,
-
     },
 
     eventIconText: {
@@ -284,10 +213,10 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        //flex: 1,
-        //flexDirection: 'column',
-        //justifyContent: 'space-between',
-        backgroundColor: '#ffffff'
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        backgroundColor: Colors.backgroundColor,
     },
 
     closeModalButton: {
@@ -299,13 +228,10 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 50,
     },
 
     closeModalButtonText: {
         fontSize: 18,
         color: "#ffffff",
-
     },
 })

@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  ScrollView, StyleSheet, View, FlatList, TextInput,
-  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity
-} from 'react-native';
+import { ScrollView, StyleSheet, View, FlatList, TextInput,
+  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { List, ListItem, Button, Text, Header, Icon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
@@ -50,7 +48,7 @@ export default class CalenderScreen extends React.Component {
 
   // Function to save data to local storage
   storeData = async () => {
-    const data = this.state.items;
+  const data = this.state.items;
     try {
       await AsyncStorage.setItem('Agenda', JSON.stringify(data));
     }
@@ -83,7 +81,7 @@ export default class CalenderScreen extends React.Component {
 
   loadItems(day) {
     setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
+      for (let i = 0; i < 15; i++) {
         const time = day.timestamp + (i * 24 * 60 * 60 * 1000);
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
@@ -91,7 +89,7 @@ export default class CalenderScreen extends React.Component {
         }
       }
       const newItems = {};
-      Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
+      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
         items: newItems
       });
@@ -104,7 +102,7 @@ export default class CalenderScreen extends React.Component {
       <View style={[styles.item, { height: item.height }]}>
         <TouchableOpacity
           style={{ flex: 1 }}
-          onPress={() => { this.isSelected(item) }}
+          onPress={() => {this.isSelected(item)}}
         >
           <Text style={styles.itemTime}> {item.time} </Text>
           <Text style={styles.itemName}> {item.name} </Text>
@@ -126,13 +124,13 @@ export default class CalenderScreen extends React.Component {
         animationType="fade"
         transparent={false}
         visible={this.state.updateModalVisible}
-        onRequestClose={() => { this.setUpdateModalVisibility() }}>
+        onRequestClose={() => {this.setUpdateModalVisibility()}}>
 
         <View style={styles.modal}>
           <View>
 
             <Header
-              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => { this.setUpdateModalVisibility() } }}
+              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setUpdateModalVisibility()} }}
               centerComponent={{ text: 'Update item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
               backgroundColor={'#fff'}
             />
@@ -156,14 +154,14 @@ export default class CalenderScreen extends React.Component {
               title="Update item"
               onPress={this.updateItem}
               buttonStyle={styles.addBtn}
-              containerViewStyle={{ width: '100%', marginLeft: 0 }}
+              containerViewStyle={{width: '100%', marginLeft: 0}}
             />
 
             <Button
               title="Delete item"
               onPress={this.removeItem}
               buttonStyle={styles.deleteBtn}
-              containerViewStyle={{ width: '100%', marginLeft: 0 }}
+              containerViewStyle={{width: '100%', marginLeft: 0}}
             />
 
           </View>
@@ -189,7 +187,7 @@ export default class CalenderScreen extends React.Component {
     console.log(item);
     items[date].pop(item)
     this.setState(
-      { items, updateModalVisible: false, },
+      { items, updateModalVisible: false,  },
       () => this.storeData()
     );
 
@@ -200,9 +198,9 @@ export default class CalenderScreen extends React.Component {
       <View style={styles.emptyDate}>
         <TouchableOpacity
           style={{ flex: 1 }}
-          onPress={() => { this.setAddModalVisibility() }}
+          onPress={() => {this.setAddModalVisibility()}}
         >
-          <Text style={{ color: '#bbb' }}>Click me to add new agenda!</Text>
+          <Text style={{color: '#bbb'}}>Click me to add new agenda!</Text>
         </TouchableOpacity>
       </View>
     );
@@ -266,13 +264,13 @@ export default class CalenderScreen extends React.Component {
         animationType="fade"
         transparent={false}
         visible={this.state.addModalVisible}
-        onRequestClose={() => { this.setAddModalVisibility() }}>
+        onRequestClose={() => {this.setAddModalVisibility()}}>
 
         <View style={styles.modal}>
           <View>
 
             <Header
-              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => { this.setAddModalVisibility() } }}
+              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setAddModalVisibility()} }}
               centerComponent={{ text: 'Add item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
               backgroundColor={'#fff'}
             />
@@ -296,7 +294,7 @@ export default class CalenderScreen extends React.Component {
               title="Add it"
               onPress={this.addItem}
               buttonStyle={styles.addBtn}
-              containerViewStyle={{ width: '100%', marginLeft: 0 }}
+              containerViewStyle={{width: '100%', marginLeft: 0}}
             />
 
           </View>
@@ -333,7 +331,7 @@ export default class CalenderScreen extends React.Component {
             marginLeft: 36
           }
         }}
-        onDateChange={(date) => { this.setState({ date: date }) }}
+        onDateChange={(date) => {this.setState({date: date})}}
       />
     )
   }
@@ -368,7 +366,7 @@ export default class CalenderScreen extends React.Component {
             marginLeft: 36
           }
         }}
-        onDateChange={(date) => { this.setState({ time: date }) }}
+        onDateChange={(date) => {this.setState({time: date})}}
       />
     )
   }
@@ -395,7 +393,7 @@ export default class CalenderScreen extends React.Component {
             title="Add new agenda"
             onPress={this.setAddModalVisibility}
             buttonStyle={styles.addBtn}
-            containerViewStyle={{ width: '100%', marginLeft: 0 }}
+            containerViewStyle={{width: '100%', marginLeft: 0}}
           />
         </View>
 
@@ -404,7 +402,7 @@ export default class CalenderScreen extends React.Component {
           {this.updateItemModal()}
         </View>
 
-        <View style={{ height: 800 }}>
+        <View style={{height: 800}}>
           {this.myAgenda()}
         </View>
 
@@ -425,7 +423,7 @@ const styles = StyleSheet.create({
   },
   emptyDate: {
     height: 15,
-    flex: 1,
+    flex:1,
     paddingTop: 30
   },
   itemTime: {
