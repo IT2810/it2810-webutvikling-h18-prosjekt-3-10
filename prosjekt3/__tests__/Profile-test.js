@@ -19,7 +19,6 @@ test('renders button with passed props', () => {
     expect(component.toJSON()).toMatchSnapshot();
 });
 
-
 //When a component is rendered the save is equal to empty / undefined.
 test('renders with " " as an initial state of saveState', () => {
     const component = renderer.create(
@@ -39,14 +38,3 @@ test('onClick function is being called once', () => {
     instance.props.onClick();
     expect(fn.mock.calls.length).toBe(1);
 });
-
-test('function for checking only numbers', () => {
-    const mockCallback = renderer.create(<ProfileScreen />).getInstance();
-
-
-
-    expect(mockCallback.onChangedHeight().not.toBeNull())
-});
-
-
-
