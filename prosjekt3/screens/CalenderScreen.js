@@ -184,13 +184,11 @@ export default class CalenderScreen extends React.Component {
     const items = this.state.items;
     const item = this.state.selectedItem;
     const date = item.date;
-    console.log(item);
     items[date].pop(item)
     this.setState(
       { items, updateModalVisible: false,  },
       () => this.storeData()
     );
-
   }
 
   renderEmptyDate() {
@@ -204,10 +202,6 @@ export default class CalenderScreen extends React.Component {
         </TouchableOpacity>
       </View>
     );
-  }
-
-  selectedEmptyDate = () => {
-
   }
 
   rowHasChanged(r1, r2) {
