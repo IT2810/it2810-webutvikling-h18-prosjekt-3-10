@@ -81,7 +81,7 @@ export default class CalenderScreen extends React.Component {
 
   loadItems(day) {
     setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
+      for (let i = 0; i < 15; i++) {
         const time = day.timestamp + (i * 24 * 60 * 60 * 1000);
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
