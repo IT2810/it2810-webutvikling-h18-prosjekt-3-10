@@ -77,9 +77,10 @@ export default class CalenderScreen extends React.Component {
     }
   }
 
+  // Loads items
   loadItems(day) {
     setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
+      for (let i = 0; i < 15; i++) {
         const time = day.timestamp + (i * 24 * 60 * 60 * 1000);
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
@@ -95,18 +96,33 @@ export default class CalenderScreen extends React.Component {
     // https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
   }
 
+  //
   renderItem(item) {
-    return (
-      <View style={[styles.item, { height: item.height }]}>
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          onPress={() => {this.isSelected(item)}}
-        >
-          <Text style={styles.itemTime}> {item.time} </Text>
-          <Text style={styles.itemName}> {item.name} </Text>
-        </TouchableOpacity>
-      </View>
-    );
+    if(!item.time == '') {
+      return (
+        <View style={[styles.item, { height: item.height }]}>
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => {this.isSelected(item)}}
+          >
+            <Text style={styles.itemTime}> {item.time} </Text>
+            <Text style={styles.itemName}> {item.name} </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    else {
+      return (
+        <View style={[styles.item, { height: item.height }]}>
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => {this.isSelected(item)}}
+          >
+            <Text style={styles.itemName}> {item.name} </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
 
   isSelected = (item) => {
@@ -460,14 +476,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     borderRadius: 5,
-    padding: 10,
     marginRight: 10,
-    marginTop: 17
+    marginTop: 30,
+    marginBottom: -12,
+    padding: 10,
   },
   emptyDate: {
     height: 15,
     flex:1,
-    paddingTop: 30
+    paddingTop: 45
   },
   itemTime: {
     fontSize: 12,
