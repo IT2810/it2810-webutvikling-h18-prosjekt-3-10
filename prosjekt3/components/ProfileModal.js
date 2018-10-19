@@ -4,7 +4,7 @@ import {
     View,
     Modal,
     TouchableHighlight,
-    KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import ProfileScreen from '../screens/ProfilesScreen';
@@ -37,19 +37,19 @@ export default class ProfileModal extends React.Component {
                     }}>
 
                     <Header
-                      outerContainerStyles={styles.headerOuterContainer}
-                      innerContainerStyles={styles.headerInnerContainer}
-                      rightComponent={{
-                        size: 28,
-                        icon: 'home',
-                        color: Colors.btnBlue,
-                        onPress: () => {this.setModalVisible(!this.state.modalVisible)}
-                      }}
-                      centerComponent={{
-                        text: 'profile',
-                        style: styles.header,
-                      }}
-                      backgroundColor={Colors.headerBackground}
+                        outerContainerStyles={styles.headerOuterContainer}
+                        innerContainerStyles={styles.headerInnerContainer}
+                        rightComponent={{
+                            size: 28,
+                            icon: 'home',
+                            color: Colors.btnBlue,
+                            onPress: () => { this.setModalVisible(!this.state.modalVisible) }
+                        }}
+                        centerComponent={{
+                            text: 'profile',
+                            style: styles.header,
+                        }}
+                        backgroundColor={Colors.headerBackground}
                     />
 
                     <View >
@@ -69,7 +69,7 @@ export default class ProfileModal extends React.Component {
                             reverse
                             type='font-awesome'
                             name='user'
-                            color='#5F7C80'
+                            color='#425b84'
                             size={40}
                         />
                     </View>
@@ -88,17 +88,19 @@ export default class ProfileModal extends React.Component {
 
 const styles = StyleSheet.create({
     headerInnerContainer: {
-      marginTop: 13,
+        marginTop: 13,
     },
     headerOuterContainer: {
-      borderBottomWidth: 2,
-      borderBottomColor: 'black',
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+        //height: 100,
+        height: Platform.OS === 'ios' ? 100 : 70
     },
     header: {
-      color: 'black',
-      fontSize: 20,
-      fontWeight: '600',
-      fontVariant: ['small-caps'],
+        color: 'black',
+        fontSize: 20,
+        fontWeight: '600',
+        fontVariant: ['small-caps'],
     },
     closeModalButton: {
         position: 'absolute',

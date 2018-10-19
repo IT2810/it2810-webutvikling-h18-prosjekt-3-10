@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import ProfileScreen from '../screens/ProfilesScreen';
 import NavigationTestUtils from 'react-navigation/NavigationTestUtils';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import MockAsyncStorage from 'mock-async-storage';
 
 
@@ -14,13 +14,13 @@ const mock = () => {
 
 // snapshot test
 const release = () => jest.unmock('AsyncStorage')
-describe('ContactsScreen snapshot', () => {
+describe('ProfileScreen snapshot', () => {
     jest.useFakeTimers();
     beforeEach(() => {
         NavigationTestUtils.resetInternalState();
     });
 
-    it('renders the contacts screen', async () => {
+    it('renders the Profile screen', async () => {
         const tree = renderer.create(<ProfileScreen />).toJSON();
         expect(tree).toMatchSnapshot();
     });
@@ -35,6 +35,7 @@ describe("unit test save info", () => {
         myHeightNumber: '180',
         myWeightNumber: '80',
         modalVisible: false,
+        navBarHeight: (Platform.OS === 'ios') ? 0 : -180,
     }
 
     // testing saveState function
@@ -56,7 +57,23 @@ describe("unit test save info", () => {
         expect(value).toBe(JSON.stringify(user));
     })
 
-    release();
+    it('should not be able to input string for height', async () => {
+        mock();
+        profileInfo.setState(user)
+        await profileInfo.onChangedHeight("hundreogfemti");
+        const value = await AsyncStorage.getItem('profile')
+        expect(value).toBe(JSON.stringify(user));
+    })
+
+    it('should not be able to input string for weight', async () => {
+        mock();
+        profileInfo.setState(user)
+        await profileInfo.onChangedWeight("hundre");
+        const value = await AsyncStorage.getItem('profile')
+        expect(value).toBe(JSON.stringify(user));
+    })
 
 })
 
+
+release();

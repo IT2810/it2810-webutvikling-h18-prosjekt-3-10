@@ -7,7 +7,7 @@ import {
     TouchableHighlight,
     AsyncStorage,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Header } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
 import Colors from '../constants/Colors'
 
@@ -16,13 +16,10 @@ export default class AppointmentModalHomescreen extends React.Component {
         super(props);
         this.state = {
             modalVisible: false,
-            addModalVisible: false,
-            updateModalVisible: false,
-            inputValue: '',
             date: '',
             time: '',
             items: {},
-            selectedItem: {},
+            _mounted: false,
         };
     }
 
@@ -30,12 +27,21 @@ export default class AppointmentModalHomescreen extends React.Component {
         this.setState({ modalVisible: visible });
     }
 
+    // mounting data from calendar
     componentDidMount = () => {
+        this.retrieveData()
+        this._mounted = true
+    }
+
+    // updating data from calendar in the same session
+    componentDidUpdate = () => {
         this.retrieveData()
     }
 
-    componentDidUpdate = () => {
-        this.retrieveData()
+    // canceling subscription on asynchronous  tasks
+    componentWillUnmount = () => {
+        this._mounted = false
+
     }
 
     myAgenda = () => {
@@ -55,7 +61,7 @@ export default class AppointmentModalHomescreen extends React.Component {
         try {
             const getAgenda = await AsyncStorage.getItem('Agenda');
             const agenda = JSON.parse(getAgenda);
-            if (agenda != null) {
+            if (agenda != null && this._mounted) {
                 this.setState({
                     items: agenda,
                 });
@@ -87,6 +93,7 @@ export default class AppointmentModalHomescreen extends React.Component {
         return (
             <View style={styles.emptyDate}>
                 <Text style={{ color: '#bbb' }}>Nothing to do today</Text>
+                <Text style={{ color: '#bbb', fontSize: 12 }}>Add something in Calendar</Text>
             </View>
         );
     }
@@ -114,6 +121,16 @@ export default class AppointmentModalHomescreen extends React.Component {
                     onRequestClose={() => { // required on android, making it posible to use hardware back-button
                         this.setModalVisible(!this.state.modalVisible);
                     }}>
+                    <Header
+                        outerContainerStyles={styles.headerOuterContainer}
+                        innerContainerStyles={styles.headerInnerContainer}
+                        centerComponent={{
+                            text: 'Agenda',
+                            style: styles.header,
+                        }}
+                        backgroundColor={Colors.headerBackground}
+
+                    />
                     <View style={styles.centerContent}>
                         <View style={styles.agendaContent}>
                             {this.myAgenda()}
@@ -138,7 +155,7 @@ export default class AppointmentModalHomescreen extends React.Component {
                         <Icon
                             reverse
                             name='event'
-                            color='#5F7C80'
+                            color='#425b84'
                         />
                         <Text style={styles.eventText}>Upcoming Events  </Text>
                     </View>
@@ -186,14 +203,13 @@ const styles = StyleSheet.create({
     },
 
     events: {
-        backgroundColor: '#5F7C80',
+        backgroundColor: '#425b84',
         borderWidth: 0,
         width: "95%",
         height: 75,
         borderRadius: 10,
         borderWidth: 0,
-        margin: 8,
-        marginTop: 40,
+        margin: 10,
     },
 
     eventIconText: {
@@ -233,5 +249,19 @@ const styles = StyleSheet.create({
     closeModalButtonText: {
         fontSize: 18,
         color: "#ffffff",
+    },
+
+    headerInnerContainer: {
+        marginTop: 13,
+    },
+    headerOuterContainer: {
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+    },
+    header: {
+        color: 'black',
+        fontSize: 20,
+        fontWeight: '600',
+        fontVariant: ['small-caps'],
     },
 })

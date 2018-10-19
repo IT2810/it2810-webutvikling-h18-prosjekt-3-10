@@ -3,12 +3,12 @@
 <head>
     <title>Code coverage report for screens/ContactsScreen.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="..\prettify.css" />
-    <link rel="stylesheet" href="..\base.css" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(..\sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\index.html">All files</a> / <a href="index.html">screens</a> ContactsScreen.js
+      <a href="../index.html">All files</a> / <a href="index.html">screens</a> ContactsScreen.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">55.1% </span>
+        <span class="strong">51.02% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>27/49</span>
+        <span class='fraction'>25/49</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">36.36% </span>
+        <span class="strong">31.82% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>8/22</span>
+        <span class='fraction'>7/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">55.56% </span>
+        <span class="strong">51.85% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>15/27</span>
+        <span class='fraction'>14/27</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">54.35% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>25/46</span>
+        <span class='fraction'>23/46</span>
       </div>
     </div>
   </div>
@@ -318,13 +318,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -375,14 +375,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -412,12 +412,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from 'react';
 import AddContactModal from '../components/AddContactModal';
 import ContactInformationModal from '../components/ContactInformationModal';
-&nbsp;
 import {
   Alert,
   ScrollView,
   View,
-  AsyncStorage
+  AsyncStorage,
+  StyleSheet
 } from 'react-native';
 &nbsp;
 import { Contacts, Permissions } from 'expo';
@@ -504,8 +504,8 @@ export default class ContactsScreen extends Component {
     let addedContacts = []
     AsyncStorage.getItem('contacts')
       .then(result =&gt; {
-        if (result !== null) {
-          addedContacts = JSON.parse(result)
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (result !== null) {
+<span class="cstat-no" title="statement not covered" >          addedContacts = JSON.parse(result)</span>
         }
         this.setState({
           addedContacts,
@@ -557,8 +557,8 @@ export default class ContactsScreen extends Component {
     )
   }
 &nbsp;
-  handleContactPress = contact =&gt; {
-    this.setState({
+  handleContactPress = <span class="fstat-no" title="function not covered" >co</span>ntact =&gt; {
+<span class="cstat-no" title="statement not covered" >    this.setState({</span>
       contactModalVisible: true,
       activeContact: contact,
     })
@@ -598,10 +598,10 @@ export default class ContactsScreen extends Component {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 17 2018 13:30:21 GMT+0200 (Vest-Europa (sommertid))
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Oct 19 2018 09:07:41 GMT+0200 (Central European Summer Time)
 </div>
 </div>
-<script src="..\prettify.js"></script>
+<script src="../prettify.js"></script>
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -609,6 +609,6 @@ window.onload = function () {
         }
 };
 </script>
-<script src="..\sorter.js"></script>
+<script src="../sorter.js"></script>
 </body>
 </html>
