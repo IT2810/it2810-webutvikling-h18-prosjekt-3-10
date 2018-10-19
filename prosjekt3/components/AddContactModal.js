@@ -34,6 +34,37 @@ export default class AddContactModal extends Component {
         return id
     }
 
+    handleAddContact = () => {
+        const {
+            firstName,
+            lastName,
+            number,
+        } = this.state
+
+        // Construct contact-object
+        // Trim spaces from both ends of names
+        const contact = {
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            id: this.generateId(),
+            phoneNumbers: [{number: number}]
+        }
+
+        // Reset modal
+        this.setState({
+            firstName: '',
+            lastName: '',
+            number: '',
+            id: '',
+        })
+
+        // Pass contact to save-method
+        this.props.onSave(contact)
+
+        // Notify ready to close
+        this.props.closeCallback()
+    }
+
     render() {
         return (
             <Modal
@@ -100,36 +131,7 @@ export default class AddContactModal extends Component {
                         </View>
                         <View style={styles.buttonWrapper}>
                             <Button
-                                onPress={()=>{
-                                    const {
-                                        firstName,
-                                        lastName,
-                                        number,
-                                    } = this.state
-
-                                    // Construct contact-object
-                                    // Trim spaces from both ends of names
-                                    const contact = {
-                                        firstName: firstName.trim(),
-                                        lastName: lastName.trim(),
-                                        id: this.generateId(),
-                                        phoneNumbers: [{number: number}]
-                                    }
-
-                                    // Reset modal
-                                    this.setState({
-                                        firstName: '',
-                                        lastName: '',
-                                        number: '',
-                                        id: '',
-                                    })
-
-                                    // Pass contact to save-method
-                                    this.props.onSave(contact)
-
-                                    // Notify ready to close
-                                    this.props.closeCallback()
-                                }}
+                                onPress={this.handleAddContact}
                                 title="Add"
                             />
                         </View>
