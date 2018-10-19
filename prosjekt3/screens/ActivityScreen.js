@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView, ScrollView, Platform, SafeAreaView } from 'react-native';
 import Colors from '../constants/Colors';
 import PedometerSensor from '../components/pedometer';
 
@@ -15,20 +15,27 @@ export default class ActivityScreen extends React.Component {
   // RENDER
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={this.state.navBarHeight} behavior="position" enabled>
-        <ScrollView scrollEnabled={false}>
-          <PedometerSensor />
-        </ScrollView>
-      </KeyboardAvoidingView>
+      <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={this.state.navBarHeight} behavior="position" enabled>
+          <ScrollView scrollEnabled={false}>
+            <PedometerSensor />
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     );
   }
 }
 
-// STYLESHEET
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: Colors.backgroundColor,
-  },
-});
+  // STYLESHEET
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: '#fff',
+    },
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      backgroundColor: Colors.backgroundColor,
+    },
+
+  });

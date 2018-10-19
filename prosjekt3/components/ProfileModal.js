@@ -5,6 +5,7 @@ import {
     Modal,
     TouchableHighlight,
     Platform,
+    SafeAreaView
 } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import ProfileScreen from '../screens/ProfilesScreen';
@@ -25,7 +26,7 @@ export default class ProfileModal extends React.Component {
     ProfileMod = () => {
         return (
             <View>
-                {/* the modal for profile*/}
+                {/* the modal for profile */}
                 <Modal
                     animationType="slide"
                     transparent={false}
@@ -34,29 +35,31 @@ export default class ProfileModal extends React.Component {
                     onRequestClose={() => { // required on android, making it posible to use hardware back-button
                         this.setModalVisible(!this.state.modalVisible);
                     }}>
+                    <SafeAreaView style={styles.safeArea}>
+                      <Header
+                          outerContainerStyles={styles.headerOuterContainer}
+                          innerContainerStyles={styles.headerInnerContainer}
+                          rightComponent={{
+                              size: 32,
+                              icon: 'home',
+                              color: Colors.btnBlue,
+                              onPress: () => { this.setModalVisible(!this.state.modalVisible) }
+                          }}
+                          centerComponent={{
+                              text: 'profile',
+                              style: styles.header,
+                          }}
+                          backgroundColor={Colors.headerBackground}
+                      />
 
-                    <Header
-                        outerContainerStyles={styles.headerOuterContainer}
-                        innerContainerStyles={styles.headerInnerContainer}
-                        rightComponent={{
-                            size: 28,
-                            icon: 'home',
-                            color: Colors.btnBlue,
-                            onPress: () => { this.setModalVisible(!this.state.modalVisible) }
-                        }}
-                        centerComponent={{
-                            text: 'profile',
-                            style: styles.header,
-                        }}
-                        backgroundColor={Colors.headerBackground}
-                    />
-
-                    <View >
-                        {/* get return screen */}
-                        <ProfileScreen />
-                    </View>
+                      <View >
+                          {/* get return screen */}
+                          <ProfileScreen />
+                      </View>
+                    </SafeAreaView>
                 </Modal>
 
+                <View style={styles.profileBtnContainer}>
                 <TouchableHighlight
                     underlayColor={'transparent'}
                     onPress={() => { // opens modal when profile-object is pressed
@@ -68,11 +71,12 @@ export default class ProfileModal extends React.Component {
                             reverse
                             type='font-awesome'
                             name='user'
-                            color='#425b84'
+                            color='#2f95dc'
                             size={40}
                         />
                     </View>
                 </TouchableHighlight>
+                </View>
             </View>
         )
     }
@@ -86,13 +90,16 @@ export default class ProfileModal extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    headerInnerContainer: {
-        marginTop: 13,
+    safeArea: {
+      flex: 1,
+      backgroundColor: '#fff',
+    },
+    profileBtnContainer: {
+      flex: 1,
     },
     headerOuterContainer: {
         borderBottomWidth: 2,
         borderBottomColor: 'black',
-        height: Platform.OS === 'ios' ? 100 : 70
     },
     header: {
         color: 'black',
@@ -101,8 +108,4 @@ const styles = StyleSheet.create({
         fontVariant: ['small-caps'],
     },
 
-    modalProfile: {
-        position: 'absolute',
-        bottom: 3,
-    },
 })

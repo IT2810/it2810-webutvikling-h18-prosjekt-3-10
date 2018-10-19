@@ -22,6 +22,7 @@ export default class PedometerHomescreen extends React.Component {
     // updating steps between activity and homescreen in one the same session
     componentDidUpdate() {
         this.retrieveData()
+
         _subscribe = () => {
             this._subscription = Pedometer.watchStepCount(result => {
                 this.setState({
@@ -100,7 +101,7 @@ export default class PedometerHomescreen extends React.Component {
                 borderWidth={15}
                 color='#5aa0dd'
                 shadowColor="#a6a6a6"
-                bgColor="#333333"
+                bgColor="#425b84"
             >
                 <Text style={styles.progressCircleText}> {"Steps"} </Text>
                 <Text style={styles.stepsText}> {steps} </Text>
@@ -127,6 +128,6 @@ const styles = StyleSheet.create({
     stepsText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: "#595959",
+        color: "#ffffff",
     },
 })

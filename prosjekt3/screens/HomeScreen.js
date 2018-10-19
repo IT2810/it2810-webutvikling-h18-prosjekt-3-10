@@ -4,6 +4,7 @@ import {
   View,
   Text,
   ScrollView,
+  SafeAreaView
 } from 'react-native';
 import PedometerHomescreen from '../components/PedometerHomescreen';
 import TodoHomescreen from '../components/TodoHomescreen';
@@ -25,23 +26,23 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
+      <SafeAreaView style={styles.safeArea}>
+
+      <Header
+        outerContainerStyles={styles.headerOuterContainer}
+        centerComponent={{
+          text: 'STE reactive',
+          style: styles.header,
+        }}
+        backgroundColor={Colors.headerBackground}
+      />
+
       <ScrollView style={{
-        backgroundColor: "#d9d9d9",
+        backgroundColor: Colors.backgroundColor,
       }}>
 
         <View>
-
-          <Header
-            outerContainerStyles={styles.headerOuterContainer}
-            innerContainerStyles={styles.headerInnerContainer}
-            centerComponent={{
-              text: 'STE reactive',
-              style: styles.header,
-            }}
-            backgroundColor={Colors.headerBackground}
-          />
-          <View style={styles.modals}>
-
+          <View style={styles.eventAndProfileContainer}>
             {/* "upcoming events modal */}
             <AppointmentModalHomescreen />
             {/* button to profile modal*/}
@@ -59,11 +60,10 @@ export default class HomeScreen extends React.Component {
             </View>
           </View>
 
-          <View style={styles.TodoBackgroundContent}>
-
+          <View style={styles.todoBackgroundContent}>
             {/* ToDo view content*/}
             <View style={styles.todoContent}>
-              <Text style={styles.todoHeader}>ToDo</Text>
+              <Text style={styles.todoHeader}>Todo</Text>
               <View>
                 <TodoHomescreen />
               </View>
@@ -72,23 +72,31 @@ export default class HomeScreen extends React.Component {
         </View>
 
       </ScrollView >
+      </SafeAreaView>
+
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+      flex: 1,
+      backgroundColor: '#425b84',
+  },
 
   activityContent: {
     padding: 10,
   },
 
   activityBackgroundContent: {
-    backgroundColor: "#a6a6a6",
-    borderColor: "#ffffff",
+    backgroundColor: Colors.backgroundColor,
+    borderColor: "#999",
+    borderTopWidth: 1,
     borderBottomWidth: 1,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
   },
 
   activityHeader: {
@@ -98,39 +106,32 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  headerInnerContainer: {
-    marginTop: 15,
-  },
-
   headerOuterContainer: {
     borderBottomWidth: 1,
     borderBottomColor: '#999',
-    backgroundColor: "#5aa0dd",
-    height: 100
+    backgroundColor: "#425b84",
   },
 
   header: {
-    color: '#cccccc',
+    color: '#ffffff',
     fontSize: 25,
     fontWeight: '900',
     fontVariant: ['small-caps'],
   },
 
-  TodoBackgroundContent: {
-    backgroundColor: "#737373",
-    borderColor: "#ffffff",
-    borderBottomWidth: 1,
+  todoBackgroundContent: {
+    backgroundColor: Colors.backgroundColor,
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    padding: 15,
   },
 
-  modals: {
+  eventAndProfileContainer: {
     flexDirection: "row",
-    backgroundColor: "#d9d9d9",
-    borderColor: "#ffffff",
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
+    backgroundColor: Colors.backgroundColor,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 
   todoContent: {
@@ -141,8 +142,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#ffffff",
     fontSize: 17,
+    padding: 4,
     backgroundColor: "#425b84",
-    borderColor: "#a6a6a6",
+    borderColor: "#999",
     borderRightWidth: 1,
     borderLeftWidth: 1,
     borderTopWidth: 1,

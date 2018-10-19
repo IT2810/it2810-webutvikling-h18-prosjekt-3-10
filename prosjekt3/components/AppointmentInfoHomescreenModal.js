@@ -6,6 +6,7 @@ import {
     Modal,
     TouchableHighlight,
     AsyncStorage,
+    SafeAreaView,
 } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
@@ -121,9 +122,9 @@ export default class AppointmentModalHomescreen extends React.Component {
                     onRequestClose={() => { // required on android, making it posible to use hardware back-button
                         this.setModalVisible(!this.state.modalVisible);
                     }}>
+                    <SafeAreaView style={styles.safeArea}>
                     <Header
                         outerContainerStyles={styles.headerOuterContainer}
-                        innerContainerStyles={styles.headerInnerContainer}
                         centerComponent={{
                             text: 'Agenda',
                             style: styles.header,
@@ -143,9 +144,11 @@ export default class AppointmentModalHomescreen extends React.Component {
                             <Text style={styles.closeModalButtonText}>Close</Text>
                         </TouchableHighlight>
                     </View>
+                    </SafeAreaView>
                 </Modal>
 
                 {/* The button for accessing modal content */}
+                <View style={styles.agendaBtnContainer}>
                 <TouchableHighlight
                     underlayColor={'transparent'}
                     onPress={() => { // opens modal when event-object is pressed
@@ -155,11 +158,12 @@ export default class AppointmentModalHomescreen extends React.Component {
                         <Icon
                             reverse
                             name='event'
-                            color='#425b84'
+                            color='#2f95dc'
                         />
                         <Text style={styles.eventText}>Upcoming Events  </Text>
                     </View>
                 </TouchableHighlight>
+                </View>
             </View>
         )
     }
@@ -173,24 +177,32 @@ export default class AppointmentModalHomescreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: '#fff',
+    },
+    agendaBtnContainer: {
+      flex: 1,
+    },
     agendaContent: {
         width: "100%",
         flex: 1,
     },
 
     item: {
-        backgroundColor: 'white',
-        flex: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginRight: 10,
-        marginTop: 17
+      backgroundColor: 'white',
+      flex: 1,
+      borderRadius: 5,
+      marginRight: 10,
+      marginTop: 30,
+      marginBottom: -12,
+      padding: 10,
     },
 
     emptyDate: {
-        height: 15,
-        flex: 1,
-        paddingTop: 30
+      height: 15,
+      flex: 1,
+      paddingTop: 40
     },
 
     itemTime: {
@@ -203,30 +215,31 @@ const styles = StyleSheet.create({
     },
 
     events: {
-        backgroundColor: '#425b84',
+        backgroundColor: Colors.btnBlue,
         borderWidth: 0,
-        width: "95%",
         height: 75,
         borderRadius: 10,
-        borderWidth: 0,
         margin: 10,
+        marginLeft: 20,
+        marginRight: -30,
+        width: '80%'
     },
 
     eventIconText: {
         flexDirection: 'row',
+        width: '80%'
     },
 
     eventText: {
-        fontSize: 18,
+        fontSize: 16,
         color: "#ffffff",
         height: 75,
-        justifyContent: 'center',
         margin: 20,
         marginLeft: 0,
+        marginRight: 0,
+        width: '80%'
     },
     centerContent: {
-        width: '100%',
-        height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
@@ -251,13 +264,11 @@ const styles = StyleSheet.create({
         color: "#ffffff",
     },
 
-    headerInnerContainer: {
-        marginTop: 13,
-    },
     headerOuterContainer: {
         borderBottomWidth: 2,
         borderBottomColor: 'black',
     },
+
     header: {
         color: 'black',
         fontSize: 20,

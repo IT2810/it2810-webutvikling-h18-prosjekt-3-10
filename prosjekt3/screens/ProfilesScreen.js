@@ -25,7 +25,7 @@ export default class UserProfileView extends Component {
             myHeightNumber: '',
             myWeightNumber: '',
             modalVisible: false,
-            navBarHeight: (Platform.OS === 'ios') ? 0 : -180,
+            navBarHeight: (Platform.OS === 'ios') ? 10 : -90,
         };
     }
     static navigationOptions = {
@@ -202,6 +202,12 @@ const styles = StyleSheet.create({
     GrayContent: {
         flex: 1,
         padding: 10,
+    },
+
+    headBackground: {
+      flex: 1,
+      borderBottomWidth: 2,
+      marginTop: 14,
     },
 
     ImageStyle: {

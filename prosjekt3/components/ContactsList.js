@@ -6,33 +6,41 @@ import {
     FlatList,
     Button,
     Image,
+    ScrollView,
 } from 'react-native'
+
 import {
     List,
     ListItem,
     Text,
 } from 'react-native-elements';
 
-const ContactsList = ({ addedContacts = [], importedContacts = [], handleContactPress, handleDelete, importContacts, addContact }) => {
+const ContactsList = ({
+  addedContacts = [],
+  importedContacts = [],
+  handleContactPress,
+  handleDelete,
+  importContacts,
+  addContact }) => {
 
     // Helperfunction that places all items from array into a flatlist
     const listContacts = contacts => {
         return (
             <List>
                 <FlatList
-                    data={contacts}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <ListItem
-                            containerStyle={styles.listItem}
-                            roundAvatar
-                            title={`${item.firstName} ${item.lastName}`}
-                            avatar={item.imageAvailable ? { uri: item.image.uri } : require('../assets/images/profile.png')}
-                            onPress={() => handleContactPress(item)}
-                            // Only imported contacts has a lookupKey, so that's an easy way to check which type the contact is
-                            onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => handleDelete(item)}
-                        />
-                    )}
+                data={contacts}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <ListItem
+                        containerStyle={styles.listItem}
+                        roundAvatar
+                        title={`${item.firstName} ${item.lastName}`}
+                        avatar={item.imageAvailable ? {uri: item.image.uri} : require('../assets/images/profile.png')}
+                        onPress={() => handleContactPress(item)}
+                        // Only imported contacts has a lookupKey, so that's an easy way to check which type the contact is
+                        onLongPress={item.lookupKey ? () => Alert.alert("Can't do anything with phone contact") : () => handleDelete(item)}
+                    />
+                )}
                 />
             </List>
         )
@@ -43,10 +51,13 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
         return (
             <View style={styles.contactsContainer}>
                 <View style={styles.contactsHeader}>
-                    <Text h4>Added contacts</Text>
-                    <Button title="Add Contact" onPress={addContact} />
+                    <Text style={styles.contactsHeaderTxt}>Added contacts</Text>
                 </View>
+                <ScrollView keyboardShouldPersistTaps='handled'>
                 {listContacts(addedContacts)}
+                </ScrollView>
+                {/*
+                  // Kommentert ut fordi vi ikke har tid til å finne løsning til treghetsproblem
                 <View style={styles.contactsHeader}>
                     <Text h4>Imported contacts</Text>
                     {
@@ -54,6 +65,7 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
                     }
                 </View>
                 {listContacts(importedContacts)}
+                */}
             </View>
         )
     } else {
@@ -69,12 +81,8 @@ const ContactsList = ({ addedContacts = [], importedContacts = [], handleContact
 
                 <View style={styles.ontainer}>
                     <Text style={styles.text}>It looks like your contacts list is empty.</Text>
-                    <View style={styles.buttonContainer}>
-                        <Button title="Add Contact" onPress={addContact} />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button title="Import from phone" onPress={importContacts} />
-                    </View>
+                    <Text style={styles.text}>Try to add some in the top right corner!</Text>
+
                 </View>
 
             </View>
@@ -87,8 +95,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     contactsHeader: {
-        flexDirection: "row",
-        justifyContent: "space-around",
         padding: 20,
         paddingBottom: 0,
     },
@@ -99,6 +105,9 @@ const styles = StyleSheet.create({
         width: 400,
         height: 200,
         marginBottom: 50,
+    },
+    contactsHeaderTxt: {
+      fontSize: 20,
     }
 })
 
