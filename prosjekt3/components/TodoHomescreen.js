@@ -63,7 +63,9 @@ export default class TodoHomescreen extends React.Component {
               <ListItem
                 title={item.input}
                 subtitle={item.date}
-                hideChevron={true} />
+                hideChevron={true}
+                style={{ backgroundColor: "blue" }}
+              />
             )} />
         </ScrollView>
       </List>
@@ -81,12 +83,17 @@ export default class TodoHomescreen extends React.Component {
 
 const styles = StyleSheet.create({
 
+
   todoList: {
     borderWidth: 1,
     marginBottom: 10,
     marginTop: 0,
     width: 250,
     maxHeight: 120,
+    minHeight: 100,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+
   },
 })
 
