@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
     },
     agendaBtnContainer: {
-      width: '60%',
+      flex: 1,
     },
     agendaContent: {
         width: "100%",
@@ -221,23 +221,25 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 10,
         marginLeft: 20,
+        marginRight: -30,
+        width: '80%'
     },
 
     eventIconText: {
         flexDirection: 'row',
+        width: '80%'
     },
 
     eventText: {
-        fontSize: 15,
+        fontSize: 16,
         color: "#ffffff",
         height: 75,
-        justifyContent: 'center',
         margin: 20,
         marginLeft: 0,
+        marginRight: 0,
+        width: '80%'
     },
     centerContent: {
-        width: '100%',
-        height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,

@@ -30,7 +30,6 @@ export default class HomeScreen extends React.Component {
 
       <Header
         outerContainerStyles={styles.headerOuterContainer}
-        innerContainerStyles={styles.headerInnerContainer}
         centerComponent={{
           text: 'STE reactive',
           style: styles.header,
@@ -43,7 +42,7 @@ export default class HomeScreen extends React.Component {
       }}>
 
         <View>
-          <View style={styles.modals}>
+          <View style={styles.eventAndProfileContainer}>
             {/* "upcoming events modal */}
             <AppointmentModalHomescreen />
             {/* button to profile modal*/}
@@ -61,8 +60,7 @@ export default class HomeScreen extends React.Component {
             </View>
           </View>
 
-          <View style={styles.TodoBackgroundContent}>
-
+          <View style={styles.todoBackgroundContent}>
             {/* ToDo view content*/}
             <View style={styles.todoContent}>
               <Text style={styles.todoHeader}>Todo</Text>
@@ -121,7 +119,7 @@ const styles = StyleSheet.create({
     fontVariant: ['small-caps'],
   },
 
-  TodoBackgroundContent: {
+  todoBackgroundContent: {
     backgroundColor: Colors.backgroundColor,
     flex: 1,
     justifyContent: 'flex-end',
@@ -129,12 +127,11 @@ const styles = StyleSheet.create({
     padding: 15,
   },
 
-  modals: {
+  eventAndProfileContainer: {
     flexDirection: "row",
     backgroundColor: Colors.backgroundColor,
-    width: '80%',
-    marginLeft: 10,
-    padding: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 
   todoContent: {

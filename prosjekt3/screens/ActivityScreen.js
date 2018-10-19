@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, SafeAreaView } from 'react-native';
+import React from 'react';
+import { StyleSheet, KeyboardAvoidingView, ScrollView, Platform, SafeAreaView } from 'react-native';
 import Colors from '../constants/Colors';
 import PedometerSensor from '../components/pedometer';
-
 
 export default class ActivityScreen extends React.Component {
   static navigationOptions = {

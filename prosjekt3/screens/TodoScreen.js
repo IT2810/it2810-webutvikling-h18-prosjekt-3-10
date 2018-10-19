@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, TextInput, Image, FlatList,
-  AsyncStorage, ScrollView, SafeAreaView } from 'react-native';
-import { List, ListItem, Button, Text, Header } from 'react-native-elements';
+import React from 'react';
+import { View, StyleSheet, TextInput, Image, FlatList, AsyncStorage, ScrollView, SafeAreaView } from 'react-native';
+import { List, ListItem, Button, Header } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
 
@@ -105,7 +104,6 @@ export default class TodoScreen extends React.Component {
       </List>
     )
   }
-
 
   // Date picker object
   datePicker = () => {
@@ -238,30 +236,36 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+
   headerOuterContainer: {
     borderBottomWidth: 1,
     borderBottomColor: '#999',
   },
+
   header: {
     color: 'black',
     fontSize: 20,
     fontWeight: '600',
     fontVariant: ['small-caps'],
   },
+
   container: {
     flex: 1,
     paddingTop: 0,
     backgroundColor: Colors.backgroundColor,
   },
+
   formView: {
     alignItems: 'center',
     borderColor: '#ccc',
     paddingBottom: 8,
     paddingTop: 20,
   },
+
   txtinput: {
     width: '90%',
   },
+
   inputForm: {
     marginLeft: 36,
     backgroundColor: Colors.inputBackground,
@@ -270,35 +274,40 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: 'center',
   },
+
   listItemContainer: {
     height: 350,
     marginRight: 20,
     marginLeft: 20,
   },
+
   listItems: {
     borderBottomColor: '#ccc',
     backgroundColor: Colors.backgroundColor,
     paddingTop: 15,
     paddingBottom: 15,
   },
+
   listItemTitle: {
     fontWeight: '400',
 
   },
   listItemSubtitle: {
     fontWeight: '300',
-
   },
+
   listItemLeftIcon: {
     marginRight: 10,
     fontSize: 22,
     color: Colors.black,
   },
+
   listItemRightIcon: {
     marginRight: 10,
     fontSize: 22,
     color: Colors.btnRed,
   },
+
   listImage: {
     position: 'absolute',
     left: 0,
@@ -307,6 +316,7 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
   },
+
   addBtn: {
     backgroundColor: Colors.btnBlue,
   },

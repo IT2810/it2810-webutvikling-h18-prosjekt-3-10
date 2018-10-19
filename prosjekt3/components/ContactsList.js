@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
     View,
     StyleSheet,
@@ -62,7 +61,7 @@ const ContactsList = ({
                 <View style={styles.contactsHeader}>
                     <Text h4>Imported contacts</Text>
                     {
-                        importedContacts.length == 0 && <Button title="Import" onPress={importContacts}/>
+                        importedContacts.length == 0 && <Button title="Import" onPress={importContacts} />
                     }
                 </View>
                 {listContacts(importedContacts)}
@@ -71,13 +70,13 @@ const ContactsList = ({
         )
     } else {
         // Show an empty contact list
-        return(
+        return (
             <View style={styles.mainContainer}>
                 <Image
-                source={
-                    require('../assets/images/alone.gif')
-                }
-                style={styles.lonelyImage}
+                    source={
+                        require('../assets/images/alone.gif')
+                    }
+                    style={styles.lonelyImage}
                 />
 
                 <View style={styles.ontainer}>

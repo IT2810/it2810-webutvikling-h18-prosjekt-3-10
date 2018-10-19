@@ -11,7 +11,6 @@ import { Icon, Header } from 'react-native-elements';
 import ProfileScreen from '../screens/ProfilesScreen';
 import Colors from '../constants/Colors'
 
-
 export default class ProfileModal extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +26,7 @@ export default class ProfileModal extends React.Component {
     ProfileMod = () => {
         return (
             <View>
-                {/* the modal for profile*/}
+                {/* the modal for profile */}
                 <Modal
                     animationType="slide"
                     transparent={false}
@@ -41,7 +40,7 @@ export default class ProfileModal extends React.Component {
                           outerContainerStyles={styles.headerOuterContainer}
                           innerContainerStyles={styles.headerInnerContainer}
                           rightComponent={{
-                              size: 28,
+                              size: 32,
                               icon: 'home',
                               color: Colors.btnBlue,
                               onPress: () => { this.setModalVisible(!this.state.modalVisible) }
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
     },
     profileBtnContainer: {
-      width: '50%',
+      flex: 1,
     },
     headerOuterContainer: {
         borderBottomWidth: 2,
@@ -108,13 +107,5 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontVariant: ['small-caps'],
     },
-    closeModalButton: {
-        position: 'absolute',
-        top: "50%",
-        right: 2,
-    },
-    modalProfile: {
-        position: 'absolute',
-        bottom: 3,
-    },
+
 })

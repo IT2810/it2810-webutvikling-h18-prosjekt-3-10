@@ -9,7 +9,6 @@ import {
     SafeAreaView,
     ScrollView,
 } from 'react-native'
-
 import {
     Avatar,
     Header,
@@ -34,6 +33,37 @@ export default class AddContactModal extends Component {
     generateId = () => {
         const id = `${this.state.firstName}${this.state.lastName}${this.state.number}`
         return id
+    }
+
+    handleAddContact = () => {
+        const {
+            firstName,
+            lastName,
+            number,
+        } = this.state
+
+        // Construct contact-object
+        // Trim spaces from both ends of names
+        const contact = {
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            id: this.generateId(),
+            phoneNumbers: [{ number: number }]
+        }
+
+        // Reset modal
+        this.setState({
+            firstName: '',
+            lastName: '',
+            number: '',
+            id: '',
+        })
+
+        // Pass contact to save-method
+        this.props.onSave(contact)
+
+        // Notify ready to close
+        this.props.closeCallback()
     }
 
     render() {
@@ -72,27 +102,27 @@ export default class AddContactModal extends Component {
 
                         <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
-                            placeholder="First name"
-                            value={this.state.firstName}
-                            onChangeText={name => {
-                                this.setState({
-                                    firstName: name,
-                                })
-                            }}
-                            underlineColorAndroid="transparent"
+                                placeholder="First name"
+                                value={this.state.firstName}
+                                onChangeText={name => {
+                                    this.setState({
+                                        firstName: name,
+                                    })
+                                }}
+                                underlineColorAndroid="transparent"
                             />
                         </View>
 
                         <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
-                            placeholder="Last name"
-                            value={this.state.lastName}
-                            onChangeText={name => {
-                                this.setState({
-                                    lastName: name
-                                })
-                            }}
-                            underlineColorAndroid="transparent"
+                                placeholder="Last name"
+                                value={this.state.lastName}
+                                onChangeText={name => {
+                                    this.setState({
+                                        lastName: name
+                                    })
+                                }}
+                                underlineColorAndroid="transparent"
                             />
                         </View>
 
@@ -180,12 +210,7 @@ const styles = StyleSheet.create({
     avatar: {
         margin: 20,
     },
-    textWithLabel: {
-        marginBottom: 20,
-    },
-    lightText: {
-        color: "#696969"
-    },
+
     name: {
         fontSize: 20,
         color: "#4d4d4d",

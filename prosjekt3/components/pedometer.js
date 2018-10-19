@@ -1,13 +1,10 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
-import { List, ListItem, Button, Text,
-  Overlay, Header } from 'react-native-elements';
-import { AsyncStorage, StyleSheet, View, TextInput, Alert,
-  KeyboardAvoidingView, ScrollView } from "react-native";
+import { Button, Text, Header } from 'react-native-elements';
+import { AsyncStorage, StyleSheet, View, TextInput, Alert } from "react-native";
 import ProgressCircle from 'react-native-progress-circle'
 import Colors from '../constants/Colors';
-
 
 export default class PedometerSensor extends React.Component {
   constructor(props) {
@@ -166,6 +163,8 @@ export default class PedometerSensor extends React.Component {
     }
   }
 
+
+  // printing a motivation quote for different percentage progress
   motivationQuote = () => {
     const steps = this.state.todayStepCount;
     const goal = this.state.goal;
@@ -312,7 +311,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: 'center',
   },
-
 
 });
 

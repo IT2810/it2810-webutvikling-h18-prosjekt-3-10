@@ -1,24 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ContactsScreen snapshot renders the contacts screen 1`] = `
-<View
-  enabled={true}
-  keyboardVerticalOffset={0}
-  onLayout={[Function]}
->
-  <View
-    style={
-      Array [
-        undefined,
-        Object {
-          "bottom": 0,
-        },
-      ]
-    }
-  />
-</View>
-`;
-
 exports[`ProfileScreen snapshot renders the Profile screen 1`] = `
 <View
   enabled={true}
