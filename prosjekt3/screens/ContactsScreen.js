@@ -6,16 +6,20 @@ import {
   ScrollView,
   View,
   AsyncStorage,
-  StyleSheet
+  StyleSheet,
+  SafeAreaView,
 } from 'react-native';
-
+import { Button, Header } from 'react-native-elements';
 import { Contacts, Permissions } from 'expo';
 import ContactsList from '../components/ContactsList';
 import Loading from '../components/Loading';
+import Colors from '../constants/Colors'
+
 
 export default class ContactsScreen extends Component {
   static navigationOptions = {
     title: "Contacts",
+    header: null,
   };
 
   state = {
@@ -31,12 +35,14 @@ export default class ContactsScreen extends Component {
     // Check if user already has accepted sharing contacts
     // If not the contacts page will show an option to import from contacts
     // which will in turn ask for Contacts-permission.
+    {/*
     Permissions.getAsync(Permissions.CONTACTS)
       .then(({ status }) => {
         if (status === 'granted') {
           this.importContacts();
         }
       })
+    */}
   }
 
   // Saves a contact in AsyncStorage
@@ -79,6 +85,7 @@ export default class ContactsScreen extends Component {
         data = data.filter(savedContact => savedContact.id != contact.id)
         this.setState({
           addedContacts: data,
+          contactModalVisible: false,
         })
         return JSON.stringify(data)
       })
@@ -155,29 +162,74 @@ export default class ContactsScreen extends Component {
 
   render() {
     return (
-      <View>
-        <ScrollView keyboardShouldPersistTaps='handled'>
-          {
-            // This checks if phone is currently fetching contacts and if so displays loading, if not displays list of contacts
-            this.state.fetchingContacts
-              ?
-              <Loading />
-              :
-              <ContactsList
-                addedContacts={this.state.addedContacts}
-                importedContacts={this.state.importedContacts}
-                handleContactPress={this.handleContactPress}
-                handleDelete={this.handleDelete}
-                importContacts={this.importContacts}
-                addContact={() => this.setState({ addContactModalVisible: true })}
-              />
-          }
+      <SafeAreaView style={styles.safeArea}>
+        <View>
 
-          {/*Modals not shown on screen until their visibility is set to true in state*/}
-          <ContactInformationModal contact={this.state.activeContact} closeCallback={() => this.setState({ contactModalVisible: false })} visible={this.state.contactModalVisible} />
-          <AddContactModal onSave={(contact) => this.saveContact(contact)} closeCallback={() => this.setState({ addContactModalVisible: false })} visible={this.state.addContactModalVisible} />
-        </ScrollView>
-      </View>
+          <Header
+            outerContainerStyles={styles.headerOuterContainer}
+            rightComponent={{
+              size: 28,
+              icon: 'add-circle',
+              color: Colors.btnBlue,
+              style: styles.headerBtn,
+              onPress: () => { this.setState({ addContactModalVisible: true }) }
+            }}
+            centerComponent={{
+              text: 'contacts',
+              style: styles.header,
+            }}
+            backgroundColor={Colors.headerBackground}
+          />
+
+          <View>
+            {
+              // This checks if phone is currently fetching contacts and if so displays loading, if not displays list of contacts
+              this.state.fetchingContacts
+                ?
+                <Loading />
+                :
+                <ContactsList
+                  addedContacts={this.state.addedContacts}
+                  importedContacts={this.state.importedContacts}
+                  handleContactPress={this.handleContactPress}
+                  handleDelete={this.handleDelete}
+                  importContacts={this.importContacts}
+                  addContact={() => this.setState({ addContactModalVisible: true })}
+                />
+            }
+
+            {/*Modals not shown on screen until their visibility is set to true in state*/}
+            <ContactInformationModal
+              contact={this.state.activeContact}
+              onDelete={(contact) => this.handleDelete(contact)}
+              closeCallback={() => this.setState({ contactModalVisible: false })}
+              visible={this.state.contactModalVisible}
+            />
+            <AddContactModal
+              onSave={(contact) => this.saveContact(contact)}
+              closeCallback={() => this.setState({ addContactModalVisible: false })}
+              visible={this.state.addContactModalVisible} />
+          </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+  },
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
+
+});

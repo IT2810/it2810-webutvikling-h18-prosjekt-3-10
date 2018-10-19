@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TextInput, Image, FlatList,
-  AsyncStorage, ScrollView } from 'react-native';
+  AsyncStorage, ScrollView, SafeAreaView } from 'react-native';
 import { List, ListItem, Button, Text, Header } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
@@ -112,7 +112,7 @@ export default class TodoScreen extends React.Component {
     return (
       <DatePicker
         style={{
-          width: 320,
+          width: '90%',
           paddingBottom: 10,
         }}
         date={this.state.date}
@@ -180,58 +180,63 @@ export default class TodoScreen extends React.Component {
   // RENDER
   render() {
     return (
-      <View style={styles.container}>
 
-        <Header
-          outerContainerStyles={styles.headerOuterContainer}
-          innerContainerStyles={styles.headerInnerContainer}
-          centerComponent={{
-            text: 'todo',
-            style: styles.header,
-          }}
-          backgroundColor={Colors.headerBackground}
-        />
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Header
+            outerContainerStyles={styles.headerOuterContainer}
+            innerContainerStyles={styles.headerInnerContainer}
+            centerComponent={{
+              text: 'todo',
+              style: styles.header,
+            }}
+            backgroundColor={Colors.headerBackground}
+          />
 
-        <View style={styles.formView}>
+          <View style={styles.formView}>
 
-          <View style={styles.txtinput}>
-            <Image
-              style={styles.listImage}
-              source={require('../assets/images/list-icon.png')}
-            />
+            <View style={styles.txtinput}>
+              <Image
+                style={styles.listImage}
+                source={require('../assets/images/list-icon.png')}
+              />
 
-            <TextInput
-              style={styles.inputForm}
-              value={this.state.inputValue}
-              onChangeText={this.handleTextChange}
-              placeholder="What todo"
-              underlineColorAndroid="transparent"
-            />
+              <TextInput
+                style={styles.inputForm}
+                value={this.state.inputValue}
+                onChangeText={this.handleTextChange}
+                placeholder="What todo"
+                underlineColorAndroid="transparent"
+              />
+            </View>
+
+            {this.datePicker()}
+
+            <View style={styles.btnView}>
+              <Button
+                title="Add"
+                onPress={this.handleSendButtonPress}
+                buttonStyle={styles.addBtn}
+              />
+            </View>
           </View>
 
-          {this.datePicker()}
-
-          <Button
-            title="Add"
-            onPress={this.handleSendButtonPress}
-            buttonStyle={styles.addBtn}
-          />
+          <View style={styles.listItemContainer}>
+            <ScrollView>
+              {this.itemsOutput()}
+            </ScrollView>
+          </View>
         </View>
+      </SafeAreaView>
 
-        <View style={styles.listItemContainer}>
-          <ScrollView>
-            {this.itemsOutput()}
-          </ScrollView>
-        </View>
-
-      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  headerInnerContainer: {
-    marginTop: 13,
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
   headerOuterContainer: {
     borderBottomWidth: 1,
@@ -255,7 +260,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   txtinput: {
-    width: 320,
+    width: '90%',
   },
   inputForm: {
     marginLeft: 36,
@@ -303,9 +308,11 @@ const styles = StyleSheet.create({
     height: 25,
   },
   addBtn: {
-    marginLeft: 36,
-    width: 285,
     backgroundColor: Colors.btnBlue,
   },
+  btnView: {
+    marginLeft: 36,
+    width: '89%',
+  }
 
 });

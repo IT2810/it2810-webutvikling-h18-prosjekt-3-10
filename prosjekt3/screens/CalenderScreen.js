@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   ScrollView, StyleSheet, View, FlatList, TextInput,
-  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity, Text
+  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity, Text, SafeAreaView
 } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { List, ListItem, Button, Header, Icon } from 'react-native-elements';
@@ -142,57 +142,59 @@ export default class CalenderScreen extends React.Component {
         visible={this.state.updateModalVisible}
         onRequestClose={() => { this.setUpdateModalVisibility() }}>
 
-        <View style={styles.modal}>
-          <View>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.modal}>
+            <View>
 
-            <Header
-              outerContainerStyles={styles.headerOuterContainer}
-              innerContainerStyles={styles.headerInnerContainer}
-              rightComponent={{
-                size: 25,
-                icon: 'close',
-                color: 'black',
-                style: styles.headerBtn,
-                onPress: () => { this.setUpdateModalVisibility() }
-              }}
-              centerComponent={{
-                text: 'update item',
-                style: styles.header,
-              }}
-              backgroundColor={Colors.headerBackground}
-            />
+              <Header
+                outerContainerStyles={styles.headerOuterContainer}
+                innerContainerStyles={styles.headerInnerContainer}
+                rightComponent={{
+                  size: 25,
+                  icon: 'close',
+                  color: 'black',
+                  style: styles.headerBtn,
+                  onPress: () => { this.setUpdateModalVisibility() }
+                }}
+                centerComponent={{
+                  text: 'update item',
+                  style: styles.header,
+                }}
+                backgroundColor={Colors.headerBackground}
+              />
 
-            <TextInput
-              style={styles.inputForm}
-              value={this.state.inputValue}
-              onChangeText={this.handleTextChange}
-              placeholder="Whats happening"
-              underlineColorAndroid="transparent"
-            />
+              <TextInput
+                style={styles.inputForm}
+                value={this.state.inputValue}
+                onChangeText={this.handleTextChange}
+                placeholder="Whats happening"
+                underlineColorAndroid="transparent"
+              />
 
-            <View style={styles.modalDatePicker}>
-              {this.datePicker()}
+              <View style={styles.modalDatePicker}>
+                {this.datePicker()}
+              </View>
+              <View style={styles.modalTimePicker}>
+                {this.timePicker()}
+              </View>
+
+              <Button
+                title="Update item"
+                onPress={this.updateItem}
+                buttonStyle={styles.addBtn}
+                containerViewStyle={{ width: '100%', marginLeft: 0 }}
+              />
+
+              <Button
+                title="Delete item"
+                onPress={this.removeItem}
+                buttonStyle={styles.deleteBtn}
+                containerViewStyle={{ width: '100%', marginLeft: 0 }}
+              />
+
             </View>
-            <View style={styles.modalTimePicker}>
-              {this.timePicker()}
-            </View>
-
-            <Button
-              title="Update item"
-              onPress={this.updateItem}
-              buttonStyle={styles.addBtn}
-              containerViewStyle={{ width: '100%', marginLeft: 0 }}
-            />
-
-            <Button
-              title="Delete item"
-              onPress={this.removeItem}
-              buttonStyle={styles.deleteBtn}
-              containerViewStyle={{ width: '100%', marginLeft: 0 }}
-            />
-
           </View>
-        </View>
+        </SafeAreaView>
       </Modal>
     )
   }
@@ -287,50 +289,52 @@ export default class CalenderScreen extends React.Component {
         visible={this.state.addModalVisible}
         onRequestClose={() => { this.setAddModalVisibility() }}>
 
-        <View style={styles.modal}>
-          <View>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.modal}>
+            <View>
 
-            <Header
-              outerContainerStyles={styles.headerOuterContainer}
-              innerContainerStyles={styles.headerInnerContainer}
-              rightComponent={{
-                size: 25,
-                icon: 'close',
-                color: 'black',
-                style: styles.headerBtn,
-                onPress: () => { this.setAddModalVisibility() }
-              }}
-              centerComponent={{
-                text: 'add item',
-                style: styles.header,
-              }}
-              backgroundColor={Colors.headerBackground}
-            />
+              <Header
+                outerContainerStyles={styles.headerOuterContainer}
+                innerContainerStyles={styles.headerInnerContainer}
+                rightComponent={{
+                  size: 25,
+                  icon: 'close',
+                  color: 'black',
+                  style: styles.headerBtn,
+                  onPress: () => { this.setAddModalVisibility() }
+                }}
+                centerComponent={{
+                  text: 'add item',
+                  style: styles.header,
+                }}
+                backgroundColor={Colors.headerBackground}
+              />
 
-            <TextInput
-              style={styles.inputForm}
-              value={this.state.inputValue}
-              onChangeText={this.handleTextChange}
-              placeholder="Whats happening"
-              underlineColorAndroid="transparent"
-            />
+              <TextInput
+                style={styles.inputForm}
+                value={this.state.inputValue}
+                onChangeText={this.handleTextChange}
+                placeholder="Whats happening"
+                underlineColorAndroid="transparent"
+              />
 
-            <View style={styles.modalDatePicker}>
-              {this.datePicker()}
+              <View style={styles.modalDatePicker}>
+                {this.datePicker()}
+              </View>
+              <View style={styles.modalTimePicker}>
+                {this.timePicker()}
+              </View>
+
+              <Button
+                title="Add it"
+                onPress={this.addItem}
+                buttonStyle={styles.addBtn}
+                containerViewStyle={{ width: '100%', marginLeft: 0 }}
+              />
+
             </View>
-            <View style={styles.modalTimePicker}>
-              {this.timePicker()}
-            </View>
-
-            <Button
-              title="Add it"
-              onPress={this.addItem}
-              buttonStyle={styles.addBtn}
-              containerViewStyle={{ width: '100%', marginLeft: 0 }}
-            />
-
           </View>
-        </View>
+        </SafeAreaView>
       </Modal>
     )
   }
@@ -418,11 +422,11 @@ export default class CalenderScreen extends React.Component {
   // RENDER
   render() {
     return (
+      <SafeAreaView style={styles.safeArea}>
       <View>
 
         <Header
           outerContainerStyles={styles.headerOuterContainer}
-          innerContainerStyles={styles.headerInnerContainer}
           rightComponent={{
             size: 28,
             icon: 'add-circle',
@@ -447,19 +451,20 @@ export default class CalenderScreen extends React.Component {
         </View>
 
       </View>
+      </SafeAreaView>
     );
   }
 }
 
 
 const styles = StyleSheet.create({
-  headerInnerContainer: {
-    marginTop: 13,
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
   headerOuterContainer: {
     borderBottomWidth: 1,
     borderBottomColor: '#999',
-    height: 100,
   },
   header: {
     color: 'black',
