@@ -4,7 +4,6 @@ import {
   View,
   Text,
   ScrollView,
-  SafeAreaView
 } from 'react-native';
 import PedometerHomescreen from '../components/PedometerHomescreen';
 import TodoHomescreen from '../components/TodoHomescreen';
@@ -26,53 +25,53 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.safeArea}>
+      <View>
 
-      <Header
-        outerContainerStyles={styles.headerOuterContainer}
-        centerComponent={{
-          text: 'STE reactive',
-          style: styles.header,
-        }}
-        backgroundColor={Colors.headerBackground}
-      />
+        <Header
+          outerContainerStyles={styles.headerOuterContainer}
+          centerComponent={{
+            text: 'STE reactive',
+            style: styles.header,
+          }}
+          backgroundColor={Colors.headerBackground}
+        />
 
-      <ScrollView style={{
-        backgroundColor: Colors.backgroundColor,
-      }}>
+        <ScrollView style={{
+          backgroundColor: Colors.backgroundColor,
+        }}>
 
-        <View>
-          <View style={styles.eventAndProfileContainer}>
-            {/* "upcoming events modal */}
-            <AppointmentModalHomescreen />
-            {/* button to profile modal*/}
-            <ProfileModal />
-          </View>
+          <View>
+            <View style={styles.eventAndProfileContainer}>
+              {/* "upcoming events modal */}
+              <AppointmentModalHomescreen />
+              {/* button to profile modal*/}
+              <ProfileModal />
+            </View>
 
-          {/* activity and todo content, middle of the screen */}
-          <View style={styles.activityBackgroundContent}>
+            {/* activity and todo content, middle of the screen */}
+            <View style={styles.activityBackgroundContent}>
 
-            {/* progress cycle*/}
-            <View style={styles.activityContent}>
-              <View>
-                <PedometerHomescreen />
+              {/* progress cycle*/}
+              <View style={styles.activityContent}>
+                <View>
+                  <PedometerHomescreen />
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.todoBackgroundContent}>
+              {/* ToDo view content*/}
+              <View style={styles.todoContent}>
+                <Text style={styles.todoHeader}>Todo</Text>
+                <View>
+                  <TodoHomescreen />
+                </View>
               </View>
             </View>
           </View>
 
-          <View style={styles.todoBackgroundContent}>
-            {/* ToDo view content*/}
-            <View style={styles.todoContent}>
-              <Text style={styles.todoHeader}>Todo</Text>
-              <View>
-                <TodoHomescreen />
-              </View>
-            </View>
-          </View>
-        </View>
-
-      </ScrollView >
-      </SafeAreaView>
+        </ScrollView >
+      </View>
 
     );
   }
@@ -80,8 +79,8 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   safeArea: {
-      flex: 1,
-      backgroundColor: '#425b84',
+    flex: 1,
+    backgroundColor: '#425b84',
   },
 
   activityContent: {
