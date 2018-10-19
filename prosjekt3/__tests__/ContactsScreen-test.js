@@ -38,21 +38,22 @@ describe('Unit testing', () => {
         mock();
         await contactsScreen.saveContact(contact);
         expect(contactsScreen.state.addedContacts.length).toEqual(1);
+        expect(contactsScreen.state.addedContacts[0]).toEqual(contact);
     })
     it('should have saved contact in AsyncStorage', async () => {
         const value = await AsyncStorage.getItem('contacts')
-        expect(value).toBe(JSON.stringify([contact]))
+        expect(value).toEqual(JSON.stringify([contact]))
     })
     it('should allow several contacts in AsyncStorage', async () => {
         await contactsScreen.saveContact(contact);
         const value = await AsyncStorage.getItem('contacts')
-        expect(value).toBe(JSON.stringify([contact, contact]))
+        expect(value).toEqual(JSON.stringify([contact, contact]))
     })
     it('should delete contacts', async () => {
         // This should delete all the contacts as they all share the same id
         await contactsScreen.removeContact(contact)
         const value = await AsyncStorage.getItem('contacts')
-        expect(value).toBe("[]")
+        expect(value).toEqual("[]")
     })
 
 
