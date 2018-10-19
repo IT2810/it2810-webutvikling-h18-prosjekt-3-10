@@ -2,15 +2,8 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Text,
-  Modal,
-  TouchableHighlight,
-  ImageBackground,
-
 } from 'react-native';
-import { Button, Icon, } from 'react-native-elements';
-import PedometerHomescreen from './PedometerHomescreen';
-import TodoHomescreen from './TodoHomescreen';
+import { Button } from 'react-native-elements';
 
 export default class ProfileButton extends React.Component {
   constructor(props) {
@@ -24,7 +17,6 @@ export default class ProfileButton extends React.Component {
   }
 
   homeButton = () => {
-
     return (
       <Button buttonStyle={styles.profileButton}
         icon={{

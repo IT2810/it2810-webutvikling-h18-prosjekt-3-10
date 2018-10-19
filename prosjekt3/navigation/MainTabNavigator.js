@@ -7,9 +7,8 @@ import CalenderScreen from '../screens/CalenderScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import TodoScreen from '../screens/TodoScreen';
 import ContactsScreen from '../screens/ContactsScreen';
-import ProfileScreen from '../screens/ProfilesScreen';
 
-
+// adding homescreen to navigator stack
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
@@ -28,6 +27,7 @@ HomeStack.navigationOptions = {
   ),
 };
 
+// adding calendar screen to navigator stack
 const CalenderStack = createStackNavigator({
   Calender: CalenderScreen
 });
@@ -44,6 +44,7 @@ CalenderStack.navigationOptions = {
   ),
 };
 
+// adding activity screen to navigator stack
 const ActivityStack = createStackNavigator({
   Activity: ActivityScreen,
 });
@@ -58,6 +59,7 @@ ActivityStack.navigationOptions = {
   ),
 };
 
+// adding todo screen to navigator stack
 const TodoStack = createStackNavigator({
   Todo: TodoScreen,
 });
@@ -72,6 +74,7 @@ TodoStack.navigationOptions = {
   ),
 };
 
+// adding contact screen to navigator stack
 const ContactsStack = createStackNavigator({
   Contacts: ContactsScreen,
 });
@@ -86,31 +89,10 @@ ContactsStack.navigationOptions = {
   ),
 };
 
-const ProfileStack = createStackNavigator({
-  Profile: ProfileScreen,
-});
-
-ProfileStack.navigationOptions = {
-  tabBarLabel: 'Profile',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    />
-  ),
-};
-
-
-
 export default createBottomTabNavigator({
   HomeStack,
   CalenderStack,
   ActivityStack,
   TodoStack,
   ContactsStack,
-  ProfileStack
 });

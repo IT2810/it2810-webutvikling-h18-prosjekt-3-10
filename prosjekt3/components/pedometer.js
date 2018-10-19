@@ -1,12 +1,10 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
-import { List, ListItem, Button, Text, Overlay } from 'react-native-elements';
-import { AsyncStorage, StyleSheet, View, TextInput, Alert, KeyboardAvoidingView, ScrollView } from "react-native";
+import { Button, Text, Header } from 'react-native-elements';
+import { AsyncStorage, StyleSheet, View, TextInput, Alert } from "react-native";
 import ProgressCircle from 'react-native-progress-circle'
 import Colors from '../constants/Colors';
-
-
 
 export default class PedometerSensor extends React.Component {
   constructor(props) {
@@ -107,12 +105,15 @@ export default class PedometerSensor extends React.Component {
 
   // Function to set or update daily goal
   setGoal = () => {
-    this.setState({
-      goal: this.state.inputGoal,
-      inputGoal: ''
-    },
-      () => this.storeData()
-    );
+    const goal = this.state.inputGoal;
+    if (goal != '') {
+      this.setState({
+        goal: this.state.inputGoal,
+        inputGoal: ''
+      },
+        () => this.storeData()
+      );
+    }
   }
 
   // Function to save daily goal data to local storage
@@ -162,12 +163,23 @@ export default class PedometerSensor extends React.Component {
     }
   }
 
+
+  // printing a motivation quote for different percentage progress
   motivationQuote = () => {
     const steps = this.state.todayStepCount;
     const goal = this.state.goal;
     const perc = (parseInt(steps, 10) / parseInt(goal, 10) * 100);
 
-    if (perc > 10 && 25 > perc) {
+    if (perc > 0 && 10 > perc) {
+      return (
+        <Text style={styles.motivationQuote}>
+          You are on the go!
+          Why not take a morning walk!
+        </Text>
+      )
+    }
+
+    else if (perc > 10 && 25 > perc) {
       return (
         <Text style={styles.motivationQuote}>
           That is a good start!
@@ -203,45 +215,69 @@ export default class PedometerSensor extends React.Component {
 
   render() {
     return (
-      <View style={styles.elements}>
-        {this.checkAvailablity()}
+      <View>
 
-        <Text style={styles.todayStepTxt}>
-          Todays steps:
-            </Text>
-
-        <View style={styles.progressCircle}>
-          {this.progressCircle()}
-        </View>
-
-        {this.motivationQuote()}
-
-        <View>
-          <TextInput
-            style={styles.inputForm}
-            value={this.state.inputGoal}
-            onChangeText={this.handleInputGoal}
-            placeholder="Input your daily goal"
-            underlineColorAndroid="transparent"
-            keyboardType='numeric'
-          />
-        </View>
-
-        <Button
-          title="Set goal"
-          onPress={this.setGoal}
-          buttonStyle={styles.addBtn}
+        <Header
+          outerContainerStyles={styles.headerOuterContainer}
+          innerContainerStyles={styles.headerInnerContainer}
+          centerComponent={{
+            text: 'goals / activity',
+            style: styles.header,
+          }}
+          backgroundColor={Colors.headerBackground}
         />
 
+        <View style={styles.elements}>
+
+          {this.checkAvailablity()}
+
+          <Text style={styles.todayStepTxt}>
+            Todays steps:
+              </Text>
+
+          <View style={styles.progressCircle}>
+            {this.progressCircle()}
+          </View>
+
+          {this.motivationQuote()}
+
+          <View>
+            <TextInput
+              style={styles.inputForm}
+              value={this.state.inputGoal}
+              onChangeText={this.handleInputGoal}
+              placeholder="Input your daily goal"
+              underlineColorAndroid="transparent"
+              keyboardType='numeric'
+            />
+          </View>
+
+          <Button
+            title="Set goal"
+            onPress={this.setGoal}
+            buttonStyle={styles.addBtn}
+          />
+
+        </View>
       </View>
-
-
-
     );
   }
 }
 
 const styles = StyleSheet.create({
+  headerInnerContainer: {
+    marginTop: 13,
+  },
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+  },
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
   elements: {
     alignItems: 'center',
 
@@ -275,7 +311,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: 'center',
   },
-
 
 });
 

@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, TextInput, Image, FlatList,
-  AsyncStorage, ScrollView } from 'react-native';
-import { List, ListItem, Button, Text } from 'react-native-elements';
+import React from 'react';
+import { View, StyleSheet, TextInput, Image, FlatList, AsyncStorage, ScrollView, SafeAreaView } from 'react-native';
+import { List, ListItem, Button, Header } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
 
 export default class TodoScreen extends React.Component {
   static navigationOptions = {
-    title: 'Todo',
+    header: null,
   };
 
   constructor(props) {
@@ -23,6 +22,7 @@ export default class TodoScreen extends React.Component {
   }
 
   // Updating inputValue on textchange
+  // InputValue represents name of ToDo-task
   handleTextChange = (value) => {
     this.setState(() => ({
       inputValue: value,
@@ -41,7 +41,7 @@ export default class TodoScreen extends React.Component {
     return id;
   }
 
-  // Adding an item to the list
+  // Adding an item to the list of todos
   handleSendButtonPress = () => {
     const input = this.state.inputValue;
     const date = this.state.date;
@@ -65,17 +65,17 @@ export default class TodoScreen extends React.Component {
     this.storeData();
   };
 
-  // Deleting an item from the list
+  // Deleting an item from the list of todos
   handleDeleteButtonPress = (item) => {
     const list = this.state.list.filter(listItem => listItem.id != item.id)
-    // returns new array with item filtered out
+    // sets state with new array where specified item is removed
     this.setState(
       { list },
       () => this.storeData()
     );
   }
 
-  // List object with todo items
+  // List with todo items
   itemsOutput = () => {
     return (
       <List>
@@ -85,16 +85,18 @@ export default class TodoScreen extends React.Component {
           extraData={this.state}
           renderItem={({ item }) => (
             <ListItem
+              containerStyle={styles.listItems}
               title={item.input}
+              titleStyle={styles.listItemTitle}
               subtitle={item.date}
+              subtitleStyle={styles.listItemSubtitle}
+              leftIcon={{
+                name: 'chevron-right',
+                style: styles.listItemLeftIcon
+              }}
               rightIcon={{
-                name: 'times',
-                type: 'font-awesome',
-                style: {
-                  marginRight: 15,
-                  fontSize: 22,
-                  color: '#2f95dc',
-                },
+                name: 'clear',
+                style: styles.listItemRightIcon,
               }}
               onPressRightIcon={() => this.handleDeleteButtonPress(item)}
             />
@@ -104,13 +106,12 @@ export default class TodoScreen extends React.Component {
     )
   }
 
-
-  // Date picker object
+  // Datepicker component
   datePicker = () => {
     return (
       <DatePicker
         style={{
-          width: 320,
+          width: '90%',
           paddingBottom: 10,
         }}
         date={this.state.date}
@@ -139,22 +140,23 @@ export default class TodoScreen extends React.Component {
     )
   }
 
-  // Function to save data to local storage
+  // Saves list of todos in AsyncStorage
   storeData = async () => {
     const data = this.state.list;
     try {
       await AsyncStorage.setItem('Todo-list', JSON.stringify(data));
     }
     catch (error) {
-      // Error saving data
+      console.error("Saving list of todos in AsyncStorage failed")
     }
   };
 
+  // When component first loads, retrieve todo-list from AsyncStorage
   componentDidMount = () => {
     this.retrieveData()
   }
 
-  // Function to retrieve data from local storage
+  // Retrieves todo-list from AsyncStorage
   retrieveData = async () => {
     try {
       const getData = await AsyncStorage.getItem('Todo-list');
@@ -172,71 +174,143 @@ export default class TodoScreen extends React.Component {
     }
     catch (error) {
       alert('Error retrieving data')
+      console.error("Error retrieving Todo-list from AsyncStorage")
     }
   }
 
   // RENDER
   render() {
     return (
-      <View style={styles.container}>
 
-        <View style={styles.formView}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Header
+            outerContainerStyles={styles.headerOuterContainer}
+            innerContainerStyles={styles.headerInnerContainer}
+            centerComponent={{
+              text: 'todo',
+              style: styles.header,
+            }}
+            backgroundColor={Colors.headerBackground}
+          />
 
-          <View style={styles.txtinput}>
-            <Image
-              style={styles.listImage}
-              source={require('../assets/images/list-icon.png')}
-            />
+          <View style={styles.formView}>
 
-            <TextInput
-              style={styles.inputForm}
-              value={this.state.inputValue}
-              onChangeText={this.handleTextChange}
-              placeholder="What todo"
-              underlineColorAndroid="transparent"
-            />
+            <View style={styles.txtinput}>
+              <Image
+                style={styles.listImage}
+                source={require('../assets/images/list-icon.png')}
+              />
+
+              <TextInput
+                style={styles.inputForm}
+                value={this.state.inputValue}
+                onChangeText={this.handleTextChange}
+                placeholder="What todo"
+                underlineColorAndroid="transparent"
+              />
+            </View>
+
+            {this.datePicker()}
+
+            <View style={styles.btnView}>
+              <Button
+                title="Add"
+                onPress={this.handleSendButtonPress}
+                buttonStyle={styles.addBtn}
+              />
+            </View>
           </View>
 
-          {this.datePicker()}
-
-          <Button
-            title="Add"
-            onPress={this.handleSendButtonPress}
-            buttonStyle={styles.addBtn}
-          />
+          <View style={styles.listItemContainer}>
+            <ScrollView>
+              {this.itemsOutput()}
+            </ScrollView>
+          </View>
         </View>
+      </SafeAreaView>
 
-        <ScrollView>
-          {this.itemsOutput()}
-        </ScrollView>
-
-      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+  },
+
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
+
   container: {
     flex: 1,
-    paddingTop: 15,
+    paddingTop: 0,
     backgroundColor: Colors.backgroundColor,
   },
+
   formView: {
     alignItems: 'center',
     borderColor: '#ccc',
     paddingBottom: 8,
+    paddingTop: 20,
   },
+
   txtinput: {
-    width: 320,
+    width: '90%',
   },
+
   inputForm: {
     marginLeft: 36,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.inputBackground,
     height: 40,
     padding: 8,
     marginBottom: 8,
     textAlign: 'center',
   },
+
+  listItemContainer: {
+    height: 350,
+    marginRight: 20,
+    marginLeft: 20,
+  },
+
+  listItems: {
+    borderBottomColor: '#ccc',
+    backgroundColor: Colors.backgroundColor,
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+
+  listItemTitle: {
+    fontWeight: '400',
+
+  },
+  listItemSubtitle: {
+    fontWeight: '300',
+  },
+
+  listItemLeftIcon: {
+    marginRight: 10,
+    fontSize: 22,
+    color: Colors.black,
+  },
+
+  listItemRightIcon: {
+    marginRight: 10,
+    fontSize: 22,
+    color: Colors.btnRed,
+  },
+
   listImage: {
     position: 'absolute',
     left: 0,
@@ -245,10 +319,13 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
   },
+
   addBtn: {
-    marginLeft: 36,
-    width: 285,
-    backgroundColor: '#2f95dc',
+    backgroundColor: Colors.btnBlue,
   },
+  btnView: {
+    marginLeft: 36,
+    width: '89%',
+  }
 
 });

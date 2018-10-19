@@ -6,12 +6,14 @@ import {
     Image,
     TextInput,
     ScrollView,
-    KeyboardAvoidingView,
     AsyncStorage,
     TouchableHighlight,
     Text,
     ImageBackground,
+    KeyboardAvoidingView,
+    Platform
 } from 'react-native';
+import Colors from '../constants/Colors'
 
 export default class UserProfileView extends Component {
     constructor(props) {
@@ -23,18 +25,19 @@ export default class UserProfileView extends Component {
             myHeightNumber: '',
             myWeightNumber: '',
             modalVisible: false,
+            navBarHeight: (Platform.OS === 'ios') ? 10 : -90,
         };
     }
     static navigationOptions = {
         header: null,
     };
 
-    // loading saved profile info
+    // When the screen is first loaded, retrieve the saved profile data
     componentDidMount = () => {
         this.retrieveData()
     }
 
-    // retrieves stored profile info
+    // Retrieves profile data from AsyncStorage
     retrieveData = async () => {
         try {
             const result = await AsyncStorage.getItem('profile')
@@ -51,10 +54,12 @@ export default class UserProfileView extends Component {
         }
         catch (error) {
             alert('Error retrieving data')
+            console.error("Error retrieving profile data from AsyncStorage")
         }
     }
 
-    /* function that restrict user to only input integers for height input field */
+    // Method that restricts input from user to only contain integers
+    // Also adds cm to the height-string
     onChangedHeight(height) {
         let newHeight = 'cm   ';
         let heightNumbers = '0123456789';
@@ -65,7 +70,9 @@ export default class UserProfileView extends Component {
         }
         this.setState({ myHeightNumber: newHeight });
     }
-    /* function that restrict user to only input integers for weight input field */
+
+    // Method that restricts input from user to only contain integers
+    // Also adds kg to the weight string
     onChangedWeight(weight) {
         let newWeight = 'kg   ';
         let weightNumbers = '0123456789';
@@ -76,13 +83,15 @@ export default class UserProfileView extends Component {
         }
         this.setState({ myWeightNumber: newWeight });
     }
-    // saving profile info
+
+    // Saves the profile to AsyncStorage
     saveState = async () => {
         const data = this.state;
         try {
             await AsyncStorage.setItem("profile", JSON.stringify(data))
         } catch (error) {
             alert('Error saving data')
+            console.error("Error saving profile date to AsyncStorage")
         }
     }
 
@@ -92,8 +101,9 @@ export default class UserProfileView extends Component {
         }
 
         return (
-            <KeyboardAvoidingView behavior="position" enabled>
-                <ScrollView>
+            <KeyboardAvoidingView keyboardVerticalOffset={this.state.navBarHeight} behavior="position" enabled>
+                <ScrollView style={styles.container}>
+
                     <ImageBackground source={require('../assets/images/profileBackground3.jpg')} style={styles.backgroundImage}>
                         <View style={styles.headBackground}>
                             <View style={styles.centerContent}>
@@ -159,6 +169,7 @@ export default class UserProfileView extends Component {
                                 underlineColorAndroid="transparent" />
                         </View>
                     </View>
+
                     {/*  Save  button */}
                     <View style={styles.centerContent}>
                         <View style={styles.saveButton}>
@@ -170,7 +181,8 @@ export default class UserProfileView extends Component {
                             </TouchableHighlight>
                         </View>
                     </View>
-                </ScrollView>
+
+                </ScrollView >
             </KeyboardAvoidingView>
         );
     }
@@ -199,18 +211,9 @@ const styles = StyleSheet.create({
     },
 
     headBackground: {
-        flex: 1,
-        padding: 10,
-        borderBottomWidth: 2,
-        marginTop: 40,
-    },
-
-    headerText: {
-        fontSize: 30,
-        fontWeight: '700',
-        textAlign: 'center',
-        padding: 10,
-        color: "#4d4d4d",
+      flex: 1,
+      borderBottomWidth: 2,
+      marginTop: 14,
     },
 
     ImageStyle: {
@@ -248,7 +251,7 @@ const styles = StyleSheet.create({
 
     saveButton: {
         margin: 10,
-        backgroundColor: "#129919",
+        backgroundColor: Colors.btnBlue,
         borderWidth: 0,
         borderRadius: 5,
         width: 200,
