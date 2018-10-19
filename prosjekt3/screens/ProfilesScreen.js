@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import Colors from '../constants/Colors'
 
-
 export default class UserProfileView extends Component {
     constructor(props) {
         super(props);
@@ -98,6 +97,7 @@ export default class UserProfileView extends Component {
         return (
             <KeyboardAvoidingView keyboardVerticalOffset={this.state.navBarHeight} behavior="position" enabled>
                 <ScrollView style={styles.container}>
+
                     <ImageBackground source={require('../assets/images/profileBackground3.jpg')} style={styles.backgroundImage}>
                         <View style={styles.headBackground}>
                             <View style={styles.centerContent}>
@@ -107,6 +107,15 @@ export default class UserProfileView extends Component {
                                     source={profilePicture}
                                     activeOpacity={0.7}
                                 />
+                            </View>
+
+                            <View>
+                                <TextInput style={[styles.name, styles.centerContent]} // input field for name
+                                    placeholder="Enter name"
+                                    placeholderTextColor="#4f545b"
+                                    value={this.state.name}
+                                    onChangeText={(name => this.setState({ name }))}
+                                    underlineColorAndroid="transparent" />
                             </View>
                         </View>
                     </ImageBackground>
@@ -155,7 +164,6 @@ export default class UserProfileView extends Component {
                         </View>
                     </View>
 
-
                     {/*  Save  button */}
                     <View style={styles.centerContent}>
                         <View style={styles.saveButton}>
@@ -177,8 +185,6 @@ export default class UserProfileView extends Component {
 // styling
 const styles = StyleSheet.create({
 
-    container: {
-    },
     avatar: {
         borderWidth: 2,
         borderColor: "#4d4d4d"
@@ -196,21 +202,6 @@ const styles = StyleSheet.create({
     GrayContent: {
         flex: 1,
         padding: 10,
-    },
-
-    headBackground: {
-        flex: 1,
-        padding: 10,
-        borderBottomWidth: 2,
-        marginTop: 40,
-    },
-
-    headerText: {
-        fontSize: 30,
-        fontWeight: '700',
-        textAlign: 'center',
-        padding: 10,
-        color: "#4d4d4d",
     },
 
     ImageStyle: {
@@ -281,17 +272,6 @@ const styles = StyleSheet.create({
         height: 30,
         margin: 10,
         width: 250,
-    },
-
-    closeModalButton: {
-        position: 'absolute',
-        bottom: 10,
-    },
-
-    closeModalButtonText: {
-        fontSize: 18,
-        color: "#ffffff",
-
     },
 
 });

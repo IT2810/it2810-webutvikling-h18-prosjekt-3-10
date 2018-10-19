@@ -10,7 +10,6 @@ import { Icon, Header } from 'react-native-elements';
 import ProfileScreen from '../screens/ProfilesScreen';
 import Colors from '../constants/Colors'
 
-
 export default class ProfileModal extends React.Component {
     constructor(props) {
         super(props);
@@ -93,7 +92,6 @@ const styles = StyleSheet.create({
     headerOuterContainer: {
         borderBottomWidth: 2,
         borderBottomColor: 'black',
-        //height: 100,
         height: Platform.OS === 'ios' ? 100 : 70
     },
     header: {
@@ -102,11 +100,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontVariant: ['small-caps'],
     },
-    closeModalButton: {
-        position: 'absolute',
-        top: "50%",
-        right: 2,
-    },
+
     modalProfile: {
         position: 'absolute',
         bottom: 3,

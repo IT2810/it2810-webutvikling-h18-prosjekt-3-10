@@ -2,12 +2,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import HomeScreen from '../screens/HomeScreen';
 import NavigationTestUtils from 'react-navigation/NavigationTestUtils';
-import PedometerHomescreen from '../components/PedometerHomescreen';
-import TodoHomescreen from '../components/TodoHomescreen';
-import AppointmentModalHomescreen from '../components/AppointmentInfoHomescreenModal';
-import ProfileModal from '../components/ProfileModal';
-import { AsyncStorage, Platform } from 'react-native';
-import MockAsyncStorage from 'mock-async-storage';
 
 // snapshot test
 const release = () => jest.unmock('AsyncStorage')

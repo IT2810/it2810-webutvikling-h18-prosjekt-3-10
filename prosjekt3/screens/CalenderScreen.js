@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-  ScrollView, StyleSheet, View, FlatList, TextInput,
-  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity, Text
-} from 'react-native';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { List, ListItem, Button, Header, Icon } from 'react-native-elements';
+import { StyleSheet, View, TextInput, Modal, AsyncStorage, TouchableOpacity, Text } from 'react-native';
+import { Agenda } from 'react-native-calendars';
+import { Button, Header } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
 
@@ -451,7 +448,6 @@ export default class CalenderScreen extends React.Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   headerInnerContainer: {
     marginTop: 13,
@@ -519,7 +515,5 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginBottom: 8,
   },
-
-
 
 });

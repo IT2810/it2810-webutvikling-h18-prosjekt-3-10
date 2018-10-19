@@ -39,9 +39,7 @@ export default class HomeScreen extends React.Component {
               style: styles.header,
             }}
             backgroundColor={Colors.headerBackground}
-
           />
-
           <View style={styles.modals}>
 
             {/* "upcoming events modal */}
@@ -74,7 +72,6 @@ export default class HomeScreen extends React.Component {
         </View>
 
       </ScrollView >
-
     );
   }
 }
@@ -134,7 +131,6 @@ const styles = StyleSheet.create({
     borderColor: "#ffffff",
     borderBottomWidth: 1,
     borderTopWidth: 1,
-
   },
 
   todoContent: {

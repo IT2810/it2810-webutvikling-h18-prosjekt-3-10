@@ -5,7 +5,6 @@ import {
   AsyncStorage,
   FlatList,
   ScrollView,
-
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
@@ -83,7 +82,6 @@ export default class TodoHomescreen extends React.Component {
 
 const styles = StyleSheet.create({
 
-
   todoList: {
     borderWidth: 1,
     marginBottom: 10,
@@ -93,7 +91,6 @@ const styles = StyleSheet.create({
     minHeight: 100,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-
   },
 })
 
