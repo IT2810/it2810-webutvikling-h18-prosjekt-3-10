@@ -23,7 +23,7 @@ export default class AppointmentModalHomescreen extends React.Component {
             _mounted: false,
         };
     }
-
+    
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
