@@ -3,66 +3,78 @@ import {
   StyleSheet,
   View,
   Text,
-  ImageBackground,
-
+  ScrollView,
 } from 'react-native';
 import PedometerHomescreen from '../components/PedometerHomescreen';
 import TodoHomescreen from '../components/TodoHomescreen';
 import AppointmentModalHomescreen from '../components/AppointmentInfoHomescreenModal';
 import ProfileModal from '../components/ProfileModal';
+import { Header, } from 'react-native-elements';
+import Colors from '../constants/Colors';
 
 export default class HomeScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
 
   // header and styling of it
   static navigationOptions = {
-    title: "Home",
-    tabBarVisible: false,
     header: null, // removing the header
-    headerStyle: { // styling the header
-      backgroundColor: '#69868a',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
   };
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
 
   render() {
     return (
-      <ImageBackground source={require('../assets/images/homeBackground4.jpg')} style={styles.centerContent}>
+      <ScrollView style={{
+        backgroundColor: "#d9d9d9",
+      }}>
 
-        {/* "upcoming events modal */}
-        <AppointmentModalHomescreen />
+        <View>
 
-        {/* activity and todo content, middle of the screen */}
-        <View style={styles.middleContent}>
+          <Header
+            outerContainerStyles={styles.headerOuterContainer}
+            innerContainerStyles={styles.headerInnerContainer}
+            centerComponent={{
+              text: 'STE reactive',
+              style: styles.header,
+            }}
+            backgroundColor={Colors.headerBackground}
 
-          {/* progress cycle*/}
-          <View style={styles.activityContent}>
-            <Text style={styles.activityHeader}>Steps</Text>
-            <View>
-              <PedometerHomescreen />
+          />
+
+          <View style={styles.modals}>
+
+            {/* "upcoming events modal */}
+            <AppointmentModalHomescreen />
+            {/* button to profile modal*/}
+            <ProfileModal />
+          </View>
+
+          {/* activity and todo content, middle of the screen */}
+          <View style={styles.activityBackgroundContent}>
+
+            {/* progress cycle*/}
+            <View style={styles.activityContent}>
+              <View>
+                <PedometerHomescreen />
+              </View>
             </View>
           </View>
 
-          {/* ToDo view content*/}
-          <View style={styles.todoContent}>
-            <Text style={styles.todoHeader}>ToDo</Text>
-            <View>
-              <TodoHomescreen />
+          <View style={styles.TodoBackgroundContent}>
+
+            {/* ToDo view content*/}
+            <View style={styles.todoContent}>
+              <Text style={styles.todoHeader}>ToDo</Text>
+              <View>
+                <TodoHomescreen />
+              </View>
             </View>
           </View>
-
         </View>
-        {/* button to profile */}
-        <ProfileModal />
 
-      </ImageBackground>
+      </ScrollView >
+
     );
   }
 }
@@ -70,13 +82,16 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
 
   activityContent: {
-    flex: 1,
-    backgroundColor: '#5F7C80',
-    margin: 15,
-    marginLeft: 10,
     padding: 10,
-    borderRadius: 5,
-    height: 200,
+  },
+
+  activityBackgroundContent: {
+    backgroundColor: "#a6a6a6",
+    borderColor: "#ffffff",
+    borderBottomWidth: 1,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   activityHeader: {
@@ -86,34 +101,55 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  centerContent: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    backgroundColor: '#ffffff'
+  headerInnerContainer: {
+    marginTop: 15,
   },
 
-  middleContent: {
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+    backgroundColor: "#5aa0dd",
+    height: 100
+  },
+
+  header: {
+    color: '#cccccc',
+    fontSize: 25,
+    fontWeight: '900',
+    fontVariant: ['small-caps'],
+  },
+
+  TodoBackgroundContent: {
+    backgroundColor: "#737373",
+    borderColor: "#ffffff",
+    borderBottomWidth: 1,
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+
+  modals: {
     flexDirection: "row",
+    backgroundColor: "#d9d9d9",
+    borderColor: "#ffffff",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+
   },
 
   todoContent: {
-    flex: 1,
-    backgroundColor: '#5F7C80',
-    margin: 15,
-    marginRight: 10,
     padding: 10,
-    borderRadius: 5,
-    maxHeight: 200,
   },
 
   todoHeader: {
     textAlign: "center",
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 17,
+    backgroundColor: "#425b84",
+    borderColor: "#a6a6a6",
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderTopWidth: 1,
   },
+
 });

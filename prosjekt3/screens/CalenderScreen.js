@@ -1,15 +1,16 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, FlatList, TextInput,
-  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity } from 'react-native';
+import {
+  ScrollView, StyleSheet, View, FlatList, TextInput,
+  TouchableHighlight, Modal, Alert, AsyncStorage, TouchableOpacity, Text
+} from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { List, ListItem, Button, Text, Header, Icon } from 'react-native-elements';
+import { List, ListItem, Button, Header, Icon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
-import TodoScreen from './TodoScreen';
 
 export default class CalenderScreen extends React.Component {
   static navigationOptions = {
-    title: 'Calendar',
+    header: null,
   };
 
   constructor(props) {
@@ -35,7 +36,6 @@ export default class CalenderScreen extends React.Component {
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         theme={{
-          agendaKnobColor: '#2f95dc'
         }}
       />
     )
@@ -48,7 +48,7 @@ export default class CalenderScreen extends React.Component {
 
   // Function to save data to local storage
   storeData = async () => {
-  const data = this.state.items;
+    const data = this.state.items;
     try {
       await AsyncStorage.setItem('Agenda', JSON.stringify(data));
     }
@@ -79,9 +79,10 @@ export default class CalenderScreen extends React.Component {
     }
   }
 
+  // Loads items
   loadItems(day) {
     setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
+      for (let i = 0; i < 15; i++) {
         const time = day.timestamp + (i * 24 * 60 * 60 * 1000);
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
@@ -89,7 +90,7 @@ export default class CalenderScreen extends React.Component {
         }
       }
       const newItems = {};
-      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+      Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
       this.setState({
         items: newItems
       });
@@ -97,18 +98,33 @@ export default class CalenderScreen extends React.Component {
     // https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
   }
 
+  //
   renderItem(item) {
-    return (
-      <View style={[styles.item, { height: item.height }]}>
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          onPress={() => {this.isSelected(item)}}
-        >
-          <Text style={styles.itemTime}> {item.time} </Text>
-          <Text style={styles.itemName}> {item.name} </Text>
-        </TouchableOpacity>
-      </View>
-    );
+    if (!item.time == '') {
+      return (
+        <View style={[styles.item, { height: item.height }]}>
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => { this.isSelected(item) }}
+          >
+            <Text style={styles.itemTime}> {item.time} </Text>
+            <Text style={styles.itemName}> {item.name} </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    else {
+      return (
+        <View style={[styles.item, { height: item.height }]}>
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => { this.isSelected(item) }}
+          >
+            <Text style={styles.itemName}> {item.name} </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
 
   isSelected = (item) => {
@@ -124,15 +140,26 @@ export default class CalenderScreen extends React.Component {
         animationType="fade"
         transparent={false}
         visible={this.state.updateModalVisible}
-        onRequestClose={() => {this.setUpdateModalVisibility()}}>
+        onRequestClose={() => { this.setUpdateModalVisibility() }}>
 
         <View style={styles.modal}>
           <View>
 
             <Header
-              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setUpdateModalVisibility()} }}
-              centerComponent={{ text: 'Update item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
-              backgroundColor={'#fff'}
+              outerContainerStyles={styles.headerOuterContainer}
+              innerContainerStyles={styles.headerInnerContainer}
+              rightComponent={{
+                size: 25,
+                icon: 'close',
+                color: 'black',
+                style: styles.headerBtn,
+                onPress: () => { this.setUpdateModalVisibility() }
+              }}
+              centerComponent={{
+                text: 'update item',
+                style: styles.header,
+              }}
+              backgroundColor={Colors.headerBackground}
             />
 
             <TextInput
@@ -154,14 +181,14 @@ export default class CalenderScreen extends React.Component {
               title="Update item"
               onPress={this.updateItem}
               buttonStyle={styles.addBtn}
-              containerViewStyle={{width: '100%', marginLeft: 0}}
+              containerViewStyle={{ width: '100%', marginLeft: 0 }}
             />
 
             <Button
               title="Delete item"
               onPress={this.removeItem}
               buttonStyle={styles.deleteBtn}
-              containerViewStyle={{width: '100%', marginLeft: 0}}
+              containerViewStyle={{ width: '100%', marginLeft: 0 }}
             />
 
           </View>
@@ -184,13 +211,11 @@ export default class CalenderScreen extends React.Component {
     const items = this.state.items;
     const item = this.state.selectedItem;
     const date = item.date;
-    console.log(item);
     items[date].pop(item)
     this.setState(
-      { items, updateModalVisible: false,  },
+      { items, updateModalVisible: false, },
       () => this.storeData()
     );
-
   }
 
   renderEmptyDate() {
@@ -198,16 +223,12 @@ export default class CalenderScreen extends React.Component {
       <View style={styles.emptyDate}>
         <TouchableOpacity
           style={{ flex: 1 }}
-          onPress={() => {this.setAddModalVisibility()}}
+          onPress={() => { this.setAddModalVisibility() }}
         >
-          <Text style={{color: '#bbb'}}>Click me to add new agenda!</Text>
+          <Text style={{ color: '#bbb' }}>Click me to add new agenda!</Text>
         </TouchableOpacity>
       </View>
     );
-  }
-
-  selectedEmptyDate = () => {
-
   }
 
   rowHasChanged(r1, r2) {
@@ -261,18 +282,29 @@ export default class CalenderScreen extends React.Component {
   addItemModal = () => {
     return (
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent={false}
         visible={this.state.addModalVisible}
-        onRequestClose={() => {this.setAddModalVisibility()}}>
+        onRequestClose={() => { this.setAddModalVisibility() }}>
 
         <View style={styles.modal}>
           <View>
 
             <Header
-              rightComponent={{ size: 24, icon: 'close', color: 'black', onPress: () => {this.setAddModalVisibility()} }}
-              centerComponent={{ text: 'Add item', style: { color: 'black', fontSize: 16, fontWeight: 'bold' }, }}
-              backgroundColor={'#fff'}
+              outerContainerStyles={styles.headerOuterContainer}
+              innerContainerStyles={styles.headerInnerContainer}
+              rightComponent={{
+                size: 25,
+                icon: 'close',
+                color: 'black',
+                style: styles.headerBtn,
+                onPress: () => { this.setAddModalVisibility() }
+              }}
+              centerComponent={{
+                text: 'add item',
+                style: styles.header,
+              }}
+              backgroundColor={Colors.headerBackground}
             />
 
             <TextInput
@@ -294,7 +326,7 @@ export default class CalenderScreen extends React.Component {
               title="Add it"
               onPress={this.addItem}
               buttonStyle={styles.addBtn}
-              containerViewStyle={{width: '100%', marginLeft: 0}}
+              containerViewStyle={{ width: '100%', marginLeft: 0 }}
             />
 
           </View>
@@ -331,7 +363,7 @@ export default class CalenderScreen extends React.Component {
             marginLeft: 36
           }
         }}
-        onDateChange={(date) => {this.setState({date: date})}}
+        onDateChange={(date) => { this.setState({ date: date }) }}
       />
     )
   }
@@ -366,7 +398,7 @@ export default class CalenderScreen extends React.Component {
             marginLeft: 36
           }
         }}
-        onDateChange={(date) => {this.setState({time: date})}}
+        onDateChange={(date) => { this.setState({ time: date }) }}
       />
     )
   }
@@ -388,21 +420,29 @@ export default class CalenderScreen extends React.Component {
     return (
       <View>
 
-        <View>
-          <Button
-            title="Add new agenda"
-            onPress={this.setAddModalVisibility}
-            buttonStyle={styles.addBtn}
-            containerViewStyle={{width: '100%', marginLeft: 0}}
-          />
-        </View>
+        <Header
+          outerContainerStyles={styles.headerOuterContainer}
+          innerContainerStyles={styles.headerInnerContainer}
+          rightComponent={{
+            size: 28,
+            icon: 'add-circle',
+            color: Colors.btnBlue,
+            style: styles.headerBtn,
+            onPress: () => { this.setAddModalVisibility() }
+          }}
+          centerComponent={{
+            text: 'calender',
+            style: styles.header,
+          }}
+          backgroundColor={Colors.headerBackground}
+        />
 
         <View>
           {this.addItemModal()}
           {this.updateItemModal()}
         </View>
 
-        <View style={{height: 800}}>
+        <View style={{ height: 800 }}>
           {this.myAgenda()}
         </View>
 
@@ -413,18 +453,35 @@ export default class CalenderScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
+  headerInnerContainer: {
+    marginTop: 13,
+  },
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+    height: 100,
+  },
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
+  headerBtn: {
+  },
   item: {
     backgroundColor: 'white',
     flex: 1,
     borderRadius: 5,
-    padding: 10,
     marginRight: 10,
-    marginTop: 17
+    marginTop: 30,
+    marginBottom: -12,
+    padding: 10,
   },
   emptyDate: {
     height: 15,
-    flex:1,
-    paddingTop: 30
+    flex: 1,
+    paddingTop: 45
   },
   itemTime: {
     fontSize: 12,
@@ -434,10 +491,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   addBtn: {
-    backgroundColor: '#2f95dc',
+    backgroundColor: Colors.btnBlue,
   },
   deleteBtn: {
-    backgroundColor: '#2f95dc',
+    backgroundColor: Colors.btnBlue,
     marginTop: 8,
   },
   modal: {
@@ -447,7 +504,7 @@ const styles = StyleSheet.create({
   },
   inputForm: {
     width: 400,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.inputBackground,
     height: 50,
     marginTop: 40,
     marginBottom: 12,

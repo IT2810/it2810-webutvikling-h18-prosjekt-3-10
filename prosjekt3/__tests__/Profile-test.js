@@ -1,52 +1,79 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import ProfileScreen from '../screens/ProfilesScreen';
+import NavigationTestUtils from 'react-navigation/NavigationTestUtils';
+import { AsyncStorage, Platform } from 'react-native';
+import MockAsyncStorage from 'mock-async-storage';
 
 
-// testing snapshot view
-it('renders correctly', () => {
-    const tree = renderer
-        .create(< ProfileScreen />)
-        .toJSON();
-    expect(tree).toMatchSnapshot();
+
+const mock = () => {
+    const mockImpl = new MockAsyncStorage()
+    jest.mock('AsyncStorage', () => mockImpl)
+}
+
+// snapshot test
+const release = () => jest.unmock('AsyncStorage')
+describe('ProfileScreen snapshot', () => {
+    jest.useFakeTimers();
+    beforeEach(() => {
+        NavigationTestUtils.resetInternalState();
+    });
+
+    it('renders the Profile screen', async () => {
+        const tree = renderer.create(<ProfileScreen />).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });
 
-// component is rendered correctly
-test('renders button with passed props', () => {
-    const component = renderer.create(
-        <ProfileScreen onClick={() => { }} label="test label" />
-    );
-    expect(component.toJSON()).toMatchSnapshot();
-});
+describe("unit test save info", () => {
+    let profileInfo = renderer.create(<ProfileScreen />).getInstance();
+    const user = {
+        name: 'Jens',
+        email: 'Test@Testorini.com',
+        town: 'Trondheim',
+        myHeightNumber: '180',
+        myWeightNumber: '80',
+        modalVisible: false,
+        navBarHeight: (Platform.OS === 'ios') ? 0 : -180,
+    }
+
+    // testing saveState function
+    it('should save profile in AsyncStorage', async () => {
+        mock();
+        profileInfo.setState(user)
+        await profileInfo.saveState();
+        const value = await AsyncStorage.getItem('profile')
+        expect(value).toBe(JSON.stringify(user));
+
+    })
+
+    // testing retrieveData function
+    it('should retrieve profile in AsyncStorage', async () => {
+        mock();
+        profileInfo.setState(user)
+        await profileInfo.retrieveData();
+        const value = await AsyncStorage.getItem('profile')
+        expect(value).toBe(JSON.stringify(user));
+    })
+
+    it('should not be able to input string for height', async () => {
+        mock();
+        profileInfo.setState(user)
+        await profileInfo.onChangedHeight("hundreogfemti");
+        const value = await AsyncStorage.getItem('profile')
+        expect(value).toBe(JSON.stringify(user));
+    })
+
+    it('should not be able to input string for weight', async () => {
+        mock();
+        profileInfo.setState(user)
+        await profileInfo.onChangedWeight("hundre");
+        const value = await AsyncStorage.getItem('profile')
+        expect(value).toBe(JSON.stringify(user));
+    })
+
+})
 
 
-//When a component is rendered the save is equal to empty / undefined.
-test('renders with " " as an initial state of saveState', () => {
-    const component = renderer.create(
-        <ProfileScreen onClick={() => { " " }} label="this is test label" />
-    );
-    const instance = component.getInstance();
-    expect(instance.state.saveState).toBe(undefined);
-});
-
-//When we click on the button it calls the SaveState function only ones - in render
-test('onClick function is being called once', () => {
-    const fn = jest.fn();
-    const component = renderer.create(
-        <ProfileScreen onClick={fn} label="this is test label" saveState={" "} />
-    );
-    const instance = component.getInstance();
-    instance.props.onClick();
-    expect(fn.mock.calls.length).toBe(1);
-});
-
-test('function for checking only numbers', () => {
-    const mockCallback = renderer.create(<ProfileScreen />).getInstance();
-
-
-
-    expect(mockCallback.onChangedHeight().not.toBeNull())
-});
-
-
-
+release();

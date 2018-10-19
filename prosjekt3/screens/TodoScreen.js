@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TextInput, Image, FlatList,
   AsyncStorage, ScrollView } from 'react-native';
-import { List, ListItem, Button, Text } from 'react-native-elements';
+import { List, ListItem, Button, Text, Header } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Colors from '../constants/Colors'
 
 export default class TodoScreen extends React.Component {
   static navigationOptions = {
-    title: 'Todo',
+    header: null,
   };
 
   constructor(props) {
@@ -85,15 +85,18 @@ export default class TodoScreen extends React.Component {
           extraData={this.state}
           renderItem={({ item }) => (
             <ListItem
+              containerStyle={styles.listItems}
               title={item.input}
+              titleStyle={styles.listItemTitle}
               subtitle={item.date}
+              subtitleStyle={styles.listItemSubtitle}
+              leftIcon={{
+                name: 'chevron-right',
+                style: styles.listItemLeftIcon
+              }}
               rightIcon={{
-                name: 'close',
-                style: {
-                  marginRight: 15,
-                  fontSize: 22,
-                  color: '#2f95dc',
-                },
+                name: 'clear',
+                style: styles.listItemRightIcon,
               }}
               onPressRightIcon={() => this.handleDeleteButtonPress(item)}
             />
@@ -179,6 +182,16 @@ export default class TodoScreen extends React.Component {
     return (
       <View style={styles.container}>
 
+        <Header
+          outerContainerStyles={styles.headerOuterContainer}
+          innerContainerStyles={styles.headerInnerContainer}
+          centerComponent={{
+            text: 'todo',
+            style: styles.header,
+          }}
+          backgroundColor={Colors.headerBackground}
+        />
+
         <View style={styles.formView}>
 
           <View style={styles.txtinput}>
@@ -205,9 +218,11 @@ export default class TodoScreen extends React.Component {
           />
         </View>
 
-        <ScrollView>
-          {this.itemsOutput()}
-        </ScrollView>
+        <View style={styles.listItemContainer}>
+          <ScrollView>
+            {this.itemsOutput()}
+          </ScrollView>
+        </View>
 
       </View>
     );
@@ -215,26 +230,69 @@ export default class TodoScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  headerInnerContainer: {
+    marginTop: 13,
+  },
+  headerOuterContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+  },
+  header: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '600',
+    fontVariant: ['small-caps'],
+  },
   container: {
     flex: 1,
-    paddingTop: 15,
+    paddingTop: 0,
     backgroundColor: Colors.backgroundColor,
   },
   formView: {
     alignItems: 'center',
     borderColor: '#ccc',
     paddingBottom: 8,
+    paddingTop: 20,
   },
   txtinput: {
     width: 320,
   },
   inputForm: {
     marginLeft: 36,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.inputBackground,
     height: 40,
     padding: 8,
     marginBottom: 8,
     textAlign: 'center',
+  },
+  listItemContainer: {
+    height: 350,
+    marginRight: 20,
+    marginLeft: 20,
+  },
+  listItems: {
+    borderBottomColor: '#ccc',
+    backgroundColor: Colors.backgroundColor,
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  listItemTitle: {
+    fontWeight: '400',
+
+  },
+  listItemSubtitle: {
+    fontWeight: '300',
+
+  },
+  listItemLeftIcon: {
+    marginRight: 10,
+    fontSize: 22,
+    color: Colors.black,
+  },
+  listItemRightIcon: {
+    marginRight: 10,
+    fontSize: 22,
+    color: Colors.btnRed,
   },
   listImage: {
     position: 'absolute',
@@ -247,7 +305,7 @@ const styles = StyleSheet.create({
   addBtn: {
     marginLeft: 36,
     width: 285,
-    backgroundColor: '#2f95dc',
+    backgroundColor: Colors.btnBlue,
   },
 
 });
