@@ -13,12 +13,11 @@ import { Header, } from 'react-native-elements';
 import Colors from '../constants/Colors';
 
 export default class HomeScreen extends React.Component {
-
-  // header and styling of it
   static navigationOptions = {
-    header: null, // removing the header
+    header: null,
   };
 
+  // Sets profile modal to visible, causing it to appear
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }

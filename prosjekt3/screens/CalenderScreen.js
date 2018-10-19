@@ -23,7 +23,7 @@ export default class CalenderScreen extends React.Component {
     };
   }
 
-  // Calender agenda object
+  // Returns Agenda-component with the items stored in state
   myAgenda = () => {
     return (
       <Agenda
@@ -38,45 +38,43 @@ export default class CalenderScreen extends React.Component {
     )
   }
 
-  // Runs first time screen opens
+  // When the component first mounts,
+  // retrieve agenda from AsyncStorage
   componentDidMount = () => {
     this.retrieveData()
   }
 
-  // Function to save data to local storage
+  // Saves items (agenda) from state in AsyncStorage
   storeData = async () => {
     const data = this.state.items;
     try {
       await AsyncStorage.setItem('Agenda', JSON.stringify(data));
     }
     catch (error) {
-      // Error saving data
+      console.error("Error saving data to AsyncStorage")
     }
   };
 
-  // Function to retrieve data from local storage
+  // Retrieves agenda from AsyncStorage and sets state
   retrieveData = async () => {
     try {
       const getAgenda = await AsyncStorage.getItem('Agenda');
       const agenda = JSON.parse(getAgenda);
+      let items = {}
       if (agenda != null) {
-        this.setState({
-          items: agenda,
-        });
+        items = agenda
       }
-      else {
-        this.setState({
-          items: {},
-        })
-      }
+      this.setState({
+        items
+      });
     }
     catch (error) {
+      alert('Error retrieving agenda from AsyncStorage')
       throw error
-      alert('Error retrieving data')
     }
   }
 
-  // Loads items
+  // Helperfunction for Agenda
   loadItems(day) {
     setTimeout(() => {
       for (let i = 0; i < 15; i++) {
@@ -95,7 +93,7 @@ export default class CalenderScreen extends React.Component {
     // https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
   }
 
-  //
+  // Helperfunction for Agenda
   renderItem(item) {
     if (!item.time == '') {
       return (
@@ -124,6 +122,7 @@ export default class CalenderScreen extends React.Component {
     }
   }
 
+  // Sets selected item in state
   isSelected = (item) => {
     this.setState(() => ({
       selectedItem: item,
@@ -131,6 +130,7 @@ export default class CalenderScreen extends React.Component {
     this.setUpdateModalVisibility();
   }
 
+  // Modal for updating items
   updateItemModal = () => {
     return (
       <Modal

@@ -12,7 +12,6 @@ export default class ActivityScreen extends React.Component {
     navBarHeight: (Platform.OS === 'ios') ? -64 : 100,
   }
 
-  // RENDER
   render() {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -26,16 +25,16 @@ export default class ActivityScreen extends React.Component {
   }
 }
 
-  // STYLESHEET
-  const styles = StyleSheet.create({
-    safeArea: {
-      flex: 1,
-      backgroundColor: '#fff',
-    },
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      backgroundColor: Colors.backgroundColor,
-    },
+// STYLESHEET
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: Colors.backgroundColor,
+  },
 
-  });
+});

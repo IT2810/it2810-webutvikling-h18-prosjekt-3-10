@@ -3,13 +3,12 @@ import AddContactModal from '../components/AddContactModal';
 import ContactInformationModal from '../components/ContactInformationModal';
 import {
   Alert,
-  ScrollView,
   View,
   AsyncStorage,
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
-import { Button, Header } from 'react-native-elements';
+import { Header } from 'react-native-elements';
 import { Contacts, Permissions } from 'expo';
 import ContactsList from '../components/ContactsList';
 import Loading from '../components/Loading';
@@ -45,7 +44,8 @@ export default class ContactsScreen extends Component {
     */}
   }
 
-  // Saves a contact in AsyncStorage
+  // Saves a contact in an array in AsyncStorage
+  // Also updates state to mirror AsyncStorage
   saveContact = async contact => {
     AsyncStorage.getItem('contacts')
       .then(result => {
@@ -69,6 +69,7 @@ export default class ContactsScreen extends Component {
   }
 
   // Removes contact from AsyncStorage
+  // Also updates state to mirror AsyncStorage
   removeContact = async contact => {
     // First gets all the saved contacts
     AsyncStorage.getItem('contacts')
@@ -95,7 +96,7 @@ export default class ContactsScreen extends Component {
       })
   }
 
-  // Loads added contacts from AsyncStorage
+  // Retrieves added contacts from AsyncStorage and sets them in state
   loadContacts = () => {
     let addedContacts = []
     AsyncStorage.getItem('contacts')
@@ -110,6 +111,7 @@ export default class ContactsScreen extends Component {
       })
   }
 
+  // NOTE: This method is not used because of importing contacts causing slowdown in app
   // Imports contacts from phone contact list
   importContacts = async () => {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
@@ -137,6 +139,8 @@ export default class ContactsScreen extends Component {
     }
   }
 
+  // Handles delete action from user
+  // Asks to verify deletion before passing contact to removal-method
   handleDelete = (contact) => {
     Alert.alert(
       `Delete ${contact.firstName} ${contact.lastName}?`,
@@ -153,6 +157,8 @@ export default class ContactsScreen extends Component {
     )
   }
 
+  // Handles press on contact
+  // Opens modal for more information on the contact
   handleContactPress = contact => {
     this.setState({
       contactModalVisible: true,

@@ -22,6 +22,7 @@ export default class TodoScreen extends React.Component {
   }
 
   // Updating inputValue on textchange
+  // InputValue represents name of ToDo-task
   handleTextChange = (value) => {
     this.setState(() => ({
       inputValue: value,
@@ -40,7 +41,7 @@ export default class TodoScreen extends React.Component {
     return id;
   }
 
-  // Adding an item to the list
+  // Adding an item to the list of todos
   handleSendButtonPress = () => {
     const input = this.state.inputValue;
     const date = this.state.date;
@@ -64,17 +65,17 @@ export default class TodoScreen extends React.Component {
     this.storeData();
   };
 
-  // Deleting an item from the list
+  // Deleting an item from the list of todos
   handleDeleteButtonPress = (item) => {
     const list = this.state.list.filter(listItem => listItem.id != item.id)
-    // returns new array with item filtered out
+    // sets state with new array where specified item is removed
     this.setState(
       { list },
       () => this.storeData()
     );
   }
 
-  // List object with todo items
+  // List with todo items
   itemsOutput = () => {
     return (
       <List>
@@ -105,7 +106,7 @@ export default class TodoScreen extends React.Component {
     )
   }
 
-  // Date picker object
+  // Datepicker component
   datePicker = () => {
     return (
       <DatePicker
@@ -139,22 +140,23 @@ export default class TodoScreen extends React.Component {
     )
   }
 
-  // Function to save data to local storage
+  // Saves list of todos in AsyncStorage
   storeData = async () => {
     const data = this.state.list;
     try {
       await AsyncStorage.setItem('Todo-list', JSON.stringify(data));
     }
     catch (error) {
-      // Error saving data
+      console.error("Saving list of todos in AsyncStorage failed")
     }
   };
 
+  // When component first loads, retrieve todo-list from AsyncStorage
   componentDidMount = () => {
     this.retrieveData()
   }
 
-  // Function to retrieve data from local storage
+  // Retrieves todo-list from AsyncStorage
   retrieveData = async () => {
     try {
       const getData = await AsyncStorage.getItem('Todo-list');
@@ -172,6 +174,7 @@ export default class TodoScreen extends React.Component {
     }
     catch (error) {
       alert('Error retrieving data')
+      console.error("Error retrieving Todo-list from AsyncStorage")
     }
   }
 

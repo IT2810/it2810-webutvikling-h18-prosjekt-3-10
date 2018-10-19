@@ -32,12 +32,12 @@ export default class UserProfileView extends Component {
         header: null,
     };
 
-    // loading saved profile info
+    // When the screen is first loaded, retrieve the saved profile data
     componentDidMount = () => {
         this.retrieveData()
     }
 
-    // retrieves stored profile info
+    // Retrieves profile data from AsyncStorage
     retrieveData = async () => {
         try {
             const result = await AsyncStorage.getItem('profile')
@@ -54,10 +54,12 @@ export default class UserProfileView extends Component {
         }
         catch (error) {
             alert('Error retrieving data')
+            console.error("Error retrieving profile data from AsyncStorage")
         }
     }
 
-    /* function that restrict user to only input integers for height input field */
+    // Method that restricts input from user to only contain integers
+    // Also adds cm to the height-string
     onChangedHeight(height) {
         let newHeight = 'cm   ';
         let heightNumbers = '0123456789';
@@ -68,7 +70,9 @@ export default class UserProfileView extends Component {
         }
         this.setState({ myHeightNumber: newHeight });
     }
-    /* function that restrict user to only input integers for weight input field */
+
+    // Method that restricts input from user to only contain integers
+    // Also adds kg to the weight string
     onChangedWeight(weight) {
         let newWeight = 'kg   ';
         let weightNumbers = '0123456789';
@@ -79,13 +83,15 @@ export default class UserProfileView extends Component {
         }
         this.setState({ myWeightNumber: newWeight });
     }
-    // saving profile info
+
+    // Saves the profile to AsyncStorage
     saveState = async () => {
         const data = this.state;
         try {
             await AsyncStorage.setItem("profile", JSON.stringify(data))
         } catch (error) {
             alert('Error saving data')
+            console.error("Error saving profile date to AsyncStorage")
         }
     }
 
