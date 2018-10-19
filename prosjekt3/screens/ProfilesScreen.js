@@ -26,7 +26,7 @@ export default class UserProfileView extends Component {
             myHeightNumber: '',
             myWeightNumber: '',
             modalVisible: false,
-            navBarHeight: (Platform.OS === 'ios') ? 0 : -180,
+            navBarHeight: (Platform.OS === 'ios') ? 0 : -320,
         };
     }
     static navigationOptions = {

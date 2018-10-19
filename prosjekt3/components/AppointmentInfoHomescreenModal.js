@@ -6,7 +6,6 @@ import {
     Modal,
     TouchableHighlight,
     AsyncStorage,
-    Platform,
 } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
@@ -17,13 +16,10 @@ export default class AppointmentModalHomescreen extends React.Component {
         super(props);
         this.state = {
             modalVisible: false,
-            addModalVisible: false,
-            updateModalVisible: false,
-            inputValue: '',
             date: '',
             time: '',
             items: {},
-            selectedItem: {},
+            _mounted: false,
         };
     }
 
@@ -31,12 +27,21 @@ export default class AppointmentModalHomescreen extends React.Component {
         this.setState({ modalVisible: visible });
     }
 
+    // mounting data from calendar
     componentDidMount = () => {
+        this.retrieveData()
+        this._mounted = true
+    }
+
+    // updating data from calendar in the same session
+    componentDidUpdate = () => {
         this.retrieveData()
     }
 
-    componentDidUpdate = () => {
-        this.retrieveData()
+    // canceling subscription on asynchronous  tasks
+    componentWillUnmount = () => {
+        this._mounted = false
+
     }
 
     myAgenda = () => {
@@ -56,7 +61,7 @@ export default class AppointmentModalHomescreen extends React.Component {
         try {
             const getAgenda = await AsyncStorage.getItem('Agenda');
             const agenda = JSON.parse(getAgenda);
-            if (agenda != null) {
+            if (agenda != null && this._mounted) {
                 this.setState({
                     items: agenda,
                 });
@@ -88,6 +93,7 @@ export default class AppointmentModalHomescreen extends React.Component {
         return (
             <View style={styles.emptyDate}>
                 <Text style={{ color: '#bbb' }}>Nothing to do today</Text>
+                <Text style={{ color: '#bbb', fontSize: 12 }}>Add something in Calendar</Text>
             </View>
         );
     }
@@ -126,10 +132,6 @@ export default class AppointmentModalHomescreen extends React.Component {
 
                     />
                     <View style={styles.centerContent}>
-
-
-
-
                         <View style={styles.agendaContent}>
                             {this.myAgenda()}
                         </View>
@@ -158,9 +160,6 @@ export default class AppointmentModalHomescreen extends React.Component {
                         <Text style={styles.eventText}>Upcoming Events  </Text>
                     </View>
                 </TouchableHighlight>
-
-
-
             </View>
         )
     }
