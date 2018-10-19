@@ -4,7 +4,6 @@ import {
     View,
     Modal,
     TouchableHighlight,
-    KeyboardAvoidingView,
     Platform,
 } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
