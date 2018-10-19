@@ -6,7 +6,6 @@ import {
   ScrollView,
   View,
   AsyncStorage,
-  StyleSheet
 } from 'react-native';
 
 import { Contacts, Permissions } from 'expo';

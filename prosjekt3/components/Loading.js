@@ -8,19 +8,19 @@ import {
 
 const Loading = () => {
     return (
-        <View style={{alignItems: "center", justifyContent: "center"}}>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Image
-            source={
-                require('../assets/images/loading.gif')
-            }
-            style={styles.welcomeImage}
+                source={
+                    require('../assets/images/loading.gif')
+                }
+                style={styles.welcomeImage}
             />
             <View style={styles.getStartedContainer}>
                 <Text style={styles.getStartedText}>Loading...</Text>
             </View>
         </View>
     )
-} 
+}
 
 const styles = StyleSheet.create({
     centerContent: {

@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import React from 'react';
+import { StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import PedometerSensor from '../components/pedometer';
-
 
 export default class ActivityScreen extends React.Component {
   static navigationOptions = {
@@ -25,12 +24,11 @@ export default class ActivityScreen extends React.Component {
   }
 }
 
-  // STYLESHEET
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      backgroundColor: Colors.backgroundColor,
-    },
-
-  });
+// STYLESHEET
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: Colors.backgroundColor,
+  },
+});

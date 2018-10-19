@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
     Modal,
     KeyboardAvoidingView,
@@ -8,7 +7,6 @@ import {
     Button,
     StyleSheet,
 } from 'react-native'
-
 import {
     Avatar,
     Header,
@@ -47,7 +45,7 @@ export default class AddContactModal extends Component {
             firstName: firstName.trim(),
             lastName: lastName.trim(),
             id: this.generateId(),
-            phoneNumbers: [{number: number}]
+            phoneNumbers: [{ number: number }]
         }
 
         // Reset modal
@@ -75,7 +73,7 @@ export default class AddContactModal extends Component {
             >
                 <KeyboardAvoidingView behavior="position">
                     <Header
-                        innerContainerStyles={{alignItems: 'center'}}
+                        innerContainerStyles={{ alignItems: 'center' }}
                         leftComponent={{ icon: 'keyboard-arrow-down', color: '#fff', size: 32, onPress: this.props.closeCallback }}
                         centerComponent={{ text: 'Add contact', style: { color: '#fff' } }}
                     />
@@ -90,27 +88,27 @@ export default class AddContactModal extends Component {
 
                         <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
-                            placeholder="First name"
-                            value={this.state.firstName}
-                            onChangeText={name => {
-                                this.setState({
-                                    firstName: name,
-                                })
-                            }}
-                            underlineColorAndroid="transparent"
+                                placeholder="First name"
+                                value={this.state.firstName}
+                                onChangeText={name => {
+                                    this.setState({
+                                        firstName: name,
+                                    })
+                                }}
+                                underlineColorAndroid="transparent"
                             />
                         </View>
 
                         <View style={styles.nameInput}>
                             <TextInput style={styles.name} // input field for name
-                            placeholder="Last name"
-                            value={this.state.lastName}
-                            onChangeText={name => {
-                                this.setState({
-                                    lastName: name
-                                })
-                            }}
-                            underlineColorAndroid="transparent"
+                                placeholder="Last name"
+                                value={this.state.lastName}
+                                onChangeText={name => {
+                                    this.setState({
+                                        lastName: name
+                                    })
+                                }}
+                                underlineColorAndroid="transparent"
                             />
                         </View>
 
@@ -143,21 +141,15 @@ export default class AddContactModal extends Component {
 }
 
 const styles = StyleSheet.create({
+
     modalContent: {
         alignItems: "center",
     },
-    header: {
-        width: "100%",
-    },
+
     avatar: {
         margin: 20,
     },
-    textWithLabel: {
-        marginBottom: 20,
-    },
-    lightText: {
-        color: "#696969"
-    },
+
     name: {
         fontSize: 20,
         color: "#4d4d4d",
