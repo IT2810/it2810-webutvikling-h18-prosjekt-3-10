@@ -11,102 +11,200 @@ exports[`Profile-modal snapshot renders the Profile-modal 1`] = `
       transparent={false}
       visible={false}
     >
-      <View
+      <RCTSafeAreaView
         style={
-          Array [
-            Object {
-              "backgroundColor": "#476DC5",
-              "borderBottomColor": "#f2f2f2",
-              "borderBottomWidth": 1,
-              "height": 70,
-              "padding": 15,
-            },
-            Object {
-              "backgroundColor": "#fff",
-            },
-            Object {
-              "borderBottomColor": "black",
-              "borderBottomWidth": 2,
-              "height": 100,
-            },
-          ]
+          Object {
+            "backgroundColor": "#fff",
+            "flex": 1,
+          }
         }
       >
         <View
           style={
             Array [
               Object {
-                "alignItems": "flex-end",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "space-between",
+                "backgroundColor": "#476DC5",
+                "borderBottomColor": "#f2f2f2",
+                "borderBottomWidth": 1,
+                "height": 70,
+                "padding": 15,
               },
               Object {
-                "marginTop": 13,
+                "backgroundColor": "#fff",
+              },
+              Object {
+                "borderBottomColor": "black",
+                "borderBottomWidth": 2,
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "height": 24,
-                "width": 24,
-              }
-            }
-          />
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
               Array [
-                Object {},
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
                 Object {
-                  "color": "black",
-                  "fontSize": 20,
-                  "fontVariant": Array [
-                    "small-caps",
-                  ],
-                  "fontWeight": "600",
+                  "alignItems": "flex-end",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 },
+                undefined,
               ]
             }
           >
-            profile
-          </Text>
+            <View
+              style={
+                Object {
+                  "height": 24,
+                  "width": 24,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {},
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  Object {
+                    "color": "black",
+                    "fontSize": 20,
+                    "fontVariant": Array [
+                      "small-caps",
+                    ],
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              profile
+            </Text>
+            <View
+              accessible={true}
+              isTVSelectable={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Array [
+                  false,
+                  false,
+                  false,
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "justifyContent": "center",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "#2f95dc",
+                      "fontSize": 32,
+                    },
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                      },
+                      undefined,
+                    ],
+                    Object {
+                      "fontFamily": "Material Icons",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View>
           <View
-            accessible={true}
-            isTVSelectable={true}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
+            enabled={true}
+            keyboardVerticalOffset={10}
+            onLayout={[Function]}
+          >
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "bottom": 0,
+                  },
+                ]
+              }
+            />
+          </View>
+        </View>
+      </RCTSafeAreaView>
+    </Modal>
+    <View
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={null}
+      >
+        <View
+          style={null}
+        >
+          <View
             style={
               Array [
-                false,
-                false,
+                Object {
+                  "margin": 7,
+                },
+                Object {
+                  "borderRadius": 44,
+                  "height": 84,
+                  "width": 84,
+                },
                 false,
                 Object {
                   "alignItems": "center",
-                  "backgroundColor": "transparent",
+                  "backgroundColor": "#2f95dc",
                   "justifyContent": "center",
                 },
                 undefined,
               ]
             }
+            underlayColor="#2f95dc"
           >
             <Text
               accessible={true}
@@ -115,8 +213,8 @@ exports[`Profile-modal snapshot renders the Profile-modal 1`] = `
               style={
                 Array [
                   Object {
-                    "color": "#2f95dc",
-                    "fontSize": 28,
+                    "color": "white",
+                    "fontSize": 40,
                   },
                   Array [
                     Object {
@@ -125,7 +223,7 @@ exports[`Profile-modal snapshot renders the Profile-modal 1`] = `
                     undefined,
                   ],
                   Object {
-                    "fontFamily": "Material Icons",
+                    "fontFamily": "FontAwesome",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                   },
@@ -133,93 +231,9 @@ exports[`Profile-modal snapshot renders the Profile-modal 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
-        </View>
-      </View>
-      <View>
-        <View
-          enabled={true}
-          keyboardVerticalOffset={0}
-          onLayout={[Function]}
-        >
-          <View
-            style={
-              Array [
-                undefined,
-                Object {
-                  "bottom": 0,
-                },
-              ]
-            }
-          />
-        </View>
-      </View>
-    </Modal>
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={null}
-    >
-      <View
-        style={null}
-      >
-        <View
-          style={
-            Array [
-              Object {
-                "margin": 7,
-              },
-              Object {
-                "borderRadius": 44,
-                "height": 84,
-                "width": 84,
-              },
-              false,
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "#425b84",
-                "justifyContent": "center",
-              },
-              undefined,
-            ]
-          }
-          underlayColor="#425b84"
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontSize": 40,
-                },
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  undefined,
-                ],
-                Object {
-                  "fontFamily": "FontAwesome",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
         </View>
       </View>
     </View>
