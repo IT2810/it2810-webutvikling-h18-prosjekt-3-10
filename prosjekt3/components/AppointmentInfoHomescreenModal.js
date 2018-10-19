@@ -6,6 +6,7 @@ import {
     Modal,
     TouchableHighlight,
     AsyncStorage,
+    Platform,
 } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
@@ -114,7 +115,21 @@ export default class AppointmentModalHomescreen extends React.Component {
                     onRequestClose={() => { // required on android, making it posible to use hardware back-button
                         this.setModalVisible(!this.state.modalVisible);
                     }}>
+                    <Header
+                        outerContainerStyles={styles.headerOuterContainer}
+                        innerContainerStyles={styles.headerInnerContainer}
+                        centerComponent={{
+                            text: 'Agenda',
+                            style: styles.header,
+                        }}
+                        backgroundColor={Colors.headerBackground}
+
+                    />
                     <View style={styles.centerContent}>
+
+
+
+
                         <View style={styles.agendaContent}>
                             {this.myAgenda()}
                         </View>
@@ -235,5 +250,19 @@ const styles = StyleSheet.create({
     closeModalButtonText: {
         fontSize: 18,
         color: "#ffffff",
+    },
+
+    headerInnerContainer: {
+        marginTop: 13,
+    },
+    headerOuterContainer: {
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+    },
+    header: {
+        color: 'black',
+        fontSize: 20,
+        fontWeight: '600',
+        fontVariant: ['small-caps'],
     },
 })

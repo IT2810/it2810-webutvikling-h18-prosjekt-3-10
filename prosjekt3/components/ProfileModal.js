@@ -5,6 +5,7 @@ import {
     Modal,
     TouchableHighlight,
     KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import ProfileScreen from '../screens/ProfilesScreen';
@@ -93,6 +94,8 @@ const styles = StyleSheet.create({
     headerOuterContainer: {
         borderBottomWidth: 2,
         borderBottomColor: 'black',
+        //height: 100,
+        height: Platform.OS === 'ios' ? 100 : 70
     },
     header: {
         color: 'black',

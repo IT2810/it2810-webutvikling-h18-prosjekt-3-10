@@ -102,13 +102,14 @@ const styles = StyleSheet.create({
   },
 
   headerInnerContainer: {
-    marginTop: 8,
+    marginTop: 15,
   },
 
   headerOuterContainer: {
     borderBottomWidth: 1,
     borderBottomColor: '#999',
-    backgroundColor: "#5aa0dd"
+    backgroundColor: "#5aa0dd",
+    height: 100
   },
 
   header: {
